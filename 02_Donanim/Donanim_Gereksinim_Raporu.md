@@ -1,11 +1,5 @@
 # AfetMesh — Donanım Gereksinim Raporu
 
-**Doküman:** HW-REQ-001
-**Sürüm:** 1.0
-**Tarih:** 2026-08-08
-**Kapsam:** Özel PCB tasarımı, komponent seçimi, mekanik/IP54 gereksinimleri
-**Durum:** Taslak — komponent siparişi öncesi gözden geçirilecek
-
 ---
 
 ## 1. Yönetici Özeti — Üç Temel Karar
