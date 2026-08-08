@@ -1,10 +1,5 @@
 # Afet Anı Meshtastic Tabanlı İletişim Ağı — Gereksinim Analizi Raporu
 
-**Doküman Sürümü:** 1.0
-**Tarih:** 2026-08-08
-**Hazırlayan:** Proje ekibi (Claude ile birlikte)
-**Durum:** Taslak — geliştirme kararları için görüşülecek
-
 ---
 
 ## 1. Proje Tanımı ve Amaç
