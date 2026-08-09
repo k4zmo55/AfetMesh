@@ -1,9 +1,5 @@
 # Türkiye'de İhtiyaç ve Rekabet Analizi Raporu
 
-**Proje:** Afet Anı Meshtastic Tabanlı İletişim Ağı
-**Rapor tarihi:** 9 Ağustos 2026
-**Amaç:** Bu projenin Türkiye'de karşılık bulup bulmayacağını değerlendirmek; kamu ve özel sektörde beyan edilmiş bir ihtiyaç olup olmadığını ve benzer projelerin geliştirilip geliştirilmediğini tespit etmek.
-
 ---
 
 ## 1. Yönetici Özeti
