@@ -1,6 +1,6 @@
 # AfetMesh — Sistem Gereksinim Belgesi (SGB)
 
-**Sürüm:** 2.0
+**Sürüm:** 2.1
 **Tarih:** 9 Ağustos 2026
 **Statü:** ✅ Yürürlükte — **projenin tek yetkili gereksinim kaynağı**
 
@@ -18,6 +18,7 @@ Bu belge, daha önce yazılmış beş raporun **birleştirilmiş ve çelişkiler
 | `04_Dokumanlar/Ihtiyac_ve_Rekabet_Analizi_Raporu.md` | Pazar ve rekabet araştırması | 📎 Araştırma girdisi (9 Ağu 2026) |
 | `04_Dokumanlar/Farklilasma_ve_Urun_Mimarisi_Raporu.md` | Mimari gerekçelendirme | 📎 Karar gerekçesi (9 Ağu 2026) |
 | `04_Dokumanlar/Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md` | Kurumsal uyum analizi | 📎 Araştırma girdisi (9 Ağu 2026) |
+| `04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md` | Ülkelerin acil haberleşme mimarileri, 5 katmanlı çerçeve | 📎 Araştırma girdisi (9 Ağu 2026) |
 
 > **Kural:** Yeni bir gereksinim doğduğunda önce **bu belgeye** yazılır. Araştırma raporları güncellenmez — onlar belirli bir tarihteki bulguların kaydıdır.
 
@@ -44,6 +45,19 @@ Sektördeki sivil çözümler (Meshtastic, MeshCore, MeshGrid) ise kullanıcın�
 > AfetMesh, Japonya'nın **171 Afet Acil Haberleşme Sistemi**'nin GSM olmadan çalışan halidir.
 
 Bu, Çevre ve Şehircilik Bakanlığı'nın 2024 tarihli *Afet Sonrası İletişim Sistemleri* kılavuzunda örnek gösterilen ve *"Türkiye'de GSM operatörleri ve AFAD iş birliği ile çalışmalar başlatılan"* modeldir. Aradaki fark taşıyıcıdadır: 171 GSM üzerinden çalışır ve büyük afette (kılavuzun kendi tanımıyla "iletişim tamamen kopar" senaryosunda) devre dışı kalır; AfetMesh LoRa mesh üzerinden çalışır ve altyapı gerektirmez.
+
+### 1.4 İKAS ile ilişki — tamamlayıcılık (rekabet değil)
+
+Türkiye'de AFAD ve TÜBİTAK BİLGEM tarafından geliştirilen **İKAS** (İkaz ve Alarm Bütünleşik Sistemi), **Cell Broadcast** teknolojisiyle **112. kanaldan** vatandaşın telefonuna uyarı göndermektedir. Yani Türkiye'de **uyarı katmanı mevcuttur.**
+
+> **AfetMesh bu katmanın eksiğini kapatmaz — yönünü tamamlar:**
+> ### İKAS afeti size haber verir. AfetMesh sizin haberinizi dışarı çıkarır.
+> İKAS **aşağı yönlüdür** (kurum → vatandaş). AfetMesh **yukarı yönlüdür** (vatandaş → kurum).
+
+Teknik olarak da çakışmazlar. Bakanlık kılavuzu afet haberleşmesinin üç düşmanını sayar: *enerji kesintileri, fiziksel zararlar, aşırı kullanım yoğunluğu.* Cell Broadcast bunlardan yalnızca **aşırı yoğunluğu** çözer (trafik yükünden etkilenmez); baz istasyonu yıkıldığında veya elektriği kesildiğinde yayın yapacak kimse kalmaz. **AfetMesh diğer iki senaryo için vardır.**
+
+> **Kurumsal iletişim kuralı:** Teklif ve sunumlarda "Türkiye'de böyle bir sistem yok" denmeyecektir — yanlıştır ve gereksiz direnç doğurur. Kullanılacak çerçeve tamamlayıcılıktır.
+> Ayrıntı: [`04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md`](../04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md)
 
 ---
 
@@ -351,7 +365,9 @@ Bu testler **PCB tasarımından önce**, hazır kartlarla ve yaklaşık sıfır 
 | **TST-4** | Yoğunluk testi: 1 NOKTA + 20 CEP + 8 telefon | SOS gecikmesi < 60 sn; paket kaybı < %10 | Yüksek |
 | **TST-5** | Uyumluluk: standart Meshtastic node'u SOS paketimizi taşıyor mu | SOS-5 doğrulanır | Yüksek |
 | **TST-6** | Kullanılabilirlik: 10 teknik olmayan gönüllü, yönlendirmesiz | ≥ 8/10 başarı, ortalama < 90 sn | Orta |
-| **TST-7** | Tam kopukluk testi: GSM ve internet kapalı, uçtan uca senaryo | SYS-1 doğrulanır | Orta |
+| **TST-7** | **"Şebekesiz gün" tatbikatı:** GSM ve internet erişimi kapalı varsayılarak, pilot bölgede gerçek katılımcılarla uçtan uca senaryo | SYS-1 doğrulanır; ölçülmüş saha verisi üretilir | Orta |
+
+> **TST-7 modeli:** Tayvan, 2026 kentsel dayanıklılık tatbikatlarında **ilk kez ulusal ölçekte mobil internet kesintisi simülasyonu** uygulamıştır. Aynı yaklaşım pilot bölgede uygulanmalıdır — laboratuvar testinden farklı olarak gerçek kullanıcı davranışını ölçer ve Bakanlık kılavuzunun *"toplumun hazırlıklı olması için tatbikatlar düzenlenmesi"* maddesiyle örtüşür.
 
 > **TST-1 ve TST-2 tamamlanmadan PCB tasarımına başlanmayacaktır.**
 
@@ -406,6 +422,8 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | Parça tedarik ve kur riski | Orta | Her kritik parça için ikinci kaynak |
 | Regülasyon belirsizliği | Düşük-Orta | REG-4 erken teyit |
 | Paralel topluluk çalışmasıyla çabanın tekrarı | Orta | TA Mesh ile erken temas ve işbirliği |
+| **Uydu-doğrudan-telefon (D2C) yaygınlaşması → problemin telefon üreticilerince çözülmesi** | **Orta-Yüksek (orta vade)** | Apple Emergency SOS (Globalstar), Starlink Direct-to-Cell (Text-to-911 beta), AST SpaceMobile hızla yaygınlaşıyor. **Karşı konumlandırma:** D2C açık gökyüzü gerektirir — enkaz altında, bodrumda ve kapalı mekânda çalışmaz; ayrıca yalnızca yeni/pahalı telefonlarda bulunur. AfetMesh telefon modelinden bağımsızdır. **Pilot öncesi bu alan yeniden gözden geçirilecektir** |
+| Kullanıcıların sesli iletişim beklentisi (metin yetersiz bulunabilir) | Orta | Hurricane Helene saha raporu bu beklentiyi doğruluyor. Ürün sohbet için değil **tek yönlü SOS + triage** için konumlandırılacak; telsizle rekabet edilmeyecek (Bölüm 3.2) |
 
 ---
 
@@ -488,6 +506,7 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | 1.0 | — | Gereksinim Analizi Raporu (ilk kapsam) |
 | 1.1 | — | Donanım Gereksinim Raporu (donanım detayı) |
 | **2.0** | **9 Ağu 2026** | Rekabet, mimari ve bakanlık analizleri birleştirildi. 14 çelişki çözüldü. Kamu node'u ayrı cihaz sınıfına alındı. Cihazsız erişim BLE'den WiFi portala taşındı. Gereksinim ID şeması birleştirildi |
+| **2.1** | **9 Ağu 2026** | Uluslararası karşılaştırma işlendi: **Bölüm 1.4** (İKAS ile tamamlayıcılık konumlandırması) eklendi · risk kaydına **uydu D2C** ve **sesli iletişim beklentisi** riskleri eklendi · **TST-7** "şebekesiz gün tatbikatı" olarak somutlaştırıldı |
 
 ---
 

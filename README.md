@@ -61,6 +61,7 @@ Ayrıca bu aşamada **A-1 frekans kararı** verilecek (433 MHz mi 868 MHz mi) �
 
 ## Temel Kabuller
 
+- **Mevcut sistemlerin eksiğini kapatmıyoruz, yönünü tamamlıyoruz.** Türkiye'de AFAD **İKAS** (Cell Broadcast, 112 kanalı) uyarıyı *size* getirir; AfetMesh *sizin haberinizi dışarı çıkarır*. İKAS aşağı yönlü, AfetMesh yukarı yönlüdür.
 - **Yeni bir mesh protokolü yazılmayacak.** Meshtastic tabanı korunur; mevcut ağlarla (TA Mesh dâhil) birlikte çalışabilirlik buna bağlıdır.
 - **Telsiz sistemlerinin yerine geçilmiyor.** Ses ve video taşınmaz; AfetMesh kurumsal çözümlerin eksik olduğu **vatandaş katmanını** doldurur.
 - **Menzil ve pil ömrü beyanları ölçülmüş değerlere dayanır.** İdeal koşul rakamları pazarlama amaçlı kullanılmaz.
