@@ -1,5 +1,9 @@
 # Farklılaşma Analizi ve Ürün Mimarisi Raporu (v2)
 
+> 📎 **Karar gerekçesi belgesi — 9 Ağustos 2026.** Mimari kararların *neden* alındığını açıklar.
+> Buradaki AF-* gereksinimleri **SGB v2.0'da CEP-/NOK-/POR-/SOS-/PAN- ön ekleriyle yeniden numaralandırılmıştır** (eşleşme tablosu: SGB Bölüm 17).
+> Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+
 
 ---
 

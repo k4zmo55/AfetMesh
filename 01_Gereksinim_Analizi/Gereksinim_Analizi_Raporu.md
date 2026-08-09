@@ -1,5 +1,14 @@
 # Afet Anı Meshtastic Tabanlı İletişim Ağı — Gereksinim Analizi Raporu
 
+> ## 📎 BELGE STATÜSÜ: GİRDİ BELGESİ (v1.0)
+>
+> Bu rapor projenin **ilk kapsam çalışmasıdır** ve tarihsel kayıt olarak korunmaktadır.
+> Yürürlükteki gereksinimler için: **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** (SGB v2.0)
+>
+> **Bu belgedeki bazı maddeler SGB v2.0 ile değiştirilmiştir.** Değişen maddelerin yanında `⚠️ SGB v2.0` işareti bulunur. Çelişki halinde **SGB geçerlidir.**
+>
+> Değişen ana maddeler: Bölüm 3 (cihazsız erişim modeli) · NFR-9 / SW-2 (frekans) · SW-6 · SW-8 · SW-11 · SW-13 · Bölüm 6.5 (kamu node'u)
+
 ---
 
 ## 1. Proje Tanımı ve Amaç
@@ -29,6 +38,15 @@ Doğal afetler (deprem, sel, yangın vb.) sonrasında GSM şebekesi ve internet 
 ---
 
 ## 3. Kritik Teknik Kısıt: "Cihazsız Kullanıcı" Nasıl Çalışır?
+
+> ### ⚠️ SGB v2.0 — BU BÖLÜM DEĞİŞTİRİLMİŞTİR
+>
+> Aşağıda tarif edilen **BLE tabanlı model geçersizdir.** İki nedenle:
+> 1. Meshtastic'in `PhoneAPI` mimarisi aynı anda **tek istemci** destekler; yeni bağlanan öncekini düşürür. Kamu node'una 50 kişi yaklaştığında model çalışmaz.
+> 2. BLE modeli, kullanıcının telefonunda **Meshtastic uygulamasının kurulu olmasını** gerektirir — afet anında internet olmadığı için indirilemez.
+>
+> **Yürürlükteki model:** Cihazsız kullanıcı, NOKTA'nın açtığı **WiFi ağına bağlanır** ve **captive portal** otomatik açılır. Uygulama kurulumu gerekmez, eşzamanlı en az 8 kullanıcı desteklenir.
+> → SGB Bölüm 7 (NOK-2, NOK-3, NOK-4) ve Bölüm 8 (PORTAL)
 
 Bu netleştirme, projenin doğru kurgulanması için kritik önemde:
 
@@ -66,7 +84,7 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 | NFR-6 | Kurulum süresi | Deneyimsiz kullanıcı için kutudan çıkış → çalışır node: **< 15 dakika** |
 | NFR-7 | Kullanım kolaylığı | Teknik bilgisi olmayan biri Meshtastic mobil uygulamasını kurup 5 dakikada bağlanabilmeli |
 | NFR-8 | Enerji bağımsızlığı | Şebeke elektriği olmadan (solar/powerbank) en az 1 hafta çalışabilme (kamu node'ları için) |
-| NFR-9 | Yasal uygunluk | Türkiye'de lisanssız kullanılabilen ISM bandında (868 MHz, EU868 bölge ayarı) çalışmalı |
+| NFR-9 ⚠️ | Yasal uygunluk | Türkiye'de lisanssız kullanılabilen ISM bandında çalışmalı. **⚠️ SGB v2.0: `EU_868` sabitlemesi kaldırıldı.** Türkiye'de topluluk ağı ağırlıklı olarak 433 MHz kullanıyor; yanlış band seçimi mevcut ağdan kopmaya yol açar. Karar askıya alındı → SGB **A-1** |
 | NFR-10 | Sürdürülebilirlik | Açık kaynak Meshtastic firmware'inden mümkün olduğunca sapmadan, upstream ile uyumlu kalmak |
 
 ---
@@ -77,8 +95,8 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 
 | Bileşen | Gereksinim | Aday Ürün(ler) |
 |---|---|---|
-| MCU + LoRa modülü | SX1262 tabanlı, Meshtastic destekli, EU868 uyumlu | Heltec WiFi LoRa 32 V3, RAK4631 (nRF52840+SX1262), LILYGO T-Beam Supreme |
-| Anten | 868 MHz, harici, SMA konnektörlü | Standart 868 MHz "duck" anten (üreticiyle birlikte gelir; menzil için harici katlanır anten önerilir) |
+| MCU + LoRa modülü ⚠️ | SX1262 tabanlı, Meshtastic destekli, **A-1 ile seçilecek bandı destekleyen** | Heltec WiFi LoRa 32 V3, RAK4631 (nRF52840+SX1262), LILYGO T-Beam Supreme |
+| Anten ⚠️ | **Seçilen banda uygun** (433 veya 868 MHz), harici, SMA konnektörlü | Standart "duck" anten (üreticiyle birlikte gelir; menzil için harici katlanır anten önerilir) |
 | Pil | 18650 Li-ion veya LiPo, min. 2000 mAh | 18650 pil + tutucu (değiştirilebilir, yaygın bulunur) |
 | Şarj devresi | USB-C girişli, entegre BMS | Çoğu geliştirme kartında dahili (TP4056 vb.) |
 | Muhafaza | Su/toz dirençli, darbeye dayanıklı | 3D baskı gövde (STL dosyası dahil edilecek) veya hazır IP65 kutu |
@@ -110,6 +128,8 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 - Görsel/titreşimli/sesli durum bildirimi (pil, bağlantı durumu)
 
 ### 6.5 Kamu / Sabit Node Gereksinimleri
+
+> **⚠️ SGB v2.0:** Kamu node'u artık temel node'un bir varyantı değil, **ayrı bir cihaz sınıfıdır (NOKTA)** — ESP32-S3 + PSRAM + WiFi + solar. Aşağıdaki maddeler geçerliliğini korur ancak eksiktir; tam liste SGB Bölüm 7'dedir (NOK-1…NOK-11).
 - Dış mekâna montaj için ayaklı/duvar tipi muhafaza
 - Solar + batarya ile sürekli çalışma
 - Yüksek nokta kurulumuna uygun (çatı, direk, minare/cami gibi yüksek yapılar) — menzili maksimize etmek için
@@ -123,26 +143,26 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 | # | Gereksinim |
 |---|---|
 | SW-1 | Meshtastic açık kaynak firmware'i temel alınacak (özelleştirme upstream ile uyumlu tutulacak) |
-| SW-2 | Bölge ayarı **EU_868** (Türkiye için) olarak yapılandırılmalı |
+| SW-2 ⚠️ | ~~Bölge ayarı **EU_868** olarak yapılandırılmalı~~ → **SGB v2.0: askıya alındı, bkz. A-1** |
 | SW-3 | Varsayılan kanal şifrelemesi **açık (PSK ayarlı)** olmalı — herkese açık afet kanalı yayın amaçlı şifresiz/bilinen PSK, özel gruplar için PSK korumalı kanal desteklenmeli |
 | SW-4 | Doğrudan mesajlarda PKC (public-key) uçtan uca şifreleme aktif olmalı (Meshtastic 2.5+ firmware ile gelir) |
 | SW-5 | Düşük güç / uyku modu, pil tasarrufu için yapılandırılmalı |
-| SW-6 | SOS/acil durum mesaj önceliklendirmesi (mümkünse mesaj tipi olarak ayrıştırılmalı) |
+| SW-6 ⚠️ | SOS/acil durum mesaj önceliklendirmesi. **⚠️ SGB v2.0: Bu bir yapılandırma değil, geliştirme kalemidir.** Meshtastic'te acil mesaj önceliği **yoktur** (upstream talebi #7980 kapatılmıştır). Sıfırdan geliştirilecek → SGB **SOS-1, SOS-2** |
 | SW-7 | Node'un "genel/kamu node'u" olduğunu belirten bir isimlendirme/etiketleme standardı (ör. `AFAD-`, `HALK-` ön eki) |
 
 ### 7.2 Mobil Uygulama (Kullanıcı Tarafı)
 | # | Gereksinim |
 |---|---|
-| SW-8 | Resmi Meshtastic mobil uygulaması (Android/iOS) kullanılacak; özel bir uygulama geliştirmek şimdilik kapsam dışı |
+| SW-8 ⚠️ | **⚠️ SGB v2.0: Değiştirildi.** Cihazsız kullanıcının birincil arayüzü **PORTAL**'dır (NOKTA üzerinde barındırılan web sayfası — mobil uygulama değildir, kapsam içidir). Resmî Meshtastic uygulaması yalnızca **CEP sahibi** kullanıcılar için opsiyoneldir. Özel mobil uygulama geliştirmek hâlâ kapsam dışıdır |
 | SW-9 | Kullanıcıya afet moduna özel önceden tanımlı hızlı mesaj şablonları sunulmalı ("Güvendeyim", "Yardım gerekiyor", "Yaralı var", "Konumumu paylaşıyorum") — Meshtastic app'in "Quick Chat" özelliği ile uygulanabilir |
 | SW-10 | Offline harita (önceden indirilmiş) ile GPS konum gösterimi |
-| SW-11 | Basit, teknik olmayan kullanıcı için "en yakın node'a bağlan" sihirbazı/rehber ekranı (varsa özelleştirilmiş onboarding) |
+| SW-11 ⚠️ | ~~"En yakın node'a bağlan" sihirbazı~~ → **SGB v2.0: İPTAL.** Captive portal bu ihtiyacı ortadan kaldırıyor: kullanıcı WiFi'a bağlanır, arayüz kendiliğinden açılır |
 
 ### 7.3 Ağ / Mesaj Yönetimi
 | # | Gereksinim |
 |---|---|
 | SW-12 | Mesaj boyutu sınırı (Meshtastic paket başına ~237 byte) göz önünde bulundurularak kısa/öz mesaj şablonları tasarlanmalı |
-| SW-13 | Yoğun bölgede (20–50+ node) kanal tıkanıklığını azaltmak için mesaj önceliklendirme ve hop-limit ayarları optimize edilmeli |
+| SW-13 ⚠️ | **⚠️ SGB v2.0: Ayar optimizasyonu yeterli değil, rol disiplini gerekir.** Meshtastic managed-flooding kullanır; her node tekrarlarsa toplanma alanında kanal tıkanır. Çözüm: **CEP = `CLIENT_MUTE`** (tekrarlamaz), **NOKTA = `ROUTER`** → SGB **CEP-2, NOK-6, SOS-3** |
 | SW-14 | Opsiyonel: İnternetin kısmen geri geldiği durumlarda MQTT üzerinden mesh verisinin bir "durum panosu"na (dashboard) köprülenmesi — arama-kurtarma koordinasyon merkezleri için |
 
 ### 7.4 Koordinasyon / İzleme (Opsiyonel, İleri Aşama)
@@ -171,7 +191,7 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 ## 9. Regülasyon ve Yasal Hususlar (Türkiye)
 
 - 868 MHz bandı, Avrupa'da olduğu gibi Türkiye'de de genel olarak **lisanssız kısa menzilli cihaz (SRD)** bandı kapsamında değerlendirilir; ancak **BTK'nın güncel "Telsiz Kullanılmasına İzin Verilmeyen Cihazlar" ve SRD teknik düzenlemeleri ile kesin teyit edilmesi gerekir** — bu, projenin ilk araştırma adımlarından biri olmalı.
-- Meshtastic firmware'de bölge **EU_868** olarak ayarlanmalı; bu ayar ETSI EN 300 220 gibi Avrupa SRD kurallarına (güç limiti, duty-cycle limiti) uyumludur ve Türkiye genellikle bu normları referans alır.
+- ~~Meshtastic firmware'de bölge **EU_868** olarak ayarlanmalı~~ **⚠️ SGB v2.0: Band kararı açıktır (A-1).** 868 MHz seçilirse `EU_868` bölge ayarı ETSI EN 300 220 SRD kurallarına (güç, duty-cycle) uyumludur; 433 MHz seçilirse ERP limiti ~10 mW'tır. Karar, sahadaki topluluk ağının fiilî bandına göre verilecektir.
 - Anten kazancı ve verici gücü, ilgili SRD güç limitlerini (genelde 25 mW ERP bandına göre değişen alt bantlar) aşmayacak şekilde yapılandırılmalı.
 - Projenin "afet senaryosu" kapsamında STK/AFAD/yerel yönetim iş birliği olursa, resmi izin/koordinasyon süreci ayrıca değerlendirilmeli.
 
@@ -205,6 +225,8 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 ---
 
 ## 12. Özet ve Sonraki Adımlar (Karar Bekleyen Konular)
+
+> **⚠️ SGB v2.0:** Bu listedeki kararların güncel durumu **SGB Bölüm 12 (Açık Kararlar A-1…A-6)** ve **Bölüm 14 (Yol Haritası)** altındadır. Madde 4 (yazılım kapsamı) ve madde 5 (pilot bölge) yanıtlanmıştır: yazılım kapsamı **PORTAL + SOS modülü + PANO**'yu içerir; pilot muhatabı **ilçe belediyesinin bilgi işlem / afet koordinasyon birimidir.**
 
 Bu rapor, geliştirmeye başlamadan önce üzerinde hizalanmamız gereken temel gereksinimleri ortaya koyar. Bir sonraki oturumda birlikte karar vermemiz gereken ana konular:
 

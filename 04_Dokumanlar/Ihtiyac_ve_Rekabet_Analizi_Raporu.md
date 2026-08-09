@@ -1,5 +1,8 @@
 # Türkiye'de İhtiyaç ve Rekabet Analizi Raporu
 
+> 📎 **Araştırma girdisi — 9 Ağustos 2026 tarihli bulguların kaydı.** Gereksinim kaynağı değildir.
+> Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+
 ---
 
 ## 1. Yönetici Özeti

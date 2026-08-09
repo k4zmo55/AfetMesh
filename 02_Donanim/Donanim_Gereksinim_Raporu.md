@@ -1,5 +1,15 @@
 # AfetMesh — Donanım Gereksinim Raporu
 
+> ## 📎 BELGE STATÜSÜ: TEKNİK EK (v1.1) — **CEP cihazı için geçerlidir**
+>
+> Yürürlükteki gereksinimler için: **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** (SGB v2.0)
+>
+> **Kapsam netleştirmesi:** Bu belgedeki tüm donanım tasarımı — nRF52840 + SX1262, 18650, güç mimarisi, RF, kasa, IP54, PCB, test planı — **CEP (kişisel node)** ve **CEP+ (saha ekibi node'u)** için **tamamen geçerlidir.**
+>
+> **Kapsam dışına çıkan:** **Kamu node'u (NOKTA)** artık bu belgenin kapsamında değildir. NOKTA ayrı bir cihaz sınıfına alınmıştır: **ESP32-S3 + PSRAM + WiFi + solar**, hazır kart üzerine kurulan bir reçetedir ve **özel PCB gerektirmez.** → SGB Bölüm 7
+>
+> Değişen maddeler: **K-1** (varyant tanımı) · **K-2** (kapsam) · **HW-INT-3** (frekans)
+
 ---
 
 ## 1. Yönetici Özeti — Üç Temel Karar
@@ -8,8 +18,8 @@ Bu rapor üç kararı gerekçeleriyle birlikte önerir. Diğer her şey bu karar
 
 | # | Karar | Öneri | Gerekçe |
 |---|---|---|---|
-| **K-1** | Kaç model tasarlanacak? | **Tek PCB, iki montaj varyantı** | İki ayrı kart tasarlamak; iki layout, iki firmware varyantı, iki kasa kalıbı ve iki stok kalemi demek. Tek kişilik bir ekip için asıl maliyet parça değil, **tasarım turu**dur. |
-| **K-2** | Hangi işlemci/radyo? | **nRF52840 + SX1262** | Pil ömrü NFR-4'ün (72 saat) ana belirleyicisi. nRF52840 uyku akımı ~2 µA; ESP32-S3'te bu değer katlarca yüksek ve saha ölçümleri nRF52 kartlarda **günler–bir hafta**, ESP32 kartlarda **onlarca saat** pil ömrü gösteriyor. |
+| **K-1** ⚠️ | Kaç model tasarlanacak? | **Tek PCB, iki montaj varyantı** | İki ayrı kart tasarlamak; iki layout, iki firmware varyantı, iki kasa kalıbı ve iki stok kalemi demek. Tek kişilik bir ekip için asıl maliyet parça değil, **tasarım turu**dur. **⚠️ SGB v2.0: Varyantlar CEP (temel) ve CEP+ (saha ekibi) olarak yeniden adlandırıldı. Eski "Varyant B = kamu node'u" tanımı geçersizdir.** |
+| **K-2** ⚠️ | Hangi işlemci/radyo? | **nRF52840 + SX1262** | Pil ömrü CEP-N2'nin (72 saat) ana belirleyicisi. nRF52840 uyku akımı ~2 µA; ESP32-S3'te bu değer katlarca yüksek ve saha ölçümleri nRF52 kartlarda **günler–bir hafta**, ESP32 kartlarda **onlarca saat** pil ömrü gösteriyor. **⚠️ SGB v2.0: Bu karar yalnızca CEP için geçerlidir. NOKTA zorunlu olarak ESP32-S3 + PSRAM'dir** — nRF52840 ne WiFi AP açabilir ne de mesaj biriktirebilir (Meshtastic mesaj deposu yalnızca PSRAM'li ESP32'de çalışır). |
 | **K-3** | Radyoyu nasıl tasarlayacağız? | **Hazır sertifikalı modül kullan, çıplak çip kullanma** | Çıplak SX1262; empedans kontrollü RF layout, eşleme devresi, harmonik filtre ve sıfırdan CE/RED test süreci demek. Sertifikalı modül bu riskin tamamını ortadan kaldırır. |
 
 ### K-1 nasıl çalışır: tek kart, iki varyant
@@ -51,11 +61,11 @@ Cihazın sahadaki mevcut Meshtastic cihazlarıyla haberleşebilmesi için aşağ
 |---|---|---|
 | HW-INT-1 | Meshtastic'in desteklediği bir MCU mimarisi kullanılmalı | nRF52840, ESP32/S3 veya RP2040. Özel/desteklenmeyen MCU birlikte çalışabilirliği kırar. |
 | HW-INT-2 | Meshtastic'in desteklediği bir LoRa transceiver kullanılmalı | **SX1262 önerilir** (SX1276/78 ve LR1121 de destekli). |
-| HW-INT-3 | Radyo parametreleri ağ ile aynı olmalı | Bölge `EU_868`, modem preset `LONG_FAST` (varsayılan), aynı frekans slotu. Farklı preset = ağı hiç görmez. |
+| HW-INT-3 ⚠️ | Radyo parametreleri ağ ile aynı olmalı | Bölge, modem preset ve frekans slotu sahadaki ağla **birebir aynı** olmalı. Farklı preset = ağı hiç görmez. **⚠️ SGB v2.0: `EU_868` sabitlemesi kaldırıldı** — Türkiye'de topluluk ağı ağırlıklı olarak 433 MHz kullanıyor. Band kararı SGB **A-1**'de açık; **anten ve RF hattı bu karara bağlıdır, karar verilmeden layout'a başlanmamalıdır.** |
 | HW-INT-4 | TCXO kullanılıyorsa firmware'de doğru tanımlanmalı | `SX126X_DIO3_TCXO_VOLTAGE`. Yanlış tanım, sessiz frekans kaymasına ve tek yönlü iletişime yol açar. |
 | HW-INT-5 | RF switch kontrol pinleri firmware'e bildirilmeli | PA'lı modüllerde (E22 vb.) `SX126X_RXEN` / `SX126X_TXEN` tanımlanmazsa cihaz alır ama gönderemez. |
 | HW-INT-6 | Firmware'e board variant tanımı eklenmeli | `variants/` altında yeni klasör, `variant.h` + `platformio.ini`. Donanım modeli olarak **`PRIVATE_HW`** kullanılır. |
-| HW-INT-7 | Antenin empedansı ve bandı doğru olmalı | 868 MHz, 50 Ω. Yanlış/eksik anten hem menzili öldürür hem de çıkış katını yakabilir. |
+| HW-INT-7 | Antenin empedansı ve bandı doğru olmalı | Seçilen banda uygun (bkz. SGB A-1), 50 Ω. Yanlış/eksik anten hem menzili öldürür hem de çıkış katını yakabilir. |
 
 > **Önemli süreç notu:** Meshtastic'in resmi `HardwareModel` enum listesine yeni bir donanım numarası eklenmesi, yalnızca **Meshtastic Backer/Partner** statüsündeki üreticilere açıktır. Kendi kartın için doğru ve desteklenen yol `PRIVATE_HW` tanımıyla derlemektir; bu, ağ üzerindeki birlikte çalışabilirliği **etkilemez** — cihaz diğer node'larla sorunsuz haberleşir, yalnızca arayüzlerde jenerik bir donanım adıyla görünür.
 
@@ -95,7 +105,7 @@ Cihazın sahadaki mevcut Meshtastic cihazlarıyla haberleşebilmesi için aşağ
 |---|---|
 | HW-MCU-1 | nRF52840 (BLE 5.x) + SX1262 (LoRa) mimarisi kullanılacak |
 | HW-MCU-2 | Sertifikalı, lehimlenebilir modül formunda olacak — çıplak çip + RF tasarım yapılmayacak |
-| HW-MCU-3 | Modül 868 MHz bandını desteklemeli ve TCXO içermeli (frekans kararlılığı için) |
+| HW-MCU-3 ⚠️ | Modül, **A-1 ile seçilecek bandı** (433 veya 868 MHz) desteklemeli ve TCXO içermeli (frekans kararlılığı için). Belgedeki blok şema ve komponent örnekleri 868 MHz varsayımıyla çizilmiştir; band kararı sonrası güncellenecektir |
 | HW-MCU-4 | En az 1 MB flash / 256 KB RAM (Meshtastic + e-ink UI için) |
 
 **Komponent adayları:**
@@ -289,7 +299,7 @@ Varyant A, 100 adette **$25** ile NFR-1 hedef bandının ($25–40) alt sınır�
 | Kart | Uyku akımı ölçümü | < 100 µA (HW-PWR-4) |
 | RF | Bilinen bir Meshtastic cihazıyla eşleşme | Mesaj gidiş-dönüş başarılı |
 | RF | Menzil testi | Açık alanda ≥ 2 km; şehir içinde ölçüm kayıt altına alınır |
-| RF | Çıkış gücü ölçümü | EU868 limitleri içinde (spektrum analizörü veya SDR ile) |
+| RF | Çıkış gücü ölçümü | Seçilen bandın ERP limitleri içinde — 433 MHz: ~10 mW · 868 MHz: EU868 alt bant limitleri (spektrum analizörü veya SDR ile). Bkz. SGB REG-2 |
 | Güç | Pil ömrü testi | Gerçek kullanımda ≥ 72 saat (NFR-4) |
 | Mekanik | Su sıçratma testi | IP54 (her yönden sıçratma, 10 dk, sonra içeride su yok) |
 | Mekanik | Toz testi | IP54 |
@@ -316,6 +326,12 @@ Varyant A, 100 adette **$25** ile NFR-1 hedef bandının ($25–40) alt sınır�
 ---
 
 ## 11. Sonraki Adımlar
+
+> **⚠️ SGB v2.0 — Bu adımlar projenin 3. aşamasıdır, 1. aşaması değil.**
+>
+> Yürürlükteki sıralama: **Aşama 0** (varsayım testleri TST-1/2/5 + frekans kararı A-1) → **Aşama 1** (NOKTA + PORTAL, hazır kartla) → **Aşama 2** (SOS modülü) → **Aşama 3: bu belgedeki PCB adımları.**
+>
+> Gerekçe: Projenin farklılaşması PORTAL'dadır ve hazır kartlarla çok daha hızlı/ucuz doğrulanır. Ayrıca **A-1 frekans kararı verilmeden anten ve RF hattı tasarlanamaz.** → SGB Bölüm 14
 
 1. **Modül kararı:** HT-N5262M mi RAK4630 mu — güncel fiyat ve stok teyidi yapılarak kesinleştirilir
 2. **Hazır kutu seçimi:** Prototip için IP65 kutu modeli seçilir; iç ölçüler PCB'yi kısıtlayacağı için bu, layout'tan **önce** yapılmalıdır

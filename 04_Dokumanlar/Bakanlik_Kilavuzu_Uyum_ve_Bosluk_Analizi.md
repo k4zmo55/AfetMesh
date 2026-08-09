@@ -1,5 +1,9 @@
 # Bakanlık Kılavuzu Uyum ve Boşluk Analizi
 
+> 📎 **Araştırma girdisi — 9 Ağustos 2026.** Kurumsal teklif stratejisi ve dayanakları içerir.
+> Buradan doğan gereksinimler SGB'ye işlenmiştir (NOK-11, PAN-6, PAN-7, doğrulama göstergeleri).
+> Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+
 **İncelenen belge:** *Afet Sonrası İletişim Sistemleri Uygulaması — Rehberlik Kılavuzu*
 **Yayınlayan:** T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı, Coğrafi Bilgi Sistemleri Genel Müdürlüğü — Akıllı Şehir Rehberlik Uygulamaları Projesi, **2024**
 **Dayandığı çalışma:** TÜBİTAK-TÜSSİDE, *Esenler Belediyesi Akıllı Şehir Uygulamaları Fizibilite Projesi* (Nisan 2021)
