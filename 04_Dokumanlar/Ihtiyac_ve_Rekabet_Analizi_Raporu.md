@@ -7,7 +7,7 @@
 | Soru | Cevap |
 |---|---|
 | Türkiye'de böyle bir ihtiyaç var mı? | **Evet** — 6 Şubat 2023 depremleri sonrası meslek odası raporlarında belgelenmiş, ulusal ölçekte tescilli bir boşluk |
-| Devlet kurumları bu projeyi talep etti mi? | **Hayır** — Yayımlanmış resmî bir ihtiyaç beyanı, şartname veya ihale bulunamadı. Talep **örtük**, açık değil |
+| Devlet kurumları bu projeyi talep etti mi? | **Kısmen evet** — Çevre, Şehircilik ve İklim Değişikliği Bakanlığı'nın 2024 tarihli *Afet Sonrası İletişim Sistemleri* rehberlik kılavuzu, belediyeler için resmî ihtiyaç tanımı, teknoloji önerisi ve bütçe şablonu sunuyor. İhale değil, ancak satın alma gerekçesi. Bkz. [Bakanlık Kılavuzu Uyum ve Boşluk Analizi](Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md) |
 | Benzer proje geliştiriliyor mu? | **Evet, en az 3 tane** — TA Mesh topluluğu, MeshGrid (ticari girişim), Ulaş ekosistemi |
 | Projenin savunulabilir yeri var mı? | **Evet** — Mevcut tüm çözümler kurumsal/profesyonel katmanda; "cihazsız vatandaş" katmanı boş |
 
@@ -50,13 +50,24 @@ Yukarıdaki sistemlerin hepsi lisanslı, profesyonel veya kurumsaldır. Cevaplan
 
 Bu sorunun resmî bir cevabı yoktur. Gereksinim Analizi Raporu'nun Bölüm 3'ünde tanımlanan **"kamu node'u + BLE üzerinden cihazsız kullanıcı katılımı"** modeli tam olarak bu boşluğa oturmaktadır. Projenin en güçlü savunma argümanı budur.
 
-### Önemli dürüstlük notu
+### ⚠️ Bu bölüm düzeltilmiştir (9 Ağustos 2026)
 
-AFAD, BTK, belediyeler veya herhangi bir kamu kurumu tarafından yayımlanmış; **"LoRa mesh tabanlı vatandaş haberleşme ağına ihtiyacımız var"** diyen resmî bir ihtiyaç beyanı, teknik şartname veya ihale ilanı **bulunamamıştır**. AFAD 2024–2028 Stratejik Planı'ndaki haberleşme hedefleri de kurumsal kapasite odaklıdır.
+Bu raporun ilk sürümü *"hiçbir kamu kurumu tarafından yayımlanmış resmî bir ihtiyaç beyanı bulunamamıştır"* diyordu. **Bu tespit eksikti.**
 
-Dolayısıyla talep durumu şöyle özetlenebilir:
-- **Örtük talep:** VAR (resmî raporlarda tespit edilmiş, çözülmemiş problem)
-- **Açık talep:** YOK (kurum tarafından beyan edilmiş, bütçelenmiş ihtiyaç)
+T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı, CBS Genel Müdürlüğü tarafından yayımlanan **2024 tarihli *Afet Sonrası İletişim Sistemleri Uygulaması* rehberlik kılavuzu**, tam olarak bu alanda:
+
+- Resmî bir **ihtiyaç analizi** yapıyor (kılavuz Bölüm 2.4)
+- **LoRaWAN ve "atlamalı haberleşme protokolü"nü** alternatif teknoloji olarak açıkça sayıyor
+- Belediyeler için örnek **proje büyüklüğü ve bütçesi** veriyor (1000 Ha / 200.000 kişi / 12 ay / **$1.053.464**)
+- Paydaş listesinde **"Vatandaşlar"** yer alıyor — ancak teknik bileşen listesinde vatandaşa dokunan **hiçbir unsur yok**
+
+Güncellenmiş talep durumu:
+
+- **Örtük talep:** VAR (meslek odası raporlarında tespit edilmiş, çözülmemiş problem)
+- **Resmî ihtiyaç tanımı:** VAR (bakanlık kılavuzu — belediyelere yönelik tavsiye ve fizibilite şablonu)
+- **Yayımlanmış ihale/şartname:** Hâlâ bulunamadı — kılavuz bir satın alma zorunluluğu değil, gerekçesidir
+
+> Kılavuzun ayrıntılı incelemesi ve projeye etkileri için: **[Bakanlık Kılavuzu Uyum ve Boşluk Analizi](Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md)**
 
 ---
 
@@ -139,12 +150,16 @@ Gereksinim Analizi Raporu **NFR-9** ve **SW-2** maddelerinde bölge ayarını **
 Gereksinim Analizi Bölüm 12, madde 5'te "pilot bölge/senaryo belirlenmeli" denmektedir. Öneri:
 
 - Hedef: bir **ilçe belediyesi** veya **AFAD il müdürlüğü** ile düşük maliyetli pilot
-- Argüman: resmî bir talep yok, ancak **resmî problem tespiti var**. Teklif doğrudan BMO/EMO/TMMOB raporlarındaki "iletişim kesintisi can kaybını artırdı" tespitine dayandırılmalıdır
+- Argüman: teklif iki resmî dayanağa oturtulmalıdır — (1) BMO/EMO/TMMOB raporlarındaki *"iletişim kesintisi can kaybını artırdı"* tespiti, (2) **Bakanlık kılavuzunun kendi ihtiyaç analizi ve bütçe şablonu**. İkincisi, muhatabın kendi kurumsal çerçevesi olduğu için daha etkilidir
 - Avantaj: cihaz başına maliyet (NFR-1: ~$25–40) kurumsal alternatiflerin (ASELSAN mobil muhabere aracı vb.) yanında ihmal edilebilir düzeydedir — bu, satış hikâyesinin en güçlü kısmıdır
 
-### 5.4 İncelenmesi gereken kaynak
+### 5.4 Bakanlık kılavuzu — ✅ incelendi
 
-Çevre, Şehircilik ve İklim Değişikliği Bakanlığı **Akıllı Şehirler Portalı**'nda yayımlanan *"Afet Sonrası İletişim Sistemleri"* fizibilite raporu doğrudan ilgili görünmektedir. Bu araştırma sırasında PDF makine okunur biçimde çözülemedi; **manuel olarak indirilip incelenmelidir.** Aranan resmî ihtiyaç ifadesi büyük olasılıkla bu belgede yer almaktadır.
+Çevre, Şehircilik ve İklim Değişikliği Bakanlığı **Akıllı Şehirler Portalı**'nda yayımlanan *"Afet Sonrası İletişim Sistemleri"* rehberlik kılavuzu incelenmiştir (41 sayfa, 2024).
+
+Aranan resmî ihtiyaç ifadesi **bu belgededir.** Kılavuz ayrıca LoRaWAN'ı alternatif teknoloji olarak sayıyor, Japonya'nın 171 modelini örnek gösteriyor ve paydaş listesinde "Vatandaşlar"a yer verip onlara hiçbir teknik bileşen sunmuyor — yani projenin hedeflediği boşluğu resmî bir belgeyle kanıtlıyor.
+
+> Tam analiz: **[Bakanlık Kılavuzu Uyum ve Boşluk Analizi](Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md)**
 
 ---
 
