@@ -1,9 +1,5 @@
 # Farklılaşma Analizi ve Ürün Mimarisi Raporu (v2)
 
-**Proje:** AfetMesh — Afet Anı Meshtastic Tabanlı İletişim Ağı
-**Rapor tarihi:** 9 Ağustos 2026
-**Girdi belgeler:** `01_Gereksinim_Analizi/Gereksinim_Analizi_Raporu.md`, `02_Donanim/Donanim_Gereksinim_Raporu.md`, `04_Dokumanlar/Ihtiyac_ve_Rekabet_Analizi_Raporu.md`
-**Amaç:** Sektördeki mevcut ürünlerin teknik eksiklerini tespit etmek ve projeyi bu eksikleri kapatacak biçimde yeniden yapılandırmak.
 
 ---
 
