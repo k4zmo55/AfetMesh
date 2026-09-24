@@ -12,9 +12,10 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 |---|---|---|
 | **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** | **Tek yetkili gereksinim kaynağı (SGB v2.0)** | ✅ Yürürlükte |
 | [`01_Gereksinim_Analizi/`](01_Gereksinim_Analizi/) | İlk kapsam çalışması | 📎 Girdi belgesi |
-| [`02_Donanim/`](02_Donanim/) | CEP donanım tasarım detayı (PCB, BOM, kasa) | 📎 Teknik ek |
+| [`02_Donanim/`](02_Donanim/) | CEP ailesi donanım gereksinimleri, **işlemci karşılaştırması**, güç bütçesi, malzeme seçimi (v2.0) + **literatür/topluluk araştırması** (30 makale, 26 topluluk kaynağı) | 📎 Teknik ek |
 | [`03_Yazilim/`](03_Yazilim/) | PORTAL, SOS modülü, PANO kaynak kodu | 🚧 Henüz boş |
 | [`04_Dokumanlar/`](04_Dokumanlar/) | Pazar, rekabet ve kurumsal uyum araştırmaları | 📎 Araştırma girdileri |
+| [`05_Cihaz_Tasarimi/`](05_Cihaz_Tasarimi/) | CEP-T (ekran + butonlu kişisel cihaz) konsept raporu | 📎 Konsept (v1.2) |
 | `Afet_Sonrası_İletişim_Sistemleri.pdf` | Çevre ve Şehircilik Bakanlığı rehberlik kılavuzu (2024) | 📄 Referans |
 
 > **Kural:** Yeni bir gereksinim doğduğunda **önce SGB'ye** yazılır. Araştırma raporları belirli bir tarihteki bulguların kaydıdır; geriye dönük güncellenmez.
@@ -25,8 +26,8 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 
 | Bileşen | Nedir | Donanım | Maliyet |
 |---|---|---|---|
-| **CEP** | Kişisel node — evde/çantada taşınan, SOS butonlu | nRF52840 + SX1262, özel PCB | $25–40 |
-| **CEP+** | Saha ekibi node'u — e-ink + GPS + sensör | Aynı PCB, farklı montaj | ~$59 |
+| **CEP** | Kişisel node — evde/çantada taşınan, SOS butonlu, ~2 hafta pil hedefi | nRF52840 + SX1262 (RAK4630), özel PCB | $25–40 |
+| **CEP+ / CEP-T** | Saha ekibi / gelişmiş kişisel node — 2,9" e-paper + GNSS + sensör + 5 yön buton | Aynı PCB, farklı montaj | ~$85–90 |
 | **NOKTA** | Kamu node'u — WiFi portal + mesaj deposu + router | ESP32-S3 + PSRAM + solar, hazır kart | $90–130 |
 | **PORTAL** | Captive portal arayüzü — cihazsız kullanıcının ekranı | NOKTA üzerinde gömülü web | — |
 | **SOS modülü** | Yapısal acil paket + önceliklendirme | Meshtastic firmware modülü | — |
@@ -55,7 +56,9 @@ PCB tasarımından önce, hazır kartlarla ve ~sıfır maliyetle yapılacak üç
 - **TST-2** — ESP32-S3'te WiFi AP ve LoRa aynı anda çalışıyor mu?
 - **TST-5** — Standart bir Meshtastic node'u bizim SOS paketimizi taşıyor mu?
 
-Ayrıca bu aşamada **A-1 frekans kararı** verilecek (433 MHz mi 868 MHz mi) — bu karar verilmeden anten ve RF hattı tasarlanamaz.
+Ayrıca bu aşamada **A-1 frekans kararı** verilecek (433 MHz mi 868 MHz mi). Seçilen RAK4630 modülünün (L)/(H) sürümleri aynı footprint'i paylaştığı için bu karar artık PCB layout'unu bloke etmez; yalnızca modül sipariş kodu ve anten banda göre seçilir.
+
+**Kapanan donanım kararı:** **A-7** ✅ — dokunmatik ekran zorunlu değil. Kişisel cihaz arayüzü **2,9" e-paper + fiziksel butonlar**, işlemci **nRF52840** (~2 hafta pil hedefi).
 
 ---
 

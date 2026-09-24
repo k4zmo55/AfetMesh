@@ -91,6 +91,8 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 
 ## 6. Donanım Gereksinimleri
 
+> **⚠️ SGB v2.2 (24 Eyl 2026):** Bu bölüm ilk kapsam çalışmasıdır. Kişisel cihazın güncel donanım gereksinimleri, işlemci karşılaştırması ve malzeme seçimi için: [`02_Donanim/Donanim_Gereksinim_Raporu.md`](../02_Donanim/Donanim_Gereksinim_Raporu.md) v2.0. Özetle: kişisel node **nRF52840 + SX1262 (RAK4630)**; aşağıdaki tabloda "kişisel node için ideal" denen Heltec V3 (ESP32-S3) ölçülmüş verilerde 10–30 saat pil ömrü gösterdiği için kişisel node olarak **önerilmez** (geliştirme/test kartı olarak kullanılabilir).
+
 ### 6.1 Zorunlu Bileşenler (Temel Node)
 
 | Bileşen | Gereksinim | Aday Ürün(ler) |

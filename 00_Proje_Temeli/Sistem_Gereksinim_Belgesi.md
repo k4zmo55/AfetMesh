@@ -1,7 +1,7 @@
 # AfetMesh — Sistem Gereksinim Belgesi (SGB)
 
-**Sürüm:** 2.1
-**Tarih:** 9 Ağustos 2026
+**Sürüm:** 2.3
+**Tarih:** 24 Eylül 2026
 **Statü:** ✅ Yürürlükte — **projenin tek yetkili gereksinim kaynağı**
 
 ---
@@ -14,7 +14,9 @@ Bu belge, daha önce yazılmış beş raporun **birleştirilmiş ve çelişkiler
 |---|---|---|
 | **`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`** (bu belge) | **Tek yetkili gereksinim kaynağı** | ✅ Yürürlükte |
 | `01_Gereksinim_Analizi/Gereksinim_Analizi_Raporu.md` | İlk kapsam çalışması | 📎 Girdi belgesi — v2.0 ile hizalandı |
-| `02_Donanim/Donanim_Gereksinim_Raporu.md` | Donanım tasarım detayı (CEP için geçerli) | 📎 Teknik ek — v2.0 ile hizalandı |
+| `02_Donanim/Donanim_Gereksinim_Raporu.md` | CEP ailesi donanım gereksinimleri, işlemci seçimi, güç bütçesi, malzeme seçimi (v2.0) | 📎 Teknik ek — v2.2 ile hizalandı |
+| `02_Donanim/Literatur_ve_Topluluk_Arastirmasi.md` | 30 akademik yayın, 26 topluluk kaynağı, 14 ticari cihaz | 📎 Araştırma girdisi (24 Eyl 2026) |
+| `05_Cihaz_Tasarimi/CEPT_Dokunmatik_Cihaz_Tasarim_Raporu.md` | CEP-T (buton + ekran arayüzlü kişisel cihaz) konsept raporu | 📎 Konsept — v1.2 donanım raporu v2.0 ile hizalandı |
 | `04_Dokumanlar/Ihtiyac_ve_Rekabet_Analizi_Raporu.md` | Pazar ve rekabet araştırması | 📎 Araştırma girdisi (9 Ağu 2026) |
 | `04_Dokumanlar/Farklilasma_ve_Urun_Mimarisi_Raporu.md` | Mimari gerekçelendirme | 📎 Karar gerekçesi (9 Ağu 2026) |
 | `04_Dokumanlar/Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md` | Kurumsal uyum analizi | 📎 Araştırma girdisi (9 Ağu 2026) |
@@ -89,7 +91,7 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 
 | Kapsam dışı | Gerekçe |
 |---|---|
-| Sıfırdan LoRa çipi/RF tasarımı | Sertifikalı hazır modül kullanılacak (Donanım Raporu K-3) |
+| Sıfırdan LoRa çipi/RF tasarımı | Sertifikalı hazır modül kullanılacak (Donanım Raporu K-4, HW-RF-2) |
 | **Yeni bir mesh protokolü yazmak** | Meshtastic tabanı korunacak; ağ etkisi ve birlikte çalışabilirlik buna bağlı |
 | **Özel mobil uygulama (Android/iOS)** | İ-1'i ihlal eder. Kullanıcı arayüzü PORTAL'dır |
 | Kitlesel üretim ve endüstriyel sertifikasyon | Prototip ve pilot aşamasının dışında |
@@ -132,7 +134,7 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 | # | Bileşen | Tip | Rol | Hedef maliyet |
 |---|---|---|---|---|
 | ① | **CEP** | Donanım (özel PCB) | Kişisel node, mesh taşıyıcı, SOS kaynağı | $25–40 |
-| ①+ | **CEP+** | Donanım (aynı PCB, farklı montaj) | Saha ekibi node'u (e-ink + GPS + sensör) | ~$59 |
+| ①+ | **CEP+ / CEP-T** | Donanım (aynı PCB, farklı montaj) | Saha ekibi / gelişmiş kişisel node (e-paper + GNSS + sensör + 5 yön buton) | ~$85–90 *(v2.2'de revize)* |
 | ② | **NOKTA** | Donanım (hazır kart reçetesi) | Kamu erişim noktası, router, mesaj deposu | $90–130 |
 | ③ | **PORTAL** | Yazılım (gömülü web) | Cihazsız kullanıcı arayüzü | — |
 | ④ | **SOS modülü** | Yazılım (firmware) | Yapısal paket + önceliklendirme | — |
@@ -162,12 +164,14 @@ Donanım tasarım detayı için: `02_Donanim/Donanim_Gereksinim_Raporu.md` (bu b
 
 | # | Gereksinim |
 |---|---|
-| **CEP-1** | Meshtastic firmware çalıştıracak; MCU **nRF52840**, radyo **SX1262** olacak |
+| **CEP-1** | Meshtastic firmware çalıştıracak; MCU **nRF52840**, radyo **SX1262** olacak. Modül: **RAK4630** — (L) 433 MHz / (H) 868 MHz, aynı footprint (Donanım Raporu K-2/K-4) |
 | **CEP-2** | Varsayılan rol **`CLIENT_MUTE`** olacak — paket tekrarlamayacak |
 | **CEP-3** | Yanlışlıkla basmaya karşı korumalı, ayrı bir **SOS butonu** bulunacak |
 | **CEP-4** | **Enkaz Modu:** SOS butonuna uzun basıldığında periyodik sesli sinyal (≈30 sn'de bir çift bip) verecek ve düşük güçte SOS yayınlayacak |
 | **CEP-5** | Telefonla eşleşme **BLE** üzerinden olacak (yalnızca cihaz sahibi için; cihazsız kullanıcı erişimi NOKTA üzerindendir) |
 | **CEP-6** | Pil ve ağ durumu görsel (LED) ve sesli (buzzer) olarak bildirilecek |
+| **CEP-7** | Cihaz **beş güç modunu** destekleyecek: Normal · Tasarruf · Enkaz/Beacon · Kapalı (raf) · Şarj. Tasarruf moduna butonla ve düşük pil eşiğinde otomatik geçilecek (Donanım Raporu Bölüm 5.2) |
+| **CEP-8** | **Enkaz/Beacon modu:** radyo alımı kapalı, periyodik SOS yayını + sesli sinyal; hedef ortalama akım ≤ 1 mA. CEP-4'ün düşük güçlü uygulamasıdır; SOS modülü (Aşama 2) ile geliştirilecek |
 
 > **CEP-2 gerekçesi:** Meshtastic'te her node varsayılan olarak gördüğü paketi tekrarlar. Toplanma alanında yüzlerce CEP aynı anda tekrarlarsa kanal tıkanır. Tekrarlama görevi NOKTA'lara aittir.
 
@@ -176,18 +180,23 @@ Donanım tasarım detayı için: `02_Donanim/Donanim_Gereksinim_Raporu.md` (bu b
 | # | Gereksinim | Hedef |
 |---|---|---|
 | **CEP-N1** | Birim maliyet | $25–40 (100 adette hedef $25) |
-| **CEP-N2** | Pil ömrü | Tek şarjla ≥ **72 saat** aktif çalışma |
-| **CEP-N3** | Uyku akımı | < 100 µA |
+| **CEP-N2** | Pil ömrü | Tek şarjla ≥ **72 saat** aktif çalışma — **GNSS sürekli açık en kötü durumda dahi** |
+| **CEP-N3** | Kapalı (raf) modu akımı | **≤ 10 µA** *(v2.2: < 100 µA'dan sıkılaştırıldı — cihaz çekmecede aylarca bekler)* |
 | **CEP-N4** | Pil | 18650, **kullanıcı tarafından değiştirilebilir** |
 | **CEP-N5** | Koruma sınıfı | **IP54** (asgari) |
 | **CEP-N6** | Çalışma sıcaklığı | −10 °C … +50 °C |
 | **CEP-N7** | Ağırlık | < 150 g |
 | **CEP-N8** | Kurulum süresi | Deneyimsiz kullanıcı için < 15 dakika |
 | **CEP-N9** | Dayanıklılık | 1,5 m'den betona düşme testini geçecek |
+| **CEP-N10** | Normal mod ortalama akım | **≤ 8 mA** (GNSS kapalı) → 3000 mAh ile hedef **≥ 14 gün**. SYS-7 gereği ölçülmeden beyan edilmez |
+| **CEP-N11** | Raf ömrü | Tam şarjlı cihaz kapalı olarak 6 ay sonra ≥ %75 şarj |
+| **CEP-N12** | Pil gerilimi kullanım aralığı | 3,3 V hat pil **3,0 V'a inene kadar** korunacak (buck-boost); soğukta TX anında brownout olmayacak |
 
 ### 6.3 CEP+ varyantı (saha ekibi)
 
-Aynı PCB, farklı montaj listesi: **e-ink ekran + GPS + sensörler**. Hedef maliyet ~$59. Rol `CLIENT` (tekrarlama açık — saha ekibi hareketli menzil uzatıcısı olarak çalışır).
+Aynı PCB, farklı montaj listesi: **2,9" e-paper + GNSS (MAX-M10S) + SHT40 + 6 eksen IMU + 5 yön buton**. Hedef maliyet **~$85–90** *(v2.2: ~$59'dan revize — gerekçe Donanım Raporu Bölüm 8; L76K GNSS ile ~$8 düşer ama GNSS açık pil ömrü 7,5 → 3 güne iner)*.
+
+> **CEP-T ile ilişki (v2.3):** A-7 kapandı — dokunmatik ekran **zorunlu değildir**. CEP-T, CEP+ montajının 5 yönlü butonlu hâlidir ve **ayrı PCB gerektirmez**. Arayüz: 2,9" e-paper + fiziksel butonlar (nRF52840). Rol `CLIENT` (tekrarlama açık — saha ekibi hareketli menzil uzatıcısı olarak çalışır).
 
 > **Not — eski "Varyant B" tanımı değişmiştir:** Donanım Raporu'nda Varyant B "kamu node'u" olarak tarif edilmişti. Kamu node'u artık **ayrı bir cihaz sınıfıdır (NOKTA)**. Varyant B = CEP+ = saha ekibi node'u.
 
@@ -230,7 +239,7 @@ Projenin farklılaşmasının tamamı bu bileşendedir.
 | **NOK-N7** | Yoğuşma önleme | Gore tipi basınç dengeleme ventili |
 | **NOK-N8** | Özel PCB | **Gerekmiyor** — hazır ESP32-S3 + SX1262 kartı kullanılacak |
 
-> **NOK-N8 gerekçesi:** Kamu node'ları adetçe azdır (bir mahallede 3–5) ve maliyete duyarsızdır — solar panel zaten karttan pahalıdır. Donanım Raporu Bölüm 2'deki *"düşük adette özel PCB pahalıya gelir"* tespiti burada geçerlidir.
+> **NOK-N8 gerekçesi:** Kamu node'ları adetçe azdır (bir mahallede 3–5) ve maliyete duyarsızdır — solar panel zaten karttan pahalıdır. Donanım Raporu Bölüm 8'deki *"düşük adette özel PCB pahalıya gelir"* tespiti burada geçerlidir.
 
 ---
 
@@ -343,9 +352,13 @@ Bu maddeler **bilerek açık bırakılmıştır.** Hiçbiri varsayım yapılarak
 | **A-1** | **Frekans bandı: 433 MHz mi 868 MHz mi?** | TA Mesh ağının fiilî bandı + BTK teyidi. **Ağda yalnız kalmamak, teknik üstünlükten önceliklidir** | Aşama 0 |
 | **A-2** | Modem preset (`LongFast` mi alternatif mi) | Yoğunluk testi TST-4 sonucu | Aşama 0 sonrası |
 | **A-3** | NOKTA için hazır kart modeli | Güncel fiyat/stok + TST-2 sonucu | Aşama 1 |
-| **A-4** | CEP modülü: HT-N5262M mi RAK4630 mu | Güncel fiyat/stok teyidi | Aşama 3 |
+| **A-4** | CEP modülü — *v2.2: **RAK4630 önerildi*** (HT-N5262M'nin 433 MHz sürümü yok) | Güncel fiyat/stok teyidi | Aşama 3 |
+| ~~**A-7**~~ ✅ | **KAPANDI (24 Eyl 2026): Yol A** — nRF52840 + 2,9" e-paper + fiziksel butonlar. Kullanıcı kararı: dokunmatik ekran zorunlu değil. ~~Yol B (ESP32-S3 + dokunmatik TFT)~~ elendi | Pil ömrü önceliği (Donanım Raporu P1) ↔ dokunmatik isteği | Aşama 3 öncesi |
+| **A-8** | 3,3 V regülatör: TPS63900 buck-boost mu, 3,0 V LDO mu? Öneri: **TPS63900** | İlk kartta alıcı gürültü tabanı ölçümü (Donanım Raporu T-06) | Aşama 3 ilk tur |
 | **A-5** | Pilot bölge ve muhatap kurum | İlçe belediyesi bilgi işlem / afet koordinasyon birimi ile görüşme | Aşama 1 |
 | **A-6** | PORTAL'da mesaj saklama süresi ve silme politikası | KVKK değerlendirmesi | Aşama 1 |
+
+> **A-1 ve PCB (v2.2):** RAK4630'un (L) ve (H) sürümleri aynı footprint'i paylaştığı için A-1 kararı artık **PCB layout'unu bloke etmez**; yalnızca modül sipariş kodu, anten ve eşleme değerleri banda göre seçilir.
 
 > **A-1 neden hâlâ açık:** Önceki raporlar bölge ayarını `EU_868` olarak sabitlemişti. Ancak Türkiye'de topluluk ağı ağırlıklı olarak **433 MHz** kullanmaktadır. 868 MHz daha yüksek güç bütçesi sunar (500 mW vs 10 mW ERP), ancak yanlış band seçimi bizi mevcut ağdan tamamen koparır. Node yoğunluğu bu projede menzilden daha kritik bir başarı faktörü olduğu için, karar ölçümle değil **ağ gerçeğiyle** verilecektir.
 
@@ -398,7 +411,7 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | **0 — Varsayım doğrulama** | TST-1, TST-2, TST-5. Hazır kartlarla, PCB yok. A-1 kararı verilir | 2 hafta | Mimarinin teyidi veya revizyonu |
 | **1 — MVP: NOKTA + PORTAL** | Hazır ESP32-S3 kart üzerinde captive portal + mesaj deposu | 6–8 hafta | Çalışan tek kamu node'u |
 | **2 — SOS modülü** | SOS-1…SOS-6 firmware modülü | 4 hafta | Upstream'e katkı adayı |
-| **3 — CEP prototipi** | Donanım Raporu Bölüm 11 adımları | 8–12 hafta | 5 adet PCB |
+| **3 — CEP prototipi** | Donanım Raporu Bölüm 12 adımları | 8–12 hafta | 5 adet PCB |
 | **4 — PANO** | Koordinasyon arayüzü | 3 hafta | Çevrimdışı web panosu |
 | **5 — Pilot** | Bir mahalle: 3 NOKTA + 20 CEP + saha tatbikatı | 4 hafta | Ölçülmüş saha verisi |
 
@@ -506,6 +519,8 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | 1.0 | — | Gereksinim Analizi Raporu (ilk kapsam) |
 | 1.1 | — | Donanım Gereksinim Raporu (donanım detayı) |
 | **2.0** | **9 Ağu 2026** | Rekabet, mimari ve bakanlık analizleri birleştirildi. 14 çelişki çözüldü. Kamu node'u ayrı cihaz sınıfına alındı. Cihazsız erişim BLE'den WiFi portala taşındı. Gereksinim ID şeması birleştirildi |
+| **2.3** | **24 Eyl 2026** | **A-7 kapandı:** kullanıcı dokunmatik ekranın zorunlu olmadığını bildirdi → CEP-T arayüzü e-paper + fiziksel butonlar (Yol A), MCU nRF52840; CEP-T ayrı cihaz sınıfı değil, CEP+ montaj varyantı |
+| **2.2** | **24 Eyl 2026** | Donanım Raporu v2.0 işlendi: işlemci karşılaştırması (TI/STM32/ESP32/Raspberry Pi/Nordic) sonucu **nRF52840 teyit edildi** · modül **RAK4630 (L/H)** önerildi (A-4) · **CEP-7/CEP-8** (güç modları, Enkaz/Beacon) ve **CEP-N10…N12** eklendi · CEP-N3 < 100 µA → ≤ 10 µA · CEP+ maliyet hedefi ~$59 → ~$85–90 · yeni açık kararlar **A-7** (CEP-T dokunmatik ↔ pil) ve **A-8** (regülatör) · belge tablosuna literatür raporu ve CEP-T eklendi |
 | **2.1** | **9 Ağu 2026** | Uluslararası karşılaştırma işlendi: **Bölüm 1.4** (İKAS ile tamamlayıcılık konumlandırması) eklendi · risk kaydına **uydu D2C** ve **sesli iletişim beklentisi** riskleri eklendi · **TST-7** "şebekesiz gün tatbikatı" olarak somutlaştırıldı |
 
 ---
