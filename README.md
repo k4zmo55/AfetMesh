@@ -10,12 +10,14 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 
 | Klasör / Dosya | İçerik | Statü |
 |---|---|---|
-| **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** | **Tek yetkili gereksinim kaynağı (SGB v2.4)** — 6.2b'de donanım özeti | ✅ Yürürlükte |
+| **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** | **Tek yetkili gereksinim kaynağı (SGB v2.5)** — 6.2b'de donanım özeti | ✅ Yürürlükte |
 | [`01_Gereksinim_Analizi/`](01_Gereksinim_Analizi/) | İlk kapsam çalışması (v2.4 notlarıyla hizalı) | 📎 Girdi belgesi |
+| [`02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md`](02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md) | **ÇATI ailesi** — çatı/direk röle düğümleri (ÇATI-B/K/O) + MERKEZ ağ geçidi: 46 gereksinim, yasal ERP hesabı, güç bütçesi, 2,4 GHz omurga köprüsü, BOM, kurulum ve test (v1.0) | 📎 Teknik ek |
 | [`02_Donanim/Donanim_Gereksinim_Raporu.md`](02_Donanim/Donanim_Gereksinim_Raporu.md) | CEP ailesi: 83 maddelik donanım gereksinim tablosu, **işlemci karşılaştırması** (TI / STM32 / ESP32 / Raspberry Pi / Nordic), güç bütçesi ve 5 güç modu, alt sistem malzeme seçimi, BOM, test planı (v2.1) | 📎 Teknik ek |
 | `03_Yazilim/` | PORTAL, SOS modülü, PANO kaynak kodu | 🚧 Henüz boş |
 | [`04_Dokumanlar/`](04_Dokumanlar/) | Pazar, rekabet, kurumsal uyum ve uluslararası karşılaştırma raporları | 📎 Araştırma girdileri |
 | ↳ [`Literatur_ve_Topluluk_Arastirmasi.md`](04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md) | Donanım literatürü: 30 akademik yayın, 26 topluluk kaynağı, 14 ticari cihaz | 📎 Araştırma girdisi |
+| ↳ [`Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md`](04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md) | Meshtastic'in 15 sorunluk envanteri, kapasite hesabı, çatı röle saha dersleri (forum/YouTube/saha raporları), merkeze iletim çözümleri | 📎 Araştırma girdisi |
 | ↳ [`Kaynakca.md`](04_Dokumanlar/Kaynakca.md) | **Projenin birleşik kaynakçası** | 📚 Kaynak dizini |
 | ↳ [`Kaynaklar/Makaleler/`](04_Dokumanlar/Kaynaklar/Makaleler/) | İndirilen **18 açık erişimli makale** (PDF) | 📚 Arşiv |
 | [`05_Cihaz_Tasarimi/`](05_Cihaz_Tasarimi/) | CEP-T konsept raporu (v1.4) + **PCB öncesi prototip malzeme listesi** (v2.0) | 📎 Konsept / uygulama |
@@ -34,6 +36,8 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 | **CEP** | Kişisel node — evde/çantada taşınan, SOS butonlu, ~2 hafta pil hedefi | nRF52840 + SX1262 (RAK4630), 18650, özel PCB | $25–40 (100 adette ≈ $37) |
 | **CEP+ / CEP-T** | Saha ekibi / gelişmiş kişisel node — 2,9" e-paper + GNSS + sensör + 5 yön buton | Aynı PCB, farklı montaj | ~$85–90 |
 | **NOKTA** | Kamu node'u — WiFi portal + mesaj deposu + router | ESP32-S3 + PSRAM + solar, hazır kart | $90–130 |
+| **ÇATI-B / K / O** | Çatı/direk röle — bina içindeki CEP'i çatıya, oradan hedefe veya merkeze taşır; SOS emanetçisi. ÇATI-O: 2,4 GHz omurga | nRF52840 + SX1262 (RAK4630/4631) + LiFePO4 + güneş; ÇATI-O'da + LR1121 | $200–310 / $330–450 / $440–610 (prototip) |
+| **MERKEZ** | Kriz merkezi ağ geçidi — SOS toplar, teslim teyidi (SOS-TEYİT) üretir, PANO'yu besler | ÇATI-O takımı + mini PC + UPS | $800–1.200 |
 | **PORTAL** | Captive portal arayüzü — cihazsız kullanıcının ekranı | NOKTA üzerinde gömülü web | — |
 | **SOS modülü** | Yapısal acil paket + önceliklendirme | Meshtastic firmware modülü | — |
 | **PANO** | Triage ve koordinasyon arayüzü | Çevrimdışı web | — |
@@ -79,7 +83,11 @@ Ayrıca bu aşamada **A-1 frekans kararı** verilecek (433 MHz mi 868 MHz mi). S
 
 **Aşama 3a — CEP breadboard prototipi:** nRF52840 Pro Micro + SX1262 + e-paper + butonlarla Meshtastic varyantını çalıştır ve PPK2 ile pil ömrünü ölç → [`05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md`](05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md). Ardından **Aşama 3b — PCB** (Donanım Raporu Bölüm 12).
 
-**Açık donanım kararları:** A-1 (frekans bandı) · A-8 (buck-boost mu 3,0 V LDO mu — ilk kartta gürültü ölçümüyle). **Kapanan:** A-4 (RAK4630) · A-7 (dokunmatik yok).
+**Açık donanım kararları:** A-1 (frekans bandı) · A-8 (buck-boost mu 3,0 V LDO mu — ilk kartta gürültü ölçümüyle) · **A-9** (omurga: 2,4 GHz LoRa önerisi) · **A-10** (ÇATI-B rolü) · **A-11** (ÇATI-K'da LNA) · **A-12** (SOS kodlaması — `CORE_PORTNUMS_ONLY` riski). **Kapanan:** A-4 (RAK4630) · A-7 (dokunmatik yok).
+
+### Çatı röle katmanı (v2.5)
+
+**"Dikey çık, yatay taşı":** Çok katlı binalarda CEP → CEP doğrudan bağlantı güvenilmez. CEP yalnızca kendi binasının çatısındaki **ÇATI-B**'ye ulaşır; uzun mesafe yüksek noktalardaki **ÇATI-K** ve 2,4 GHz **ÇATI-O omurgası** üzerinden **MERKEZ**'e taşınır. MERKEZ her SOS için teslim teyidi döndürür; teyit gelene kadar SOS'u yol üstündeki ÇATI saklar (emanet zinciri). Gerekçe: LongFast'te bir röle yasal %10 çalışma süresiyle dakikada yalnızca ~7 paket yayınlayabilir — çatı rölesi tek başına kapasite getirmez. Ayrıntı: [`04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md`](04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md) · [`02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md`](02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md)
 
 ---
 

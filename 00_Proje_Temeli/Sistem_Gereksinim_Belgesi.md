@@ -1,6 +1,6 @@
 # AfetMesh — Sistem Gereksinim Belgesi (SGB)
 
-**Sürüm:** 2.4
+**Sürüm:** 2.5
 **Tarih:** 24 Eylül 2026
 **Statü:** ✅ Yürürlükte — **projenin tek yetkili gereksinim kaynağı**
 
@@ -15,6 +15,8 @@ Bu belge, daha önce yazılmış beş raporun **birleştirilmiş ve çelişkiler
 | **`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`** (bu belge) | **Tek yetkili gereksinim kaynağı** | ✅ Yürürlükte |
 | `01_Gereksinim_Analizi/Gereksinim_Analizi_Raporu.md` | İlk kapsam çalışması | 📎 Girdi belgesi — v2.0 ile hizalandı |
 | `02_Donanim/Donanim_Gereksinim_Raporu.md` | CEP ailesi donanım gereksinimleri, işlemci seçimi, güç bütçesi, malzeme seçimi (v2.0) | 📎 Teknik ek — v2.2 ile hizalandı |
+| `02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` | **ÇATI ailesi** (çatı/direk röle düğümleri ÇATI-B/K/O + MERKEZ ağ geçidi): 46 gereksinim, yasal ERP hesabı, güç bütçesi, köprü tasarımı, BOM, kurulum, test (v1.0) | 📎 Teknik ek — v2.5 ile hizalı |
+| `04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md` | Meshtastic'in 15 sorunluk envanteri, kapasite hesabı, çatı röle saha dersleri, merkeze iletim çözümleri | 📎 Araştırma girdisi (24 Eyl 2026) |
 | `05_Cihaz_Tasarimi/CEPT_Dokunmatik_Cihaz_Tasarim_Raporu.md` | CEP-T (e-paper + buton arayüzlü kişisel cihaz) konsept raporu | 📎 Konsept — v1.4, SGB v2.4 ile hizalandı |
 | `05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md` | PCB öncesi prototip BOM + devreye alma sırası (nRF52840 + e-paper) | 📎 Uygulama belgesi (v2.0) |
 | `04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md` | Donanım literatürü: 30 akademik yayın, 26 topluluk kaynağı, 14 ticari cihaz | 📎 Araştırma girdisi (24 Eyl 2026) |
@@ -86,6 +88,7 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 
 - **CEP** — kişisel node donanım referans tasarımı (PCB, BOM, kasa, montaj rehberi)
 - **NOKTA** — kamu node'u kurulum reçetesi (hazır kart + solar + kasa)
+- **ÇATI** — çatı/direk röle düğümleri (ÇATI-B bina, ÇATI-K kule, ÇATI-O omurga) ve **MERKEZ** ağ geçidi *(v2.5)*
 - **PORTAL** — NOKTA üzerinde çalışan captive portal web arayüzü
 - **SOS protokolü** — yapılandırılmış acil durum paketi ve önceliklendirme firmware modülü
 - **PANO** — çevrimdışı çalışan koordinasyon/triage arayüzü
@@ -133,6 +136,12 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
                              └───────────────────┘
 ```
 
+> **v2.5 — Çatı röle katmanı ve merkeze iletim.** Yukarıdaki şemaya iki katman eklendi (ayrıntı: Bölüm 7b ve `02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` Bölüm 2):
+>
+> `CEP (bina içi) → ÇATI-B (bina çatısı) → ÇATI-K (yüksek nokta) → ÇATI-O ══ 2,4 GHz omurga ══ MERKEZ (PANO)`
+>
+> İlke **"dikey çık, yatay taşı"**: CEP yalnızca kendi binasının çatısına ulaşır. Uzun mesafe, 868 MHz erişim kanalını tüketmeden omurgadan taşınır. Gerekçe (kapasite hesabı): LongFast'te bir röle, %10 çalışma süresi sınırı yüzünden **dakikada yalnızca ~7 paket** yayınlayabilir. Bu yüzden çatı rölesi tek başına kapasite getirmez (`04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md` Bölüm 2 ve 4).
+
 ### 4.1 Bileşen özeti
 
 | # | Bileşen | Tip | Rol | Hedef maliyet |
@@ -140,6 +149,8 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 | ① | **CEP** | Donanım (özel PCB) | Kişisel node, mesh taşıyıcı, SOS kaynağı | $25–40 |
 | ①+ | **CEP+ / CEP-T** | Donanım (aynı PCB, farklı montaj) | Saha ekibi / gelişmiş kişisel node (e-paper + GNSS + sensör + 5 yön buton) | ~$85–90 *(v2.2'de revize)* |
 | ② | **NOKTA** | Donanım (hazır kart reçetesi) | Kamu erişim noktası, router, mesaj deposu | $90–130 |
+| ②+ | **ÇATI-B / ÇATI-K / ÇATI-O** *(v2.5)* | Donanım (prototip: hazır kart · üretim: taşıyıcı PCB) | Çatı/direk röle, SOS emanetçisi. ÇATI-O: 2,4 GHz omurga | $200–310 / $330–450 / $440–610 (prototip) |
+| ②++ | **MERKEZ** *(v2.5)* | Donanım + yazılım | Kriz merkezinde ağ geçidi: SOS toplar, **SOS-TEYİT** üretir, PANO'yu besler | $800–1.200 |
 | ③ | **PORTAL** | Yazılım (gömülü web) | Cihazsız kullanıcı arayüzü | — |
 | ④ | **SOS modülü** | Yazılım (firmware) | Yapısal paket + önceliklendirme | — |
 | ⑤ | **PANO** | Yazılım (çevrimdışı web) | Koordinasyon ve triage | — |
@@ -176,6 +187,9 @@ Donanım tasarım detayı için: `02_Donanim/Donanim_Gereksinim_Raporu.md` (bu b
 | **CEP-6** | Pil ve ağ durumu görsel (LED) ve sesli (buzzer) olarak bildirilecek |
 | **CEP-7** | Cihaz **beş güç modunu** destekleyecek: Normal · Tasarruf · Enkaz/Beacon · Kapalı (raf) · Şarj. Tasarruf moduna butonla ve düşük pil eşiğinde otomatik geçilecek (Donanım Raporu Bölüm 5.2) |
 | **CEP-8** | **Enkaz/Beacon modu:** radyo alımı kapalı, periyodik SOS yayını + sesli sinyal; hedef ortalama akım ≤ 1 mA. CEP-4'ün düşük güçlü uygulamasıdır; SOS modülü (Aşama 2) ile geliştirilecek |
+| **CEP-9** *(v2.5)* | **Afet profili (ağ dostu istemci):** konum, telemetri ve NodeInfo periyodik yayınları kapanır. Konum yalnızca SOS paketinin içinde gider. Kanal doluluğu > %25 iken SOS dışı mesajlar bekletilir, SOS bekletilmez. Sarsıntı algılanınca veya MERKEZ duyurusuyla otomatik devreye girer |
+| **CEP-10** *(v2.5)* | **Üç aşamalı teslim göstergesi:** "Gönderildi → Çatıya ulaştı (örtük ACK) → MERKEZ aldı (SOS-TEYİT)". LED + e-paper. Amaç: kullanıcının tekrar tekrar basmasını kaynağında engellemek (Helene dersi) |
+| **CEP-11** *(v2.5)* | Kendi binasının ÇATI-B'sini ve MERKEZ'i **favori** olarak tutacak (NodeDB'den atılmaz, sahteciliğe karşı korunur) |
 
 > **CEP-2 gerekçesi:** Meshtastic'te her node varsayılan olarak gördüğü paketi tekrarlar. Toplanma alanında yüzlerce CEP aynı anda tekrarlarsa kanal tıkanır. Tekrarlama görevi NOKTA'lara aittir.
 
@@ -267,6 +281,51 @@ Projenin farklılaşmasının tamamı bu bileşendedir.
 
 ---
 
+## 7b. ÇATI — Çatı / Direk Röle Düğümleri ve MERKEZ Ağ Geçidi *(v2.5)*
+
+Donanım tasarım detayı: `02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` (46 gereksinim: ÇT-GEN, ÇT-RF, ÇT-PWR, ÇT-ENV, ÇT-MEC, ÇT-DBG). Araştırma gerekçesi: `04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md`.
+
+### 7b.1 Sınıflar
+
+| Sınıf | Yer | Rol | Radyo | Enerji |
+|---|---|---|---|---|
+| **ÇATI-B** | Konut/iş bloğu çatısı (her blok, ~300–500 m) | `ROUTER_LATE` (A-10) | nRF52840 + SX1262 (RAK4630/4631) | 1S LFP ~38 Wh + 10 W panel |
+| **ÇATI-K** | En yüksek bina, su/itfaiye kulesi, tepe (~1–2 km) | `ROUTER` | + kavite filtre, isteğe bağlı LNA ön uç (A-11) | 12 V LFP ~77 Wh + 20 W |
+| **ÇATI-O** | Seçilmiş ÇATI-K noktaları (1,5–3 km) | 868: `ROUTER` · omurga: `ROUTER` | + **2,4 GHz LoRa (LR1121, `LORA_24`)** ayrı düğüm + köprü modülü | 12 V LFP 128–154 Wh + 30–40 W |
+| **MERKEZ** | Belediye kriz merkezi / AFAD il | Ağ geçidi | ÇATI-O takımı | Şebeke + jeneratör + UPS |
+
+### 7b.2 İşlevsel
+
+| # | Gereksinim |
+|---|---|
+| **ÇAT-1** | Erişim radyosu **nRF52840 + SX1262** ve **upstream Meshtastic** olacak. AfetMesh işlevleri ayrı modül (SYS-3/4) |
+| **ÇAT-2** | Rol hiyerarşisi: yüksek noktada az sayıda `ROUTER`, bina çatısında `ROUTER_LATE`. **Birbirini doğrudan duyan iki `ROUTER` olmayacak** |
+| **ÇAT-3** | Verici gücü **yasal ERP'den geriye** hesaplanıp sabitlenecek. **Yalnız PA'lı 1 W güçlendirici kullanılmayacak** (TR 868'de 6 dBi antenle yasal üst sınır ~24,6 dBm) |
+| **ÇAT-4** | Operatör vericisi bulunan çatılarda **868 MHz bant geçiren filtre** zorunlu (≤ 1 dB kayıp, 833 MHz'te ≥ 40 dB). ÇATI-K/O'da her durumda zorunlu |
+| **ÇAT-5** | **SOS emanetçisi:** aldığı her SOS'u kalıcı hafızaya yazacak (≥ 2.000 kayıt) ve MERKEZ teyidi gelene kadar yeniden sunacak (SOS-8) |
+| **ÇAT-6** | **Afet profili:** sarsıntı algılanınca veya MERKEZ komutuyla telemetri, konum ve NodeInfo durur, SOS önceliği ve emanet açılır (NOK-8 ile aynı mantık) |
+| **ÇAT-7** | `rebroadcast_mode = ALL`. **`CORE_PORTNUMS_ONLY` kullanılmayacak** (A-12) |
+| **ÇAT-8** | **ÇATI-O köprüsü:** 868 ile omurga arasında yalnızca beyaz listedeki trafik aktarılacak (SOS, SOS-TEYİT, hücresi bilinen DM'ler, hız sınırlı duyurular). Omurga trafiği erişim hücrelerine toptan basılmayacak |
+| **ÇAT-9** | **MERKEZ**, aldığı her yeni SOS için **SOS-TEYİT** üretecek (SOS-7), kayıtları PANO'ya aktaracak, internet veya uydu varsa özel MQTT broker'ı üzerinden üst merkeze iletecek |
+| **ÇAT-10** | Kurulumdan sonra uzaktan yönetilebilir (PKC admin key). BLE kapatılabilir. Sağlık telemetrisi ≥ 3 saatte bir |
+| **ÇAT-11** | Planlama: her sokak ya da blok **en az 2 ÇATI** tarafından duyulacak (N+1, deprem hasarı yedekliliği). Konumlandırma NOK-11 verileriyle yapılacak |
+
+### 7b.3 İşlevsel olmayan
+
+| # | Gereksinim | Hedef |
+|---|---|---|
+| **ÇAT-N1** | Şebekesiz güneşsiz otonomi | **≥ 7 gün** (Aralık ışınımıyla boyutlandırma, ≥ 2× panel marjı) |
+| **ÇAT-N2** | Pil kimyası | **LiFePO4** (Li-ion yalnızca prototipte). Şarj 0…45 °C dışında donanımsal kesme |
+| **ÇAT-N3** | Koruma sınıfı | **IP67**, açık renk, basınç dengeleme ventili |
+| **ÇAT-N4** | Kendiliğinden toparlanma | Pil sıfırlanıp güneş geri gelince insan müdahalesiz açılış |
+| **ÇAT-N5** | Montaj | Taşıyıcı elemana. Baca, su deposu ve güneş enerjisi su ısıtıcısına montaj yok. Balastlı ayak yok |
+| **ÇAT-N6** | RF hat | Radyo antenin dibinde (≤ 1 m koaksiyel), N tipi, DC topraklı parafudr + binaya eş potansiyel bağlantı |
+| **ÇAT-N7** | Birim maliyet (prototip) | ÇATI-B $200–310 · ÇATI-K $330–450 · ÇATI-O $440–610. **Üretim hedefi ÇATI-B ≤ $180** (taşıyıcı PCB, 100 adet) |
+
+> **ÇAT-3 gerekçesi:** TR sınırları 868 MHz'te 500 mW ERP, 433 MHz'te 10 mW ERP'dir (REG-2). 1 W PA 868'de en fazla +2,6 dB yasal kazanç sağlar ve yalnız PA'lı tasarımlar alıcıyı sağırlaştırarak asimetrik bağlantı üretir. Menzil kazancı alıcı tarafında (filtre, yükseklik, düşük kayıplı hat) aranır.
+
+---
+
 ## 8. PORTAL — Captive Portal Arayüzü
 
 ### 8.1 Ekran akışı
@@ -331,10 +390,19 @@ Projenin farklılaşmasının tamamı bu bileşendedir.
 | **SOS-4** | Tüm NOKTA'lar SOS paketlerini kalıcı saklayacak (NOK-5) |
 | **SOS-5** | Yapı **geriye dönük uyumlu** olacak: özelliği desteklemeyen standart Meshtastic node'ları paketi anlamasa bile **taşıyabilecek** |
 | **SOS-6** | SOS trafiği, S&F ve gizlilik için **ayrı bir kanalda** taşınacak: `AfetMesh-ACIL`, PSK'sı kamuya açık yayımlanmış |
+| **SOS-7** *(v2.5)* | **Uçtan uca teyit:** MERKEZ her yeni SOS için `SOS-TEYİT` paketi üretecek. Teyit kaynağa **DM olarak** (next-hop yönlendirme, 2.6+) gidecek, taşkınla yayılmayacak |
+| **SOS-8** *(v2.5)* | **Emanet zinciri:** SOS'u ilk alan ÇATI veya NOKTA kaydı kalıcı hafızaya yazar. MERKEZ teyidi gelene kadar artan aralıklarla (5/10/20/40 dk) yeniden sunar. Teyitten sonra "teslim edildi" olarak işaretler, silmez |
+| **SOS-9** *(v2.5)* | Her SOS **8 baytlık benzersiz kimlik** (düğüm no + sayaç) taşır. Yinelenen kopyalar her katmanda elenir |
+| **SOS-10** *(v2.5)* | **Patlama önleme (CEP ve PORTAL):** ilk gönderimde 0–30 s rastgele gecikme. Teyit gelmezse üstel geri çekilme (2, 4, 8 dk). SOS-3 hız sınırı geçerli kalır |
+| **SOS-11** *(v2.5)* | **Yedek teslim yolları:** ① mesh + omurga (birincil) · ② internete kavuşan herhangi bir düğümden özel MQTT broker'ına yükleme · ③ saha ekibi veya araçla veri katırı (NOKTA/ÇATI deposunun kopyalanması) · ④ MERKEZ'de uydu. Kimlik (SOS-9) sayesinde yollar yinelenme üretmez |
 
 > **SOS-2 gerekçesi:** Meshtastic'te acil mesajların önceliği **yoktur**; SOS paketleri normal paketlerle aynı kuyruğa girer ve yoğun trafikte gecikebilir veya düşebilir. Upstream'de bu yönde bir talep (firmware #7980, Eylül 2025) açılmış ve kapatılmıştır. Bu yetenek **sıfırdan geliştirilecektir** ve projenin en somut özgün katkısıdır.
 
 > **SOS-5 kritiktir:** Paketimiz standart node'lardan geçemezse, TA Mesh ağının üzerine binemez ve node yoğunluğu avantajını kaybederiz. Bu nedenle **yeni bir protokol icat edilmeyecek** — standart Meshtastic `Data` paketi içinde özel `portnum` kullanılacaktır.
+
+> ⚠️ **v2.5 — SOS-5'e yeni risk:** Meshtastic'in `rebroadcast_mode = CORE_PORTNUMS_ONLY` ayarı yalnızca çekirdek portnum'ları (metin, konum, telemetri, NodeInfo, yönlendirme) yeniden yayınlar. Kalabalık kent ağlarında router'lara bu ayar **öneriliyor** (2bn.de, Kasım 2025). Bu ayarı kullanan standart router'lar özel portnum'lu SOS'u **taşımayabilir.** → Açık karar **A-12** (özel portnum mu, `TEXT_MESSAGE_APP` içinde yapılandırılmış metin mi). TST-5 bu senaryoyu kapsayacak şekilde genişletildi.
+
+> **SOS-7…SOS-11 gerekçesi (Meshtastic sorun envanteri P-4, P-7, P-8, P-13):** Meshtastic'te yayınların uçtan uca teyidi yoktur, "merkez" kavramı yoktur ve MQTT köprüsü afette çöken internete bağlıdır. Teyit görmeyen kullanıcı tekrar gönderir ve tıkanıklık katlanır (Hurricane Helene'de 30 saniyelik durum spamı ağı kilitledi). Teyit, emanet ve kimlik birlikte, **İ-3 "mesaj kaybolmaz" ilkesinin ağ düzeyindeki karşılığıdır.**
 
 ---
 
@@ -381,10 +449,18 @@ Bu maddeler **bilerek açık bırakılmıştır.** Hiçbiri varsayım yapılarak
 | **A-8** | 3,3 V regülatör: TPS63900 buck-boost mu, 3,0 V LDO mu? Öneri: **TPS63900** | İlk kartta alıcı gürültü tabanı ölçümü (Donanım Raporu T-06) | Aşama 3 ilk tur |
 | **A-5** | Pilot bölge ve muhatap kurum | İlçe belediyesi bilgi işlem / afet koordinasyon birimi ile görüşme | Aşama 1 |
 | **A-6** | PORTAL'da mesaj saklama süresi ve silme politikası | KVKK değerlendirmesi | Aşama 1 |
+| **A-9** *(v2.5)* | **Omurga teknolojisi:** 2,4 GHz LoRa (öneri) · 433 MHz ikinci radyo · 5 GHz Wi-Fi PtP (yalnızca şebekeli noktalar) | TST-9 menzili + REG-4 yasal teyit (ETSI EN 300 328 / BTK) | Aşama 5a |
+| **A-10** *(v2.5)* | **ÇATI-B rolü:** `ROUTER_LATE` (öneri) · `CLIENT_BASE` (bina sakinlerinin CEP'leri favori) | Favori sayısı sınırı, kurulum yükü + TST-8 | Aşama 5a |
+| **A-11** *(v2.5)* | **ÇATI-K'da LNA'lı ön uç** (SKY66122, TX ≤ 24 dBm) kullanılsın mı? | TST-10: gürültü tabanı + paket alım oranı + güç farkı | Aşama 5a |
+| **A-12** *(v2.5)* | **SOS kodlaması:** özel portnum (SOS-1) · `TEXT_MESSAGE_APP` içinde yapılandırılmış metin (`#SOS1 …`) · ikisi birden | TST-5: `CORE_PORTNUMS_ONLY` ayarlı standart router'dan geçiş | **Aşama 0** |
 
 > **A-1 ve PCB (v2.2):** RAK4630'un (L) ve (H) sürümleri aynı footprint'i paylaştığı için A-1 kararı artık **PCB layout'unu bloke etmez**; yalnızca modül sipariş kodu, anten ve eşleme değerleri banda göre seçilir.
 
 > **A-1 neden hâlâ açık:** Önceki raporlar bölge ayarını `EU_868` olarak sabitlemişti. Ancak Türkiye'de topluluk ağı ağırlıklı olarak **433 MHz** kullanmaktadır. 868 MHz daha yüksek güç bütçesi sunar (500 mW vs 10 mW ERP), ancak yanlış band seçimi bizi mevcut ağdan tamamen koparır. Node yoğunluğu bu projede menzilden daha kritik bir başarı faktörü olduğu için, karar ölçümle değil **ağ gerçeğiyle** verilecektir.
+
+> **A-1'e yeni girdi (v2.5, ÇATI raporu Bölüm 5.1):** 433 MHz'in 10 mW ERP sınırı **çatı rölelerini de bağlar.** 5 dBi antenli bir ÇATI'nın yasal iletim gücü ~8,7 dBm'dir, 868'de ise 22 dBm. Çatı katmanının verici link bütçesi 433'te **~13 dB zayıftır.** 433 seçilirse ÇATI yoğunluğu artırılmalı ve bu maliyet A-1 kararında hesaba katılmalıdır.
+
+> **A-2'ye yeni girdi (v2.5):** Kapasite hesabı (Araştırma Bölüm 4): 100 cihaz, dakikada 1 mesaj, düz mesh'te kanal doluluğu LongFast'te %564, MediumFast'te %162, ShortFast'te %51. Hızlı preset TA Mesh ile birlikte çalışmayı bozar (SYS-3). **Önerilen uzlaşma:** erişim kanalı TA Mesh preset'inde kalır, çok sıçramalı taşıma ÇATI-O omurgasına alınır (A-9). Bu durumda hücre başına 25 cihazda MediumFast %20, LongFast %71 doluluk verir. LongFast'te kalınırsa **SOS disiplini (SOS-3, CEP-9) zorunludur.**
 
 ---
 
@@ -400,13 +476,24 @@ Bu testler **PCB tasarımından önce**, hazır kartlarla ve yaklaşık sıfır 
 | **TST-2** | ESP32-S3'te WiFi AP + LoRa eşzamanlı çalışma | 8 istemci bağlıyken LoRa gidiş-dönüş başarılı; radyo girişimi ölçülür | Yüksek |
 | **TST-3** | NOKTA güç bütçesi ölçümü | Gerçek tüketim ≤ 12 Wh/gün | Yüksek |
 | **TST-4** | Yoğunluk testi: 1 NOKTA + 20 CEP + 8 telefon | SOS gecikmesi < 60 sn; paket kaybı < %10 | Yüksek |
-| **TST-5** | Uyumluluk: standart Meshtastic node'u SOS paketimizi taşıyor mu | SOS-5 doğrulanır | Yüksek |
+| **TST-5** | Uyumluluk: standart Meshtastic node'u SOS paketimizi taşıyor mu. *(v2.5: rebroadcast modu `ALL`, `LOCAL_ONLY` ve **`CORE_PORTNUMS_ONLY`** olan router'larla ayrı ayrı → A-12)* | SOS-5 doğrulanır | Yüksek |
 | **TST-6** | Kullanılabilirlik: 10 teknik olmayan gönüllü, yönlendirmesiz | ≥ 8/10 başarı, ortalama < 90 sn | Orta |
 | **TST-7** | **"Şebekesiz gün" tatbikatı:** GSM ve internet erişimi kapalı varsayılarak, pilot bölgede gerçek katılımcılarla uçtan uca senaryo | SYS-1 doğrulanır; ölçülmüş saha verisi üretilir | Orta |
 
 > **TST-7 modeli:** Tayvan, 2026 kentsel dayanıklılık tatbikatlarında **ilk kez ulusal ölçekte mobil internet kesintisi simülasyonu** uygulamıştır. Aynı yaklaşım pilot bölgede uygulanmalıdır — laboratuvar testinden farklı olarak gerçek kullanıcı davranışını ölçer ve Bakanlık kılavuzunun *"toplumun hazırlıklı olması için tatbikatlar düzenlenmesi"* maddesiyle örtüşür.
 
 > **TST-1 ve TST-2 tamamlanmadan PCB tasarımına başlanmayacaktır.**
+
+**v2.5 — ÇATI katmanı testleri** (ayrıntı ve başarı kriterleri: `02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` Bölüm 12):
+
+| # | Test | Başarı kriteri | Öncelik |
+|---|---|---|---|
+| **TST-8** | Bina içi dikey bağlantı: 8+ katlı binada bodrum, zemin, orta ve üst kattan CEP → ÇATI-B | Zemin kattan ≥ %90 teslim (ölçüm beyan edilir) | Yüksek |
+| **TST-9** | 2,4 GHz omurga menzili, çatıdan çatıya 0,5 / 1 / 2 / 3 km | 2 km'de ≥ %95 → A-9 | Yüksek |
+| **TST-10** | Operatör vericili çatıda filtreli ve filtresiz gürültü tabanı. LNA'lı ve LNA'sız | A-11 kararı | Orta |
+| **TST-11** | 14 günlük kış enerji testi (Aralık–Ocak) | Pil hiçbir gün < %30 | Yüksek |
+| **TST-12** | Emanet zinciri: yol üstündeki ÇATI-O 1 saat kapalıyken SOS | Kayıp yok, teyit döner, yinelenme yok (SOS-7/8/9) | Yüksek |
+| **TST-13** | Patlama: 50 CEP aynı dakikada SOS (jitter açık/kapalı) | Jitter açıkken ≥ %95 SOS 10 dk içinde MERKEZ'de (SOS-10) | Yüksek |
 
 ### 13.2 Donanım doğrulama
 
@@ -434,11 +521,13 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 |---|---|---|---|
 | **0 — Varsayım doğrulama** | TST-1, TST-2, TST-5. Hazır kartlarla, PCB yok. A-1 kararı verilir | 2 hafta | Mimarinin teyidi veya revizyonu |
 | **1 — MVP: NOKTA + PORTAL** | Hazır ESP32-S3 kart üzerinde captive portal + mesaj deposu | 6–8 hafta | Çalışan tek kamu node'u |
-| **2 — SOS modülü** | SOS-1…SOS-6 firmware modülü | 4 hafta | Upstream'e katkı adayı |
+| **2 — SOS modülü** | SOS-1…SOS-11 firmware modülü (v2.5: teyit, emanet, kimlik, patlama önleme eklendi) | 4–6 hafta | Upstream'e katkı adayı |
 | **3a — CEP breadboard prototipi** | nRF52840 Pro Micro + SX1262 + 2,9" e-paper + butonlar; PPK2 ile güç ölçümü (`05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md`) | 2–3 hafta | Ölçülmüş pil ömrü, çalışan `PRIVATE_HW` varyantı |
 | **3b — CEP PCB** | Donanım Raporu Bölüm 12 adımları | 8–12 hafta | 5 adet PCB |
 | **4 — PANO** | Koordinasyon arayüzü | 3 hafta | Çevrimdışı web panosu |
-| **5 — Pilot** | Bir mahalle: 3 NOKTA + 20 CEP + saha tatbikatı | 4 hafta | Ölçülmüş saha verisi |
+| **4b — ÇATI prototipi** *(v2.5)* | Hazır kartlarla 3 ÇATI-B + 1 ÇATI-K + 1 ÇATI-O + MERKEZ. Köprü modülü. TST-8…TST-13 (`02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` Bölüm 8.1) | 6–8 hafta | Ölçülmüş kat zayıflaması, omurga menzili, kış enerji verisi |
+| **5 — Pilot** | Bir mahalle: 3 NOKTA + **8–15 ÇATI-B + 2–3 ÇATI-K + 1–2 ÇATI-O + MERKEZ** + 20 CEP + saha tatbikatı | 4 hafta | Ölçülmüş saha verisi |
+| **5b — ÇATI taşıyıcı PCB** *(v2.5)* | RAK4630 + BQ25798 MPPT + emanet flash + bekçi köpeği (ÇATI raporu Bölüm 8.2) | 6–8 hafta | Üretime uygun ÇATI-B/K |
 
 > **Sıralama gerekçesi:** Projenin farklılaşması donanımda değil PORTAL'dadır. Ayrıca PORTAL hazır kartlarla doğrulanabildiği için çok daha hızlı ve ucuzdur. PCB, farklılaşma kanıtlandıktan sonra anlamlıdır.
 
@@ -464,6 +553,11 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | Regülasyon belirsizliği | Düşük-Orta | REG-4 erken teyit |
 | Paralel topluluk çalışmasıyla çabanın tekrarı | Orta | TA Mesh ile erken temas ve işbirliği |
 | **Uydu-doğrudan-telefon (D2C) yaygınlaşması → problemin telefon üreticilerince çözülmesi** | **Orta-Yüksek (orta vade)** | Apple Emergency SOS (Globalstar), Starlink Direct-to-Cell (Text-to-911 beta), AST SpaceMobile hızla yaygınlaşıyor. **Karşı konumlandırma:** D2C açık gökyüzü gerektirir — enkaz altında, bodrumda ve kapalı mekânda çalışmaz; ayrıca yalnızca yeni/pahalı telefonlarda bulunur. AfetMesh telefon modelinden bağımsızdır. **Pilot öncesi bu alan yeniden gözden geçirilecektir** |
+| **Çatı rölesi tek başına kapasite getirmez** (LongFast'te röle başına yasal ~7 paket/dk) *(v2.5)* | **Yüksek** | Trafik disiplini (SOS-3, CEP-9), omurga (A-9), preset kararı (A-2). Araştırma Bölüm 4 |
+| **Standart router'lar `CORE_PORTNUMS_ONLY` ile SOS'u taşımaz** *(v2.5)* | **Yüksek** | A-12, genişletilmiş TST-5 |
+| **SOS patlaması:** deprem anında herkes aynı dakikada basar, teyit görmeyen tekrar basar *(v2.5)* | **Yüksek** | SOS-7 (teyit), SOS-10 (jitter + geri çekilme), CEP-10 (gösterge), TST-13 |
+| Çatı kurulumuna sakin itirazı ("anten" / baz istasyonu hassasiyeti) *(v2.5)* | Orta | ÇATI raporu Bölüm 10 adım 3: bilgi notu, düşük güç, kamu binası önceliği |
+| 2,4 GHz omurga menzili kentte yetersiz *(v2.5)* | Orta | TST-9 erken. Yedek: ÇATI-O sıklaştırma, MERKEZ yakınında 5 GHz PtP |
 | Kullanıcıların sesli iletişim beklentisi (metin yetersiz bulunabilir) | Orta | Hurricane Helene saha raporu bu beklentiyi doğruluyor. Ürün sohbet için değil **tek yönlü SOS + triage** için konumlandırılacak; telsizle rekabet edilmeyecek (Bölüm 3.2) |
 
 ---
@@ -554,6 +648,7 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | 1.0 | — | Gereksinim Analizi Raporu (ilk kapsam) |
 | 1.1 | — | Donanım Gereksinim Raporu (donanım detayı) |
 | **2.0** | **9 Ağu 2026** | Rekabet, mimari ve bakanlık analizleri birleştirildi. 14 çelişki çözüldü. Kamu node'u ayrı cihaz sınıfına alındı. Cihazsız erişim BLE'den WiFi portala taşındı. Gereksinim ID şeması birleştirildi |
+| **2.5** | **24 Eyl 2026** | **ÇATI katmanı ve merkeze iletim:** yeni bileşenler ÇATI-B/K/O + MERKEZ (4.1, **Bölüm 7b**: ÇAT-1…11, ÇAT-N1…N7) · CEP-9 (afet profili), CEP-10 (üç aşamalı teslim göstergesi), CEP-11 (favoriler) · **SOS-7…SOS-11** (teyit, emanet zinciri, kimlik, patlama önleme, yedek teslim yolları) · SOS-5 için `CORE_PORTNUMS_ONLY` riski · A-1/A-2 notları (433'te çatı link bütçesi −13 dB, kapasite hesabı) · yeni açık kararlar **A-9…A-12** · TST-5 genişletildi, **TST-8…TST-13** · yol haritasına 4b ve 5b · risk kaydına 5 risk · belge tablosuna ÇATI Donanım Raporu ve Meshtastic Sorunları Araştırması |
 | **2.4** | **24 Eyl 2026** | Belge ailesi hizalaması: **Bölüm 6.2b Donanım Özeti** eklendi · belge tablosuna prototip BOM, birleşik kaynakça ve makale arşivi eklendi · literatür raporu `04_Dokumanlar/`'a taşındı · araştırma raporu kuralı "tarihli güncelleme notu" olarak gevşetildi · 13.2 test listesi T-01…T-20 ile güncellendi · yol haritasında Aşama 3 → 3a (breadboard) + 3b (PCB) · risk kaydına 3 donanım riski · izlenebilirlik tablosuna Donanım Raporu v2.x eşleşmeleri |
 | **2.3** | **24 Eyl 2026** | **A-7 kapandı:** kullanıcı dokunmatik ekranın zorunlu olmadığını bildirdi → CEP-T arayüzü e-paper + fiziksel butonlar (Yol A), MCU nRF52840; CEP-T ayrı cihaz sınıfı değil, CEP+ montaj varyantı |
 | **2.2** | **24 Eyl 2026** | Donanım Raporu v2.0 işlendi: işlemci karşılaştırması (TI/STM32/ESP32/Raspberry Pi/Nordic) sonucu **nRF52840 teyit edildi** · modül **RAK4630 (L/H)** önerildi (A-4) · **CEP-7/CEP-8** (güç modları, Enkaz/Beacon) ve **CEP-N10…N12** eklendi · CEP-N3 < 100 µA → ≤ 10 µA · CEP+ maliyet hedefi ~$59 → ~$85–90 · yeni açık kararlar **A-7** (CEP-T dokunmatik ↔ pil) ve **A-8** (regülatör) · belge tablosuna literatür raporu ve CEP-T eklendi |

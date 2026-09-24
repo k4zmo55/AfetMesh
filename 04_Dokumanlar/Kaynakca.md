@@ -134,6 +134,68 @@
 - Ticari afet cihazları (CEP-T Bölüm 2.2): goTenna, Beartooth (panoplia.org saha testi), Somewear Labs (Iridium), Zello / Harvey (NBC News, Snopes)
 - Kurumsal: [TRT Haber — ASELSAN kesintisiz telsiz](https://www.trthaber.com/haber/bilim-teknoloji/aselsandan-afet-ve-acil-durumlarda-kesintisiz-telsiz-iletisimi-603580.html) · [CNN Türk — ASELSAN Mobil Muhabere Aracı](https://www.cnnturk.com/video/turkiye/deprem-senaryolari-icin-tasarlandi-aselsanin-mobil-muhabere-araci-iletisim-cokerse-devreye-giriyor-2371626)
 
+## 5b. Ağ Katmanı, Çatı Röleleri ve Merkeze İletim (SGB v2.5)
+
+Kullanıldığı belgeler: [`Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md`](Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md) · [`../02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md`](../02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md)
+
+### Akademik
+
+| # | Künye | Erişim |
+|---|---|---|
+| L-31 | Wong, A. W.-L., Goh, S. L., Hasan, M. K., Fattah, S. (2024). Multi-Hop and Mesh for LoRa Networks: Recent Advancements, Issues, and Recommended Applications. *ACM Computing Surveys* 56(6):136. [doi:10.1145/3638241](https://dl.acm.org/doi/abs/10.1145/3638241) | 🔒 |
+| L-32 | Suryadevara, N. K., Dutta, A. (2022). Meshtastic Infrastructure-less Networks for Reliable Data Transmission to Augment IoT Applications. *WiSATS 2021*, LNICST 410. [Springer](https://link.springer.com/chapter/10.1007/978-3-030-93398-2_55) | 🔒 |
+| L-33 | Ranasinghe, V. vd. (2024). Rapid and Resilient LoRa Leap: A Novel Multi-Hop Architecture for Decentralised Earthquake Early Warning Systems. *Sensors* 24(18):5960. [doi:10.3390/s24185960](https://doi.org/10.3390/s24185960) · [PMC11435446](https://pmc.ncbi.nlm.nih.gov/articles/PMC11435446/) | Açık |
+| L-34 | Rademacher, M., Linka, H., Horstmann, T., Henze, M. (2021). Path Loss in Urban LoRa Networks: A Large-Scale Measurement Study. *IEEE VTC2021-Fall*. [arXiv:2109.07768](https://arxiv.org/abs/2109.07768) | Açık |
+| L-35 | Performance Evaluation of a Mesh-Topology LoRa Network (2025). *Sensors* 25(5):1602. [MDPI](https://www.mdpi.com/1424-8220/25/5/1602) (yazarlar teyit edilecek) | Açık (MDPI engelledi) |
+| — | A Comprehensive Data Description for LoRaWAN Path Loss Measurements in an Indoor Office Setting (2025). [arXiv:2505.06375](https://arxiv.org/abs/2505.06375) | Açık |
+
+### Meshtastic dokümantasyonu ve GitHub
+
+| # | Kaynak |
+|---|---|
+| T-27 | [Why Meshtastic Uses Managed Flood Routing](https://meshtastic.org/blog/why-meshtastic-uses-managed-flood-routing/) |
+| T-28 | [Mesh Broadcast Algorithm](https://meshtastic.org/docs/overview/mesh-algo/) |
+| T-29 | [Demystifying ROUTER_LATE](https://meshtastic.org/blog/demystifying-router-late/) · [Choosing The Right Device Role](https://meshtastic.org/blog/choosing-the-right-device-role/) |
+| T-30 | [Configuration Tips](https://meshtastic.org/docs/configuration/tips/) |
+| T-31 | [Meshtastic 2.6 Preview: MUI and Next-Hop Routing](https://meshtastic.org/blog/meshtastic-2-6-preview/) |
+| T-32 | [Is LongFast Holding Your Mesh Back?](https://meshtastic.org/blog/why-your-mesh-should-switch-from-longfast/) |
+| T-33 | [That one time at DEF CON](https://meshtastic.org/blog/that-one-time-at-defcon/) · [Encryption limitations](https://meshtastic.org/docs/about/overview/encryption/limitations/) |
+| T-34 | [Discussion #9433 — hop-weighted rebroadcast delay](https://github.com/meshtastic/firmware/discussions/9433) |
+| T-35 | [Discussion #9437 — Traffic management module](https://github.com/meshtastic/firmware/discussions/9437) |
+| T-36 | [PR #11826 — congestion-aware hop scaling](https://github.com/meshtastic/firmware/pull/11826) |
+| T-37 | [PR #11927 — duty cycle accounting](https://github.com/meshtastic/firmware/pull/11927) · [LoRa Configuration](https://meshtastic.org/docs/configuration/radio/lora/) |
+| T-38 | [Issue #7980 — Emergency Mode](https://github.com/meshtastic/firmware/issues/7980) · [Discussion #8262 — QoS prioritization](https://github.com/meshtastic/firmware/discussions/8262) |
+| T-39 | [Discussion #3831 — multiple radio interfaces](https://github.com/meshtastic/firmware/discussions/3831) · [LILYGO LoRa devices (SX1280 / LR1121, LORA_24)](https://meshtastic.org/docs/hardware/devices/lilygo/lora/) |
+| T-40 | [Issue #7863 — CLIENT_BASE](https://github.com/meshtastic/firmware/issues/7863) |
+| T-41 | [Store & Forward Module](https://meshtastic.org/docs/configuration/module/store-and-forward-module/) · [Issue #8877](https://github.com/meshtastic/firmware/issues/8877) |
+| T-60 | [meshtastic/burntastic — Burning Man 2024 firmware](https://github.com/meshtastic/burntastic/) |
+
+### Topluluk, video ve saha raporları
+
+| # | Kaynak |
+|---|---|
+| T-42 | [2bn.de — Meshtastic Optimization (Kasım 2025)](https://www.2bn.de/en/2025/11/meshtastic-optimization-how-to-actually-connect-with-your-neighbors/) |
+| T-43 | [filipnet.de — Meshtastic RF Bandpass Filter](https://www.filipnet.de/meshtastic-filter/) · [SQ5BPF — 868 MHz bandpass filter](https://lipkowski.com/2024/12/28/altoids-tin-bandpass-filter-for-868mhz-meshtastic/) · [RAK Outdoor Cavity Filter](https://store.rakwireless.com/products/outdoor-cavity-band-pass-filter-lorawan) |
+| T-44 | [D-Central — Solar Meshtastic Relay Node Build Guide](https://d-central.tech/solar-meshtastic-node-build/) · [YYCMesh — Cold Weather Charging](https://yycmesh.com/blog/cold-weather-charging) |
+| T-45 | [NI3N — Rooftop Meshtastic Router Node (Ham-Optimized)](https://ni3n.net/2025/05/12/step-by-step-rooftop-meshtastic-router-node-ham-optimized/) |
+| T-46 | [MeshAtlas — Home, Rooftop and Fixed Base Nodes](https://blog.meshatlas.org/knowledge-base/choosing-the-right-meshtastic-hardware/home-rooftop-and-fixed-base-meshtastic-nodes/) · [NodakMesh — Router & Repeater Setup](https://nodakmesh.org/meshtastic/repeater-setup) |
+| T-47 | [Hackaday — The Practicality of Solar Powered Meshtastic](https://hackaday.com/2025/09/17/the-practicality-of-solar-powered-meshtastic/) |
+| T-48 | [Muldrf's Hobbytronic — Meshtastic Outdoor Solar Node](https://hobbytronics.home.blog/2025/09/07/meshtastic-outdoor-solar-node/) |
+| T-49 | [RAK WisMesh Repeater Mini V2](https://store.rakwireless.com/products/wismesh-repeater-mini-v2) · [RAK13302 1W module](https://store.rakwireless.com/products/rak13302-meshtastic-1w-lora-module) · [RAK — Why Meshtastic needs a true 1 W radio](https://news.rakwireless.com/why-the-meshtastic-community-loves-1-watt-radios/) |
+| T-50 | [TJK-Solutions — Notfallkommunikation mit Meshtastic in Am Mellensee](https://tjk-solutions.de/archive/935) · [YouTube — Notfallkommunikations-Koffer Am Mellensee](https://www.youtube.com/watch?v=A15AB0ZE-ZA) · [Landkreis Teltow-Fläming — Katastrophenschutz-Leuchttürme](https://www.teltow-flaeming.de/bevoelkerungsschutz/katastrophenschutz-leuchttuerme) |
+| T-51 | [Heartland Emergency Preparedness — Berlin Power Outage case study](https://heartlandemergencypreparedness.com/2025/09/25/meshtastic-to-the-rescue-a-case-study-of-the-berlin-power-outage-lessons-in-emergency-preparedness/) |
+| T-52 | [PAM Finds — Disaster Comms with Meshtastic + MeshCore (2026)](https://pamfinds.com/guides/disaster-comms-meshtastic-meshcore/) · [adrelien — The Morning After the Hurricane](https://adrelien.com/the-morning-after-the-hurricane-every-phone-still-worked-none-could-say-anything/) |
+| T-53 | [NodakMesh — MeshCore Explained](https://nodakmesh.org/blog/meshcore-how-it-works-guide) · [Austin Mesh — MeshCore vs Meshtastic](https://www.austinmesh.org/about/meshcore-vs-meshtastic/) |
+| T-54 | [RF.Guru — Meshtastic and MeshCore in Europe: The Legal RF Framework](https://shop.rf.guru/pages/meshtastic-and-meshcore-in-europe-the-legal-rf-framework) |
+| T-55 | [TA Mesh — SSS](https://tamesh.org/sss) · [TA Mesh MQTT Ayarları](http://blog.purgatoria.tr/2025/06/ta-mesh-mqtt-ayarlari.html) |
+| T-56 | [YouTube — Meshtastic Long Lines Relay Tower Station](https://www.youtube.com/watch?v=ob6DhsqoU5I) · [YouTube — FINALLY Solar Meshtastic On My Roof! LRZNode](https://www.youtube.com/watch?v=Ho_WyfivWSQ) · [YouTube — How to install a long range antenna](https://www.youtube.com/watch?v=COfE4p6-gk4) |
+| T-57 | [Mesh Underground — Maximize Meshtastic Range](https://meshunderground.com/posts/maximize-meshtastic-range-tips-and-deep-dive/) |
+| T-58 | [Meshtastic Discourse — Yet another Solar Node (RAK19007)](https://meshtastic.discourse.group/t/yet-another-solar-node-rak19007/14783) · [RAK Forum — RAK19007 charge rate](https://forum.rakwireless.com/t/higher-charge-rate-for-solar-charger-on-rak19007/11359) · [µArt.cz — Solar MPPT charger for Meshtastic](https://uart.cz/2534/solar-mppt-charger-for-meshtastic/) |
+| T-59 | [TrekLink docs PR #12 — on-device queue decisions](https://github.com/TrekLink-Team/treklink-docs/pull/12) (ikincil kaynak) |
+| — | Güneş verisi: [MGM — Global Güneş Radyasyonu](https://www.mgm.gov.tr/kurumici/radyasyon_iller.aspx) · [PVGIS](https://re.jrc.ec.europa.eu/pvg_tools/en/) (il bazında Aralık değeri buradan teyit edilecek) |
+
+---
+
 ## 6. Veri Sayfaları (Donanım Raporu Bölüm 6)
 
 | Parça | Üretici belgesi |

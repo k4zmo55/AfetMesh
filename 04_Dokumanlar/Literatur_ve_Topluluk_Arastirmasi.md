@@ -9,6 +9,8 @@
 > **📄 Tam metinler:** Açık erişimli olup indirilebilen makalelerin PDF'leri [`Kaynaklar/Makaleler/`](Kaynaklar/Makaleler/) klasöründedir; tabloda **📄** ile işaretlidir. Tüm projenin birleşik kaynakçası: [`Kaynakca.md`](Kaynakca.md).
 >
 > **Okuma notu:** Bu bir araştırma kaydıdır; SGB kuralı gereği sonradan geriye dönük düzenlenmez. Güncel bulgular yeni tarihli bir belgeyle eklenir.
+>
+> ⚠️ **Güncelleme notu (24 Eyl 2026, SGB v2.5):** Ağ katmanı sorunları (ölçeklenme, çatı röleleri, merkeze iletim) için yeni araştırma: [`Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md`](Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md) — numaralandırma **L-31…L-35** ve **T-27…T-60** ile sürdürüldü.
 
 ---
 
