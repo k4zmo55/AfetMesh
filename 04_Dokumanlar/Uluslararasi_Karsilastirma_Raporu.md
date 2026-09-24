@@ -3,6 +3,8 @@
 > 📎 **Araştırma girdisi — 9 Ağustos 2026.** Gereksinim kaynağı değildir.
 > Buradan doğan gereksinimler SGB'ye işlenmiştir (Bölüm 1.3 konumlandırma, risk kaydı, TST-7).
 > Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+>
+> **🔄 Güncelleme notu — 24 Eylül 2026 (SGB v2.4, Donanım Raporu v2.1):** Bu raporun orijinal bulguları korunmuştur; sonradan alınan donanım kararları ilgili yerlere `⚠️ v2.4` işaretiyle eklenmiştir. Özet: kişisel cihaz **nRF52840 + SX1262 (RAK4630)**, **2,9" e-paper + fiziksel butonlar** (dokunmatik yok, A-7 kapandı), **18650 + BQ24074 + TPS63900**, 5 güç modu, normal modda hedef **≥ 14 gün**. **Bu rapordaki etkisi:** yok — rapor donanım seçimine bağlı değildir. Katman 5 (topluluk mesh) için akademik afet haberleşmesi literatürü [`Literatur_ve_Topluluk_Arastirmasi.md`](Literatur_ve_Topluluk_Arastirmasi.md) Bölüm 2.2'ye eklenmiştir (ör. L-12 Matracia vd. 2022 derlemesi). Birleşik kaynakça: [`Kaynakca.md`](Kaynakca.md).
 
 **Amaç:** Farklı ülkelerin afet haberleşmesini nasıl kurguladığını tespit etmek; AfetMesh'in bu manzaradaki yerini ve Türkiye'ye özgü konumlandırmasını netleştirmek.
 

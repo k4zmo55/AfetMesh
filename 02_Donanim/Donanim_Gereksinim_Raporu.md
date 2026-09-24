@@ -2,7 +2,7 @@
 
 > ## 📎 BELGE STATÜSÜ: TEKNİK EK (v2.1) — **CEP / CEP+ / CEP-T kişisel cihaz ailesi için geçerlidir**
 >
-> **Tarih:** 24 Eylül 2026 · Yürürlükteki üst belge: **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** (SGB v2.3)
+> **Tarih:** 24 Eylül 2026 · Yürürlükteki üst belge: **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** (SGB v2.4)
 >
 > **Bu sürümde ne değişti (v1.1 → v2.0):** Belge, PCB'yi tasarlayacak kişinin doğrudan kullanabileceği bir **gereksinim + malzeme seçim** belgesine dönüştürüldü.
 > - Tüm donanım gereksinimleri tek bir numaralı tabloda toplandı (Bölüm 3) — öncelik, doğrulama yöntemi ve kaynak ile
@@ -10,7 +10,7 @@
 > - **Ölçülmüş verilere dayalı güç bütçesi** ve **5 güç modu** tanımlandı (Bölüm 5)
 > - Her alt sistem için aday parça tablosu ve gerekçeli seçim eklendi (Bölüm 6)
 > - v1.1'deki üç hata düzeltildi: **WS2812B LED** (sönükken bile ~1 mA çeker), **LDO + düşük kesme gerilimi** (soğukta brownout), **HT-N5262M** (433 MHz sürümü yok)
-> - Akademik ve topluluk kaynakları ayrı belgeye taşındı: **[`Literatur_ve_Topluluk_Arastirmasi.md`](Literatur_ve_Topluluk_Arastirmasi.md)** (30 akademik yayın + 26 topluluk kaynağı + 14 ticari cihaz). Bu belgede `[L-n]` makaleyi, `[T-n]` topluluk kaynağını, `[C-n]` ticari cihazı gösterir.
+> - Akademik ve topluluk kaynakları ayrı belgeye taşındı: **[`04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md`](../04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md)** (30 akademik yayın + 26 topluluk kaynağı + 14 ticari cihaz). Bu belgede `[L-n]` makaleyi, `[T-n]` topluluk kaynağını, `[C-n]` ticari cihazı gösterir.
 >
 > **Kapsam dışı:** NOKTA (kamu node'u) — ESP32-S3 + PSRAM, hazır kart reçetesi, özel PCB yok (SGB Bölüm 7).
 
@@ -551,7 +551,7 @@ BAT ──► MAX17048 (I²C, yakıt göstergesi)
 ## 12. Sonraki Adımlar (PCB tasarımcısı için sıra)
 
 1. ~~A-7 kararı~~ ✅ Verildi: dokunmatik yok, e-paper + butonlar — bu BOM geçerli.
-2. **Parçaları sipariş et (geliştirme kartlarıyla):** RAK4631 WisBlock + RAK19007 taban kartı ile **Meshtastic + e-paper + butonları breadboard'da** doğrula — PCB'ye başlamadan önce firmware varyantı hazır olsun.
+2. **Breadboard prototipi kur ve ölç:** [`05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md`](../05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md) — nRF52840 Pro Micro + SX1262 + 2,9" e-paper + butonlar (opsiyonel referans: RAK4631 + RAK19007). Devreye alma B-1…B-11; PPK2 ile ortalama akımı ölç. PCB'ye başlamadan önce `PRIVATE_HW` firmware varyantı hazır olsun.
 3. **Kasa / kutu seç** — iç ölçüler PCB boyutunu belirler (HW-PCB-2).
 4. **Şematik** (KiCad): Bölüm 3 tablosunu **kontrol listesi** olarak kullan; her HW- maddesinin şematikte karşılığını işaretle.
 5. **Layout:** önce RF (modül, SMA, BLE anten, keep-out), sonra güç (buck-boost döngüsü), en son dijital.
@@ -562,7 +562,9 @@ BAT ──► MAX17048 (I²C, yakıt göstergesi)
 
 ## Kaynaklar
 
-Tüm akademik makaleler (L-1…L-30), topluluk kaynakları (T-1…T-26) ve ticari cihaz verileri (C-1…C-14) için: **[`Literatur_ve_Topluluk_Arastirmasi.md`](Literatur_ve_Topluluk_Arastirmasi.md)**
+Birleşik kaynakça ve indirilen makale PDF'leri: **[`04_Dokumanlar/Kaynakca.md`](../04_Dokumanlar/Kaynakca.md)** · [`04_Dokumanlar/Kaynaklar/Makaleler/`](../04_Dokumanlar/Kaynaklar/Makaleler/) (18 PDF).
+
+Tüm akademik makaleler (L-1…L-30), topluluk kaynakları (T-1…T-26) ve ticari cihaz verileri (C-1…C-14) için: **[`04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md`](../04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md)**
 
 **Veri sayfaları (bu belgede doğrudan kullanılan):** nRF52840 Product Specification v1.11 (Nordic) · SX1261/2 Data Sheet Rev 1.2 (Semtech) · RAK4630 Datasheet (RAKwireless) · HT-N5262M (Heltec) · TPS63900, BQ24074, TPS22917 (TI) · MAX17048 (Analog Devices) · MAX-M10S Data Sheet UBX-20035208 (u-blox) · L76K Hardware Design V1.0 (Quectel) · SHT4x (Sensirion) · LSM6DS3TR-C (ST)
 
@@ -574,5 +576,5 @@ Tüm akademik makaleler (L-1…L-30), topluluk kaynakları (T-1…T-26) ve ticar
 |---|---|---|
 | 1.0 | — | İlk donanım raporu |
 | 1.1 | 9 Ağu 2026 | SGB v2.0 hizalaması (NOKTA kapsam dışı, A-1 açık) |
-| **2.1** | **24 Eyl 2026** | A-7 kapandı (dokunmatik zorunlu değil): Yol A kesinleşti; HW-DSP-7 ve R-4 kaldırıldı |
+| **2.1** | **24 Eyl 2026** | A-7 kapandı (dokunmatik zorunlu değil): Yol A kesinleşti; HW-DSP-7 ve R-4 kaldırıldı. Literatür raporu `04_Dokumanlar/`'a taşındı; prototip BOM ve birleşik kaynakçaya bağlantı verildi |
 | **2.0** | **24 Eyl 2026** | Tamamen yeniden yazıldı: numaralı gereksinim tablosu (HW-MCU/RF/PWR/MOD/UI/DSP/SNS/DBG/PCB/ENV/BAT), 7 adaylı işlemci puanlaması, ölçüme dayalı güç bütçesi ve 5 güç modu, alt sistem malzeme seçimi, topluluk dersleri. **Düzeltmeler:** WS2812B → ayrık RGB LED; TPS7A0233 LDO → TPS63900 buck-boost; HT-N5262M → RAK4630 (433 MHz desteği); BME280 → SHT40 (BME280 alternatif); LIS3DH → LSM6DS3TR-C; ATGM336H → MAX-M10S. Kaynaklar ayrı belgeye taşındı. |

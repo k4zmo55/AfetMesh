@@ -3,6 +3,8 @@
 > 📎 **Karar gerekçesi belgesi — 9 Ağustos 2026.** Mimari kararların *neden* alındığını açıklar.
 > Buradaki AF-* gereksinimleri **SGB v2.0'da CEP-/NOK-/POR-/SOS-/PAN- ön ekleriyle yeniden numaralandırılmıştır** (eşleşme tablosu: SGB Bölüm 17).
 > Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+>
+> **🔄 Güncelleme notu — 24 Eylül 2026 (SGB v2.4, Donanım Raporu v2.1):** Bu raporun orijinal bulguları korunmuştur; sonradan alınan donanım kararları ilgili yerlere `⚠️ v2.4` işaretiyle eklenmiştir. Özet: kişisel cihaz **nRF52840 + SX1262 (RAK4630)**, **2,9" e-paper + fiziksel butonlar** (dokunmatik yok, A-7 kapandı), **18650 + BQ24074 + TPS63900**, 5 güç modu, normal modda hedef **≥ 14 gün**. **Bu rapordaki etkisi:** Bölüm 4.2 (CEP) ve Bölüm 7 (Donanım Raporu eşleşmesi). NOKTA kararları (ESP32-S3 + PSRAM) **değişmedi** — işlemci karşılaştırması bu kararı bağımsız olarak doğruladı. Birleşik kaynakça: [`Kaynakca.md`](Kaynakca.md).
 
 
 ---
@@ -150,12 +152,16 @@ Aşağıdaki dört ilke, yukarıdaki eksiklerin doğrudan karşılığıdır ve 
 
 **Değişiklik yok.** Donanım Raporu'nun tamamı (nRF52840 + SX1262, 18650, IP54, SOS butonu, buzzer) bu cihaz için geçerlidir ve doğrudur. Yalnızca iki ekleme:
 
+> ⚠️ **v2.4:** Donanım Raporu v2.0/v2.1 ile nRF52840 + SX1262 kararı **7 adaylı işlemci karşılaştırmasıyla teyit edildi**; modül **RAK4630 (L/H)**, regülatör **TPS63900 buck-boost**, şarj **BQ24074**. AF-C2 (Enkaz Modu), SGB'de **CEP-8 — Enkaz/Beacon güç modu** olarak genişletildi (radyo alımı kapalı, periyodik SOS, hedef ≤ 1 mA ortalama).
+
 | # | Yeni gereksinim | Gerekçe |
 |---|---|---|
 | **AF-C1** | Varsayılan rol **`CLIENT_MUTE`** olacak (paket tekrarlamayacak) | E-5. Binlerce cep node'unun hepsi tekrarlarsa toplanma alanında kanal tıkanır. Tekrarlama işi NOKTA'ların görevidir |
 | **AF-C2** | **Enkaz Modu:** SOS butonuna uzun basıldığında cihaz periyodik buzzer sinyali verecek (ör. 30 sn'de bir çift bip) ve düşük güçte SOS yayınlayacak | Enkaz altında sesli bulunabilirlik, radyo menzilinden daha etkili olabilir. Donanım Raporu 5.4'te buzzer zaten var; bu onu bir kurtarma işlevine dönüştürür |
 
 > Donanım Raporu **K-1** kararı (tek PCB, iki varyant) geçerliliğini koruyor — ancak **Varyant B artık "kamu node'u" değil, "saha ekibi node'u"dur** (e-ink + GPS + sensör, arama-kurtarma gönüllüsü için). Kamu node'u ayrı bir cihaz sınıfına taşındı.
+>
+> ⚠️ **v2.4:** Varyant B = **CEP+ / CEP-T**: 2,9" e-paper + MAX-M10S GNSS + SHT40 + LSM6DS3TR-C + 5 yön buton; hedef maliyet ~$85–90.
 
 ### 4.3 ② AfetMesh NOKTA — Kamu Node'u (YENİ TASARIM)
 

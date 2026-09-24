@@ -1,6 +1,8 @@
-# CEP-T — Dokunmatik Kişisel Afet İletişim Cihazı: Tasarım Konsept Raporu
+# CEP-T — Kişisel Afet İletişim Cihazı (E-paper + Fiziksel Butonlar): Tasarım Konsept Raporu
 
-> ## 📎 BELGE STATÜSÜ: KONSEPT / ARAŞTIRMA RAPORU (v1.3)
+> *Dosya adındaki "Dokunmatik" ifadesi tarihseldir (v1.0–v1.1); bağlantılar bozulmasın diye korunmuştur. v1.3 itibarıyla cihaz **dokunmatiksizdir**.*
+
+> ## 📎 BELGE STATÜSÜ: KONSEPT / ARAŞTIRMA RAPORU (v1.4)
 >
 > **✅ v1.3 (24 Eylül 2026) — A-7 kapandı:** Kullanıcı **dokunmatik ekranın zorunlu olmadığını** bildirdi. CEP-T = **nRF52840 (RAK4630) + 2,9" e-paper + 5 yön/Seç/Geri/SOS fiziksel butonları**. Belgedeki dokunmatik/ESP32-S3 içerikleri (Faz 0a T-Deck Plus, Faz 0b ILI9341+XPT2046, CT-K3, CT-N7, CT-A5, CT-A8, CT-T2) **tarihsel kayıt** olarak korunmuştur ve artık hedef tasarımı bağlamaz. Güncel prototip yolu: **Bölüm 7.2b**.
 >
@@ -25,7 +27,8 @@ Bakanlık kılavuzu (PDF) bu ihtiyacı **kurumlar arası telsiz altyapısı** (A
 - Kullanımı basit, ekranı sade ve anlaşılır
 - Farklı koşullarda okunabilir ekran (güneşli, yağmurlu)
 - Su ve toza karşı korumalı (kasa tasarımı sonraya bırakıldı, öncelik donanım/elektronik)
-- Dokunmatik ekran
+- ~~Dokunmatik ekran~~ — **v1.3: kullanıcı kararıyla zorunlu değil (24 Eyl 2026, SGB A-7)**
+- **v1.2 ile eklenen birinci öncelik:** uzun kullanım süresi, **pil tasarrufu moduna geçebilme**, Meshtastic'i rahat çalıştıracak işlemci
 - Ekran bozulursa/dokunmatik çalışmazsa **fiziksel butonlarla tam arayüz gezinme** yedeği
 - Sıcaklık, nem sensörü
 - Gyro sensörü: (a) hareketle uyku modundan çıkma, (b) düşme algılama
@@ -40,6 +43,8 @@ Bakanlık kılavuzu (PDF) bu ihtiyacı **kurumlar arası telsiz altyapısı** (A
 ## 2. Hazır Alternatif: Türkiye'de Satın Alınabilir mi?
 
 Kısa cevap: Kullanıcının istediği tam kombinasyonu (dokunmatik + fiziksel buton yedeği + harici GPS + sıcaklık/nem + gyro düşme algılama + IP korumalı + Meshtastic mesh) karşılayan **hazır, tek parça bir ürün yok** — ne dünyada ne Türkiye'de. En yakın adaylar aşağıda; hiçbiri tüm gereksinimleri karşılamıyor, ama biri (**LILYGO T-Deck Plus**) donanım tabanı olarak kullanılabilir ve **Türkiye'de resmi distribütör üzerinden satılıyor.**
+
+> **v1.3 notu:** Bu bölüm dokunmatik cihaz arayışının tarihsel kaydıdır. Dokunmatiksiz, **nRF52840 + e-paper** tabanlı hazır cihazlar (LILYGO T-Echo, Heltec MeshPocket, Elecrow ThinkNode M1, Seeed Wio Tracker L1 E-ink) Yol A'ya daha yakındır — karşılaştırma: [`04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md`](../04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md) Bölüm 4.
 
 ### 2.1 Hazır dokunmatik/LoRa mesh cihazları — karşılaştırma
 
@@ -107,6 +112,29 @@ Bu bulgu, **LoRaMoto makalesinin bağımsız bulgusuyla örtüşüyor** (darboğ
 ---
 
 ## 5. Sistem Mimarisi
+
+### 5.0 Güncel Donanım Mimarisi (v1.3 — Yol A)
+
+```
+                  ┌── LoRa SMA anten (433 / 868 MHz, SGB A-1) ──┐
+                  │                                             │
+   ┌──────────────┴───────────────┐                             │
+   │ RAK4630 (nRF52840 + SX1262)  │── RF_BT ── 2,4 GHz çip anten │
+   │ BLE 5 · 1 MB flash · 256 KB  │◄── SWD (TC2030) · USB-C (UF2)│
+   └──┬──────┬──────┬──────┬──────┘                             │
+      │SPI   │I²C   │UART  │GPIO (SENSE, uykudan uyandırır)     │
+ ┌────┴───┐ ┌┴─────┐┌┴────┐┌┴──────────────────────────────┐    │
+ │ 2,9"   │ │SHT40 ││MAX- ││ 5 yön + Seç + Geri + SOS      │    │
+ │e-paper │ │LSM6DS││M10S ││ piezo · RGB LED · titreşim    │    │
+ │SSD1680 │ │3TR-C ││GNSS │└───────────────────────────────┘    │
+ └────────┘ └──────┘└─────┘   (ekran / sensör / GNSS ayrı yük anahtarlarında)
+
+ GÜÇ: USB-C → BQ24074 (power-path, NTC) → 18650 (DW01A+FS8205A, ters kutup MOSFET)
+      → TPS63900 buck-boost 3,3 V (75 nA Iq) → TPS22917 ×3 · MAX17048 yakıt göstergesi
+ MODLAR: Normal · Tasarruf · Enkaz/Beacon · Kapalı (≤ 10 µA) · Şarj
+```
+
+Ayrıntı: [`02_Donanim/Donanim_Gereksinim_Raporu.md`](../02_Donanim/Donanim_Gereksinim_Raporu.md) Bölüm 3–6. Aşağıdaki 5.1 diyagramı (ESP32-S3 + dokunmatik) **tarihsel kayıttır.**
 
 ### 5.1 Donanım Mimarisi
 
@@ -190,8 +218,8 @@ Bu bulgu, **LoRaMoto makalesinin bağımsız bulgusuyla örtüşüyor** (darboğ
 |---|---|
 | **CT-F1** | Cihaz Meshtastic firmware çalıştıracak; MCU ESP32-S3, radyo SX1262 |
 | **CT-F2** | Varsayılan rol `CLIENT_MUTE` olacak (bkz. CT-K7, Bölüm 3.1) |
-| **CT-F3** | Ekran dokunmatik olacak; **aynı zamanda** 5 yönlü buton + Seç + Geri + ayrı SOS butonu ile **ekranın tamamı gezinip kontrol edilebilecek** |
-| **CT-F4** | Dokunmatik veya buton donanımından biri tamamen arızalansa bile diğeri üzerinden tüm işlevlere (mesaj gönderme, SOS, ayarlar) erişilebilecek |
+| **CT-F3** | **v1.3:** Ekran 2,9" e-paper olacak; 5 yönlü buton + Seç + Geri + ayrı SOS butonu ile **tüm işlevler** gezilip kontrol edilebilecek *(v1.1: dokunmatik + buton)* |
+| **CT-F4** | **v1.3:** Buton donanımı arızalansa bile **SOS ayrı hatta** çalışacak; mesaj/ayar işlevlerine BLE ile eşleşmiş telefondan (Meshtastic uygulaması) erişilebilecek *(v1.1: dokunmatik ↔ buton karşılıklı yedek)* |
 | **CT-F5** | Sıcaklık ve nem ölçülüp telemetri paketiyle ağa iletilebilecek |
 | **CT-F6** | Hareket algılandığında (gyro/ivmeölçer eşiği aşıldığında) cihaz uyku modundan otomatik çıkacak |
 | **CT-F7** | Düşme/çarpma algılandığında otomatik "Enkaz Altında Olabilir" acil paketi hazırlanacak; kullanıcı 30 saniye içinde iptal edemezse gönderilecek |
@@ -209,12 +237,14 @@ Bu bulgu, **LoRaMoto makalesinin bağımsız bulgusuyla örtüşüyor** (darboğ
 | **CT-N4** | Koruma sınıfı | IP54 asgari (CEP-N5 ile aynı) | Kasa tasarımı bu raporun kapsamı dışı (kullanıcı isteği), ama elektronik bu sınıfa **uyumlu** seçilmeli (bkz. CT-N7) |
 | **CT-N5** | Çalışma sıcaklığı | −10°C … +50°C (CEP-N6 ile aynı) | |
 | **CT-N6** | Düşme dayanıklılığı | 1,5 m betona düşme (CEP-N9 ile aynı) | |
-| **CT-N7** | Dokunmatik kontrolör su-reddi | Faz 0b'de **rezistif (XPT2046) dokunmatik** ile kısmen azaltılıyor (bkz. CT-K3); Faz 3 hedef tasarımda kapasitif kullanılacaksa **su-reddi modlu** IC (TrueTouch/FocalTech/Goodix sınıfı) zorunlu | Rezistif panel su-köprüsü sorununu yaşamaz ama hassasiyeti düşük; GT911 gibi kapasitif kontrolörlerin yağmurdaki davranışı hâlâ doğrulanamadı — açık risk (bkz. Bölüm 10) |
+| ~~**CT-N7**~~ | ~~Dokunmatik kontrolör su-reddi~~ | **Kaldırıldı (v1.3)** — dokunmatik yok. Butonlar silikon kapaklı ve IP54 uyumlu (Donanım Raporu HW-UI-4) | — |
 | **CT-N8** | Düşme algılama yanlış-pozitif oranı | Normal taşıma/çanta kullanımında < %5 yanlış tetikleme (saha testiyle kalibre edilecek) | Literatür: en olgun ticari ürünler bile ~%80 gerçek-dünya doğruluğuna ulaşıyor — %100 beklenmemeli, kullanıcı iptal penceresi (CT-F7) bu yüzden zorunlu |
 
 ---
 
 ## 7. Prototip Malzeme Listesi (BOM)
+
+> **v1.3 notu:** 7.1 (T-Deck Plus) ve 7.2 (ESP32-S3 + dokunmatik TFT) yolları **tarihsel kayıttır, kullanılmamalıdır.** Güncel prototip: **Bölüm 7.2b** ve ayrıntılı liste [`CEP_Ilk_Prototip_Malzeme_Listesi.md`](CEP_Ilk_Prototip_Malzeme_Listesi.md) (v2.0). Eski PDF listesi `Arsiv/` klasörüne taşındı.
 
 ### 7.1 Faz 0a — Hazır Entegre Kart Yolu (T-Deck Plus, ~sıfır tasarım riski, daha pahalı)
 
@@ -302,6 +332,8 @@ Meshtastic'in **resmî DIY InkHUD tarifi** doğrudan bu yolu destekliyor: **nRF5
 
 ## 8. Test ve Doğrulama Planı
 
+> **v1.3 notu:** Yol A için devreye alma sırası (B-1…B-11) [`CEP_Ilk_Prototip_Malzeme_Listesi.md`](CEP_Ilk_Prototip_Malzeme_Listesi.md) Bölüm 4'tedir. Aşağıdaki mantık aynıdır (önce MCU, sonra radyo, sonra ekran); TFT/XPT2046 adımları e-paper/InkHUD ile değiştirilir.
+
 ### 8.1 Faz 0b Devreye Alma (Bring-up) Sırası — PCB/entegrasyon öncesi
 
 Perfboard yolunda (CT-K9), aşağıdaki sıra riski en yüksek varsayımdan başlayıp aşağı iner; SGB'nin kendi Aşama 0 mantığıyla (TST-1/2/5) aynı disiplin:
@@ -323,8 +355,8 @@ Bu adımlar tamamlanmadan aşağıdaki CT-T1-13 tablosundaki daha olgun/entegre 
 
 | # | Test | Yöntem | Beklenen/Başarı Kriteri |
 |---|---|---|---|
-| **CT-T1** | Dokunmatik/buton fonksiyonel eşdeğerlik | Dokunmatik kapatılmış durumda, sadece butonlarla tüm menüler (mesaj gönderme, SOS, ayarlar, GPS aç/kapa) gezilir | Hiçbir işleve erişim kaybı olmayacak |
-| **CT-T2** | Yağmur altında dokunmatik davranışı | Cihaz su püskürtülürken dokunmatik ile gezinme denenir (Faz 0b'de rezistif XPT2046, Faz 3'te hedef kapasitif panel ayrı ayrı test edilmeli) | Hayalet dokunuş / kilitlenme oranı ölçülür ve raporlanır (SYS-7); rezistif panelde daha az, kapasitifte daha fazla bozulma beklenir — CT-T1'in bu senaryoda **zorunlu** yedek olduğu her iki teknolojide de doğrulanır |
+| **CT-T1** | Buton-only tam gezinme | Eldivenle ve ıslak elle, yalnızca butonlarla tüm menüler (mesaj gönderme, SOS, ayarlar, GPS aç/kapa) gezilir | Hiçbir işleve erişim kaybı olmayacak (Donanım Raporu T-18) |
+| ~~**CT-T2**~~ | ~~Yağmur altında dokunmatik davranışı~~ | **Kaldırıldı (v1.3)** — yerine: yağmur altında buton + e-paper okunabilirliği CT-T1 ve Donanım Raporu T-14 ile test edilir | — |
 | **CT-T3** | Düşme algılama — gerçek düşme | Cihaz çeşitli yükseklik/açılarda kontrollü düşürülür | "Enkaz Altında Olabilir" paketi tetiklenme oranı ölçülür, hedef ≥ %80 (literatür referansı) |
 | **CT-T4** | Düşme algılama — yanlış pozitif | Cihaz normal taşıma, çanta içinde yürüme, masaya bırakma senaryolarında 24 saat taşınır | Yanlış tetikleme oranı < %5 (CT-N8) |
 | **CT-T5** | Hareketle uyanma | Cihaz uykudayken hafif sarsılır/kaldırılır | Ekran/sistem < 1 sn içinde uyanacak |
@@ -365,14 +397,16 @@ Bu adımlar tamamlanmadan aşağıdaki CT-T1-13 tablosundaki daha olgun/entegre 
 | **CT-A2** | Transflektif ekran + su-reddi dokunmatik kontrolörün Türkiye'de stoklu olmaması | Orta | İthalat/MOQ süreci Faz 3 öncesi netleştirilmeli; 2026 itibariyle Türkiye'de kişisel/ticari ithalat gümrük muafiyeti kaldırıldı, CIF değeri üzerinden vergi hesaplanıyor — birim BOM maliyetine ithalat payı eklenmeli |
 | **CT-A3** | Düşme algılama algoritmasının "elde taşınan cihaz" senaryosu için literatürde doğrudan karşılığı yok | Orta | Mevcut araştırma bilek/kemer tipi yaşlı bakım cihazlarına odaklı; CEP-T'nin kendi saha verisiyle eşik kalibrasyonu yapılması gerekecek — bu, projenin kendi özgün katkısı olabilir |
 | **CT-A4** | LoRa band kararı (433 vs 868 MHz) | Yüksek | SGB A-1 ile aynı açık karar, CEP-T de bu karara bağlı — ayrıca çözülmeyecek |
-| **CT-A5** | GT911 dokunmatik kontrolörün yağmurdaki gerçek davranışı doğrulanmadı | Orta | CT-T2 ile Faz 0'da erken test edilmeli |
+| ~~**CT-A5**~~ | ~~GT911 yağmur davranışı~~ | — | **Kapandı (v1.3)** — dokunmatik yok |
 | **CT-A6** | arXiv 2605.17063 makalesinin tam içeriği okunamadı | Düşük | Kullanıcının makaleyi doğrudan indirip incelemesi önerilir |
 | **CT-A7** | Perfboard üzerinde el ile SPI kablolama (LoRa+ekran aynı bus) sinyal bütünlüğü sorunu (crosstalk, gevşek lehim) çıkarabilir | Orta | CT-T0-1/2/3 adımları bu riski erken, entegre teste geçmeden yakalamak için bilinçli olarak ayrıştırıldı |
-| **CT-A8** | Rezistif (XPT2046) dokunmatiğin hassasiyeti kapasitife göre düşük; parmakla hassas hedefleme zor olabilir | Orta | Faz 0b UI tasarımında büyük dokunma hedefleri kullanılmalı; CT-T13 kullanılabilirlik testinde ayrıca ölçülmeli |
+| ~~**CT-A8**~~ | ~~Rezistif dokunmatik hassasiyeti~~ | — | **Kapandı (v1.3)** — dokunmatik yok |
 
 ---
 
 ## 11. Kaynakça
+
+> **v1.3:** Projenin birleşik kaynakçası ve indirilen makale PDF'leri: [`04_Dokumanlar/Kaynakca.md`](../04_Dokumanlar/Kaynakca.md) · [`04_Dokumanlar/Kaynaklar/Makaleler/`](../04_Dokumanlar/Kaynaklar/Makaleler/). Aşağıdaki liste v1.1 araştırmasının kaydıdır.
 
 1. LILYGO T-Deck / T-Deck Plus — meshtastic.org/docs/hardware/devices/lilygo/tdeck/, CNX Software, thesecuredad.com, liliputing.com
 2. LILYGO T-Watch S3/Plus — meshtastic.org, hackster.io, rokland.com
@@ -417,6 +451,7 @@ Bu adımlar tamamlanmadan aşağıdaki CT-T1-13 tablosundaki daha olgun/entegre 
 | Sürüm | Değişiklik |
 |---|---|
 | 1.0 | İlk konsept rapor — araştırma bulguları, mimari, alt gereksinimler, Faz 0 (T-Deck Plus) ve Faz 3 BOM, test planı |
-| **1.3** | **24 Eyl 2026 — A-7 kapandı:** dokunmatik zorunlu değil; CEP-T arayüzü e-paper + fiziksel butonlar, MCU nRF52840 kesinleşti. Dokunmatik içerik tarihsel kayıt olarak korundu. |
+| **1.4** | **24 Eyl 2026 — tam hizalama:** başlık dokunmatiksiz cihaz olarak güncellendi; 5.0 güncel donanım mimarisi eklendi; CT-F3/F4 buton + e-paper'a göre yeniden yazıldı; CT-N7, CT-T2, CT-A5, CT-A8 kaldırıldı; Faz 0a/0b tarihsel olarak işaretlendi; yeni prototip listesi (`CEP_Ilk_Prototip_Malzeme_Listesi.md` v2.0) ve birleşik kaynakçaya bağlantı verildi |
+| 1.3 | **24 Eyl 2026 — A-7 kapandı:** dokunmatik zorunlu değil; CEP-T arayüzü e-paper + fiziksel butonlar, MCU nRF52840 kesinleşti. Dokunmatik içerik tarihsel kayıt olarak korundu. |
 | 1.2 | **24 Eyl 2026 — Donanım Raporu v2.0 hizalaması:** CT-K1 A-7'ye bağlandı (önerilen nRF52840); CT-K4 NEO-6M → MAX-M10S; CT-K5 BME280 → SHT40; **CT-K6 BMI160 → LSM6DS3TR-C (BMI160 Meshtastic destekli değil)**; CT-N1/N2 hedefleri SGB CEP-N3/N10 ile hizalandı; Bölüm 7.2b (nRF52840 Pro Micro + e-paper DIY yolu) eklendi; Faz 3 BOM Yol A'ya güncellendi (regülatör TPS63900). |
 | 1.1 | **CT-K9 eklendi:** maliyet gerekçesiyle Faz 0 donanım yolu, hazır entegre kart (T-Deck Plus, Faz 0a) yanına düşük maliyetli DIY/perfboard yoluna (Faz 0b: ayrık ESP32-S3 DevKit + SX1262 breakout modül + kullanıcının elindeki 2.4" ILI9341+XPT2046 dokunmatik TFT) genişletildi. CT-K2/CT-K3/CT-N7 güncellendi: rezistif dokunmatiğin yağmur toleransı bulgusu işlendi. Bölüm 7.2 (DIY BOM + kablolama tabloları) eklendi. Bölüm 8.1 (Faz 0b devreye alma/bring-up sırası, CT-T0-1…8) eklendi. CT-A7/CT-A8 riskleri eklendi.

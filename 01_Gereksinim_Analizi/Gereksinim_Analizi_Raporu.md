@@ -3,11 +3,13 @@
 > ## 📎 BELGE STATÜSÜ: GİRDİ BELGESİ (v1.0)
 >
 > Bu rapor projenin **ilk kapsam çalışmasıdır** ve tarihsel kayıt olarak korunmaktadır.
-> Yürürlükteki gereksinimler için: **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** (SGB v2.0)
+> Yürürlükteki gereksinimler için: **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** (SGB v2.4)
 >
-> **Bu belgedeki bazı maddeler SGB v2.0 ile değiştirilmiştir.** Değişen maddelerin yanında `⚠️ SGB v2.0` işareti bulunur. Çelişki halinde **SGB geçerlidir.**
+> **Bu belgedeki bazı maddeler SGB v2.0 ve v2.4 ile değiştirilmiştir.** Değişen maddelerin yanında `⚠️ SGB v2.0` işareti bulunur. Çelişki halinde **SGB geçerlidir.**
 >
 > Değişen ana maddeler: Bölüm 3 (cihazsız erişim modeli) · NFR-9 / SW-2 (frekans) · SW-6 · SW-8 · SW-11 · SW-13 · Bölüm 6.5 (kamu node'u)
+>
+> **⚠️ SGB v2.4 / Donanım Raporu v2.1 (24 Eyl 2026) ile değişenler:** NFR-1 (maliyet, varyanta göre) · NFR-3 (özel PCB lehim gerektirir) · NFR-4 (pil ömrü hedefi yükseldi, güç modları) · Bölüm 6.1–6.4 (işlemci, pil, şarj, ekran, buton, GNSS seçimleri) · Bölüm 11 (pil testi)
 
 ---
 
@@ -76,10 +78,10 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 
 | # | Gereksinim | Hedef Değer / Açıklama |
 |---|---|---|
-| NFR-1 | Düşük maliyet | Temel node için hedef: **$25–40** (Türkiye'de KDV/gümrük dahil ~1000–1800 TL bandı, kur ve ithalat vergisine bağlı) |
+| NFR-1 ⚠️ | Düşük maliyet | Temel node için hedef: **$25–40** (Türkiye'de KDV/gümrük dahil ~1000–1800 TL bandı, kur ve ithalat vergisine bağlı). **⚠️ SGB v2.4:** CEP 100 adette ≈ $36–37 (bandın üst yarısı); CEP+/CEP-T ≈ $85–90 → SGB CEP-N1, Bölüm 6.3 |
 | NFR-2 | Kolay temin edilebilirlik | Parçalar Türkiye'de veya AliExpress/Alibaba üzerinden kolayca sipariş edilebilir olmalı |
-| NFR-3 | Kendin-yap uygunluğu | Lehimsiz veya minimum lehimle (JST konektörler, hazır modüller) monte edilebilmeli |
-| NFR-4 | Pil ömrü | Tek şarjla en az **72 saat** aktif node çalışması (uyku modu optimizasyonu ile) |
+| NFR-3 ⚠️ | Kendin-yap uygunluğu | Lehimsiz veya minimum lehimle (JST konektörler, hazır modüller) monte edilebilmeli. **⚠️ SGB v2.4:** Özel PCB'de SMD montaj gerekir; lehimsiz yol **hazır kartla prototip** olarak korunur (`05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md`) |
+| NFR-4 ⚠️ | Pil ömrü | Tek şarjla en az **72 saat** aktif node çalışması (uyku modu optimizasyonu ile). **⚠️ SGB v2.4:** 72 saat artık **GNSS sürekli açık en kötü durum** asgarisidir (CEP-N2); normal modda hedef **≥ 14 gün / ≤ 8 mA** (CEP-N10); kapalı mod ≤ 10 µA (CEP-N3); 5 güç modu (CEP-7) |
 | NFR-5 | Dayanıklılık | Minimum **IP54**, hedef **IP65** muhafaza; -10°C ile +50°C çalışma aralığı |
 | NFR-6 | Kurulum süresi | Deneyimsiz kullanıcı için kutudan çıkış → çalışır node: **< 15 dakika** |
 | NFR-7 | Kullanım kolaylığı | Teknik bilgisi olmayan biri Meshtastic mobil uygulamasını kurup 5 dakikada bağlanabilmeli |
@@ -91,25 +93,26 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 
 ## 6. Donanım Gereksinimleri
 
-> **⚠️ SGB v2.2 (24 Eyl 2026):** Bu bölüm ilk kapsam çalışmasıdır. Kişisel cihazın güncel donanım gereksinimleri, işlemci karşılaştırması ve malzeme seçimi için: [`02_Donanim/Donanim_Gereksinim_Raporu.md`](../02_Donanim/Donanim_Gereksinim_Raporu.md) v2.0. Özetle: kişisel node **nRF52840 + SX1262 (RAK4630)**; aşağıdaki tabloda "kişisel node için ideal" denen Heltec V3 (ESP32-S3) ölçülmüş verilerde 10–30 saat pil ömrü gösterdiği için kişisel node olarak **önerilmez** (geliştirme/test kartı olarak kullanılabilir).
+> **⚠️ SGB v2.4 (24 Eyl 2026):** Bu bölüm ilk kapsam çalışmasıdır. Kişisel cihazın güncel donanım gereksinimleri, işlemci karşılaştırması ve malzeme seçimi için: [`02_Donanim/Donanim_Gereksinim_Raporu.md`](../02_Donanim/Donanim_Gereksinim_Raporu.md) v2.1. Özetle: kişisel node **nRF52840 + SX1262 (RAK4630)**; aşağıdaki tabloda "kişisel node için ideal" denen Heltec V3 (ESP32-S3) ölçülmüş verilerde 10–30 saat pil ömrü gösterdiği için kişisel node olarak **önerilmez** (geliştirme/test kartı olarak kullanılabilir).
 
 ### 6.1 Zorunlu Bileşenler (Temel Node)
 
 | Bileşen | Gereksinim | Aday Ürün(ler) |
 |---|---|---|
-| MCU + LoRa modülü ⚠️ | SX1262 tabanlı, Meshtastic destekli, **A-1 ile seçilecek bandı destekleyen** | Heltec WiFi LoRa 32 V3, RAK4631 (nRF52840+SX1262), LILYGO T-Beam Supreme |
+| MCU + LoRa modülü ⚠️ | SX1262 tabanlı, Meshtastic destekli, **A-1 ile seçilecek bandı destekleyen** | ~~Heltec WiFi LoRa 32 V3~~, RAK4631 (nRF52840+SX1262), ~~LILYGO T-Beam Supreme~~ — **⚠️ SGB v2.4: nRF52840 + SX1262, özel PCB'de RAK4630 (L=433 / H=868)**; ESP32-S3 kartlar kişisel node için elendi (10–30 saat pil) |
 | Anten ⚠️ | **Seçilen banda uygun** (433 veya 868 MHz), harici, SMA konnektörlü | Standart "duck" anten (üreticiyle birlikte gelir; menzil için harici katlanır anten önerilir) |
-| Pil | 18650 Li-ion veya LiPo, min. 2000 mAh | 18650 pil + tutucu (değiştirilebilir, yaygın bulunur) |
-| Şarj devresi | USB-C girişli, entegre BMS | Çoğu geliştirme kartında dahili (TP4056 vb.) |
+| Pil ⚠️ | 18650 Li-ion veya LiPo, min. 2000 mAh | 18650 pil + tutucu (değiştirilebilir, yaygın bulunur). **⚠️ SGB v2.4:** yalnızca **18650, 3000–3500 mAh, aletsiz değiştirilebilir**; LiPo elendi; ters kutup koruması zorunlu |
+| Şarj devresi ⚠️ | USB-C girişli, entegre BMS | Çoğu geliştirme kartında dahili (TP4056 vb.). **⚠️ SGB v2.4:** özel PCB'de **BQ24074 power-path** + NTC + DW01A/FS8205A; 3,3 V için **TPS63900 buck-boost** (LDO soğukta brownout riski). TP4056 yalnızca prototipte |
 | Muhafaza | Su/toz dirençli, darbeye dayanıklı | 3D baskı gövde (STL dosyası dahil edilecek) veya hazır IP65 kutu |
-| Anahtar/Buton | Açma-kapama + opsiyonel SOS butonu | Basit taktil buton, GPIO'ya bağlı |
+| Anahtar/Buton ⚠️ | Açma-kapama + opsiyonel SOS butonu | Basit taktil buton, GPIO'ya bağlı. **⚠️ SGB v2.4:** SOS butonu **zorunlu ve korumalı** (CEP-3); CEP+/CEP-T'de 5 yön + Seç + Geri; tüm butonlar uykudan uyandırır |
 
 ### 6.2 Opsiyonel Bileşenler (Genişletilmiş Node)
 
 | Bileşen | Amaç |
 |---|---|
-| GPS modülü (ör. dahili T-Beam GPS) | Otomatik konum paylaşımı, "son bilinen konum" broadcast |
-| Küçük OLED/e-ink ekran | Pilsiz telefon durumunda dahi node durumunu/mesajları görebilme |
+| GPS modülü (ör. dahili T-Beam GPS) ⚠️ | Otomatik konum paylaşımı, "son bilinen konum" broadcast. **⚠️ SGB v2.4:** u-blox MAX-M10S (~25 mW), yük anahtarı arkasında, varsayılan kapalı |
+| Küçük OLED/e-ink ekran ⚠️ | Pilsiz telefon durumunda dahi node durumunu/mesajları görebilme. **⚠️ SGB v2.4:** **2,9" e-paper (SSD1680, InkHUD)**; dokunmatik zorunlu değil (A-7 kapandı) |
+| Sıcaklık/nem + 6 eksen IMU *(v2.4 ile eklendi)* | SHT40 + LSM6DS3TR-C — telemetri, hareketle uyanma, düşme algılama (CEP+/CEP-T) |
 | Solar panel (5–10 W) + güneş şarj kontrolcüsü | Kamu/sabit node'lar için sınırsız çalışma süresi |
 | Harici yüksek kazançlı anten | Kamu node'ları için menzil artırımı (tepe noktalarına kurulacaklar için) |
 
@@ -117,10 +120,10 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 
 | Model | Yaklaşık Fiyat | Notlar |
 |---|---|---|
-| Heltec WiFi LoRa 32 V3 | $20–30 | En düşük maliyetli giriş noktası, ESP32-S3 + SX1262 + OLED, kişisel node için ideal |
+| Heltec WiFi LoRa 32 V3 | $20–30 | En düşük maliyetli giriş noktası, ESP32-S3 + SX1262 + OLED. **⚠️ SGB v2.4: kişisel node için önerilmez** (ölçülen 10–30 saat pil); NOKTA testleri (TST-2) için uygundur |
 | RAK4631 + WisBlock taban kartı | ~$35 (başlangıç kiti) | Modüler, düşük güç tüketimi (nRF52840), lehimsiz GPS/solar/sensör eklenebilir — **DIY için önerilen** |
 | LILYGO T-Beam (Supreme) | $85–120 | Dahili GPS + 18650 pil yuvası, mobil/arama-kurtarma senaryosu için uygun ama daha pahalı |
-| T-Echo | Değişken | E-ink ekran + GPS + BLE, düşük güç, ekran gerektiren kullanım senaryoları için |
+| T-Echo | Değişken | E-ink ekran + GPS + BLE, düşük güç, ekran gerektiren kullanım senaryoları için — **SGB v2.4 mimarisine en yakın hazır cihaz** (nRF52840 + e-ink) |
 
 > Not: Kesin fiyatlar tedarikçiye, kura ve gümrük/ithalat koşullarına göre değişir; nihai BOM seçimi Türkiye'de tedarik araştırması yapılarak netleştirilmeli.
 
@@ -218,7 +221,7 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 ## 11. Test ve Doğrulama Kriterleri
 
 - **Menzil testi:** Açık alanda ve şehir içi yerleşimde node-to-node menzil ölçümü
-- **Pil ömrü testi:** Gerçek kullanım senaryosunda (periyodik konum + mesajlaşma) 72 saat dayanım doğrulaması
+- **Pil ömrü testi:** Gerçek kullanım senaryosunda (periyodik konum + mesajlaşma) 72 saat dayanım doğrulaması. **⚠️ SGB v2.4:** PPK2 ile ortalama akım (≤ 8 mA), kapalı mod (≤ 10 µA), tam deşarj (≥ 14 gün) — Donanım Raporu T-03…T-13
 - **Dayanıklılık testi:** IP derecesi doğrulama (su püskürtme/toz testi), düşürme testi
 - **Kullanılabilirlik testi:** Teknik bilgisi olmayan gönüllülerle kurulum süresi ve anlaşılabilirlik testi
 - **Ağ ölçeklenebilirlik testi:** 20–50 node ile simüle edilmiş afet senaryosu, mesaj gecikmesi/kaybı ölçümü
@@ -228,11 +231,11 @@ Bu iki bileşen ayrı ayrı gereksinim listelerinde ele alınmıştır (bkz. Bö
 
 ## 12. Özet ve Sonraki Adımlar (Karar Bekleyen Konular)
 
-> **⚠️ SGB v2.0:** Bu listedeki kararların güncel durumu **SGB Bölüm 12 (Açık Kararlar A-1…A-6)** ve **Bölüm 14 (Yol Haritası)** altındadır. Madde 4 (yazılım kapsamı) ve madde 5 (pilot bölge) yanıtlanmıştır: yazılım kapsamı **PORTAL + SOS modülü + PANO**'yu içerir; pilot muhatabı **ilçe belediyesinin bilgi işlem / afet koordinasyon birimidir.**
+> **⚠️ SGB v2.0:** Bu listedeki kararların güncel durumu **SGB Bölüm 12 (Açık Kararlar A-1…A-8)** ve **Bölüm 14 (Yol Haritası)** altındadır. Madde 4 (yazılım kapsamı) ve madde 5 (pilot bölge) yanıtlanmıştır: yazılım kapsamı **PORTAL + SOS modülü + PANO**'yu içerir; pilot muhatabı **ilçe belediyesinin bilgi işlem / afet koordinasyon birimidir.**
 
 Bu rapor, geliştirmeye başlamadan önce üzerinde hizalanmamız gereken temel gereksinimleri ortaya koyar. Bir sonraki oturumda birlikte karar vermemiz gereken ana konular:
 
-1. **Hedef donanım platformu seçimi** — Heltec V3 mü, RAK4631 mü, yoksa her ikisi için de mi (kişisel/kamu ayrımı) destek verilecek?
+1. **Hedef donanım platformu seçimi** — Heltec V3 mü, RAK4631 mü, yoksa her ikisi için de mi (kişisel/kamu ayrımı) destek verilecek? — ✅ **Yanıtlandı (SGB v2.4):** kişisel node **nRF52840 (RAK4630)**, kamu node'u (NOKTA) **ESP32-S3 + PSRAM**
 2. **Bütçe/BOM kesinleştirmesi** — Türkiye'de gerçek tedarik fiyatlarının araştırılması
 3. **Muhafaza tasarımı** — 3D baskı mı, hazır kutu mu?
 4. **Yazılım özelleştirme kapsamı** — Sadece firmware yapılandırması mı, yoksa özel bir onboarding/koordinasyon katmanı da eklenecek mi?
@@ -241,6 +244,8 @@ Bu rapor, geliştirmeye başlamadan önce üzerinde hizalanmamız gereken temel 
 ---
 
 ## Kaynaklar (Araştırma sırasında referans alınan)
+
+> **SGB v2.4:** Projenin birleşik kaynakçası: [`04_Dokumanlar/Kaynakca.md`](../04_Dokumanlar/Kaynakca.md) · donanım literatürü: [`04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md`](../04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md)
 
 - [Meshtastic Hardware Buyer's Guide 2026 — nodakmesh.org](https://nodakmesh.org/meshtastic/devices)
 - [Meshtastic Device Comparison — d-central.tech](https://d-central.tech/meshtastic-device-comparison/)

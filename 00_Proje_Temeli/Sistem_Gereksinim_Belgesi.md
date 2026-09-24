@@ -1,6 +1,6 @@
 # AfetMesh — Sistem Gereksinim Belgesi (SGB)
 
-**Sürüm:** 2.3
+**Sürüm:** 2.4
 **Tarih:** 24 Eylül 2026
 **Statü:** ✅ Yürürlükte — **projenin tek yetkili gereksinim kaynağı**
 
@@ -15,14 +15,18 @@ Bu belge, daha önce yazılmış beş raporun **birleştirilmiş ve çelişkiler
 | **`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`** (bu belge) | **Tek yetkili gereksinim kaynağı** | ✅ Yürürlükte |
 | `01_Gereksinim_Analizi/Gereksinim_Analizi_Raporu.md` | İlk kapsam çalışması | 📎 Girdi belgesi — v2.0 ile hizalandı |
 | `02_Donanim/Donanim_Gereksinim_Raporu.md` | CEP ailesi donanım gereksinimleri, işlemci seçimi, güç bütçesi, malzeme seçimi (v2.0) | 📎 Teknik ek — v2.2 ile hizalandı |
-| `02_Donanim/Literatur_ve_Topluluk_Arastirmasi.md` | 30 akademik yayın, 26 topluluk kaynağı, 14 ticari cihaz | 📎 Araştırma girdisi (24 Eyl 2026) |
-| `05_Cihaz_Tasarimi/CEPT_Dokunmatik_Cihaz_Tasarim_Raporu.md` | CEP-T (buton + ekran arayüzlü kişisel cihaz) konsept raporu | 📎 Konsept — v1.2 donanım raporu v2.0 ile hizalandı |
+| `05_Cihaz_Tasarimi/CEPT_Dokunmatik_Cihaz_Tasarim_Raporu.md` | CEP-T (e-paper + buton arayüzlü kişisel cihaz) konsept raporu | 📎 Konsept — v1.4, SGB v2.4 ile hizalandı |
+| `05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md` | PCB öncesi prototip BOM + devreye alma sırası (nRF52840 + e-paper) | 📎 Uygulama belgesi (v2.0) |
+| `04_Dokumanlar/Literatur_ve_Topluluk_Arastirmasi.md` | Donanım literatürü: 30 akademik yayın, 26 topluluk kaynağı, 14 ticari cihaz | 📎 Araştırma girdisi (24 Eyl 2026) |
+| `04_Dokumanlar/Kaynakca.md` + `04_Dokumanlar/Kaynaklar/Makaleler/` | Birleşik kaynakça + indirilen 18 açık erişimli makale PDF'i | 📎 Kaynak dizini (24 Eyl 2026) |
 | `04_Dokumanlar/Ihtiyac_ve_Rekabet_Analizi_Raporu.md` | Pazar ve rekabet araştırması | 📎 Araştırma girdisi (9 Ağu 2026) |
 | `04_Dokumanlar/Farklilasma_ve_Urun_Mimarisi_Raporu.md` | Mimari gerekçelendirme | 📎 Karar gerekçesi (9 Ağu 2026) |
 | `04_Dokumanlar/Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md` | Kurumsal uyum analizi | 📎 Araştırma girdisi (9 Ağu 2026) |
 | `04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md` | Ülkelerin acil haberleşme mimarileri, 5 katmanlı çerçeve | 📎 Araştırma girdisi (9 Ağu 2026) |
 
-> **Kural:** Yeni bir gereksinim doğduğunda önce **bu belgeye** yazılır. Araştırma raporları güncellenmez — onlar belirli bir tarihteki bulguların kaydıdır.
+> **Kural:** Yeni bir gereksinim doğduğunda önce **bu belgeye** yazılır. Araştırma raporlarının **orijinal bulguları silinmez**; sonradan alınan kararlar rapora **tarihli güncelleme notu** (`⚠️ vX.Y`) olarak eklenir. *(v2.4: "araştırma raporları güncellenmez" kuralı bu şekilde gevşetildi.)*
+>
+> **PDF sürümleri:** Her `.md` belgesinin yanında aynı adlı `.pdf` bulunur; PDF'ler md'den üretilir, **md esastır.**
 
 ---
 
@@ -191,6 +195,26 @@ Donanım tasarım detayı için: `02_Donanim/Donanim_Gereksinim_Raporu.md` (bu b
 | **CEP-N10** | Normal mod ortalama akım | **≤ 8 mA** (GNSS kapalı) → 3000 mAh ile hedef **≥ 14 gün**. SYS-7 gereği ölçülmeden beyan edilmez |
 | **CEP-N11** | Raf ömrü | Tam şarjlı cihaz kapalı olarak 6 ay sonra ≥ %75 şarj |
 | **CEP-N12** | Pil gerilimi kullanım aralığı | 3,3 V hat pil **3,0 V'a inene kadar** korunacak (buck-boost); soğukta TX anında brownout olmayacak |
+
+### 6.2b Donanım Özeti (Donanım Raporu v2.1'den — bağlayıcı seçimler)
+
+| Alt sistem | Seçim | Gereksinim / karar |
+|---|---|---|
+| İşlemci + radyo | **RAK4630** — nRF52840 + SX1262 (TCXO); (L) 433 MHz / (H) 868 MHz aynı footprint | CEP-1, A-4 |
+| Anten | LoRa: SMA bulkhead + harici ½λ whip, 50 Ω CPWG, π-eşleme · BLE: 2,4 GHz çip anten | HW-RF-5…8 |
+| Pil | 18650 Li-ion 3000–3500 mAh, aletsiz değiştirilebilir, ters kutup korumalı | CEP-N4 |
+| Şarj | BQ24074 power-path + NTC + DW01A/FS8205A | HW-PWR-2…5 |
+| Regülatör | **TPS63900 buck-boost 3,3 V** (75 nA Iq) — yedek: 3,0 V LDO | CEP-N12, A-8 |
+| Güç dağıtımı | TPS22917 yük anahtarları (ekran / sensör / GNSS) + MAX17048 yakıt göstergesi | CEP-N3 |
+| Ekran | **2,9" e-paper (SSD1680, InkHUD)** — dokunmatik yok | A-7 ✅ |
+| Giriş | Korumalı SOS + güç butonu; CEP+/CEP-T'de 5 yön + Seç + Geri | CEP-3 |
+| Bildirim | Piezo (≥ 85 dB @10 cm), ayrık RGB LED (WS2812B yasak), titreşim (CEP+/T) | CEP-4, CEP-6 |
+| Sensör (CEP+/T) | SHT40 · LSM6DS3TR-C (6 eksen) · u-blox MAX-M10S GNSS | HW-SNS-* |
+| Programlama | SWD (TC2030) + USB-C UF2 | HW-MCU-5/6 |
+| PCB | 4 katman, ENIG, ~90 × 55 mm | HW-PCB-* |
+| Güç modları | Normal · Tasarruf · Enkaz/Beacon · Kapalı · Şarj | CEP-7, CEP-8 |
+
+> **İşlemci seçim gerekçesi (özet):** TI CC13xx (LoRa yok), STM32WL (BLE yok, Meshtastic'te uyku yok), RP2040/RP2350 (BLE desteklenmiyor), Raspberry Pi Zero 2 W (~0,5–0,9 W), ESP32-S3 (el cihazlarında ölçülen 10–30 saat) ve nRF54L15 (deneysel port) karşılaştırıldı; **nRF52840 460/500 puanla seçildi.** Ayrıntı: Donanım Raporu Bölüm 4.
 
 ### 6.3 CEP+ varyantı (saha ekibi)
 
@@ -386,7 +410,7 @@ Bu testler **PCB tasarımından önce**, hazır kartlarla ve yaklaşık sıfır 
 
 ### 13.2 Donanım doğrulama
 
-`02_Donanim/Donanim_Gereksinim_Raporu.md` Bölüm 9'daki test listesi geçerlidir (güç açılış, uyku akımı, RF eşleşme, menzil, çıkış gücü, pil ömrü, IP54, düşürme, termal).
+`02_Donanim/Donanim_Gereksinim_Raporu.md` Bölüm 9'daki test listesi (**T-01…T-20**) geçerlidir: güç açılış, SWD/UF2, **kapalı mod ≤ 10 µA**, **normal mod ≤ 8 mA (PPK2, 24 saat)**, 3,0 V'a kadar brownout, **buck-boost alıcı gürültüsü (A-8)**, Meshtastic birlikte çalışabilirlik, çıkış gücü, menzil (elde tutarak dahil), tam deşarj, raf ömrü, −10 °C, şarj sıcaklık kesmesi, ters pil, piezo ses basıncı, buton-only gezinme, düşme algılama, 1,5 m düşme. PCB öncesi prototip sırası: `05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md` (B-1…B-11).
 
 ### 13.3 Kurumsal performans göstergeleri
 
@@ -411,7 +435,8 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | **0 — Varsayım doğrulama** | TST-1, TST-2, TST-5. Hazır kartlarla, PCB yok. A-1 kararı verilir | 2 hafta | Mimarinin teyidi veya revizyonu |
 | **1 — MVP: NOKTA + PORTAL** | Hazır ESP32-S3 kart üzerinde captive portal + mesaj deposu | 6–8 hafta | Çalışan tek kamu node'u |
 | **2 — SOS modülü** | SOS-1…SOS-6 firmware modülü | 4 hafta | Upstream'e katkı adayı |
-| **3 — CEP prototipi** | Donanım Raporu Bölüm 12 adımları | 8–12 hafta | 5 adet PCB |
+| **3a — CEP breadboard prototipi** | nRF52840 Pro Micro + SX1262 + 2,9" e-paper + butonlar; PPK2 ile güç ölçümü (`05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md`) | 2–3 hafta | Ölçülmüş pil ömrü, çalışan `PRIVATE_HW` varyantı |
+| **3b — CEP PCB** | Donanım Raporu Bölüm 12 adımları | 8–12 hafta | 5 adet PCB |
 | **4 — PANO** | Koordinasyon arayüzü | 3 hafta | Çevrimdışı web panosu |
 | **5 — Pilot** | Bir mahalle: 3 NOKTA + 20 CEP + saha tatbikatı | 4 hafta | Ölçülmüş saha verisi |
 
@@ -433,6 +458,9 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | Kurulum izni alınamaması (çatı, cami, okul) | Orta | Pilot öncesi muhtarlık/kurum görüşmesi; taşınabilir direk alternatifi |
 | Şifresiz açık WiFi'ın kötüye kullanılması | Orta | SOS-3 hız sınırı; POR-10 (internet erişimi yok) |
 | Parça tedarik ve kur riski | Orta | Her kritik parça için ikinci kaynak |
+| RAK4630 tek kaynaklı modül | Orta | Yedek yol belgelendi: MDBT50Q-1MV2 + Ebyte E22 (Donanım Raporu 6.1) |
+| Buck-boost anahtarlama gürültüsü LoRa hassasiyetini düşürür | Orta | Layout kuralı HW-PCB-4; ilk turda T-06 ölçümü; 3,0 V LDO yedeği (A-8) |
+| Özel PCB'de kapalıyken kaçak akım (topluluk kartlarında görülen ~8 mA) | Orta | Anahtarlı hatlar (HW-PWR-8, HW-MOD-5); T-03 |
 | Regülasyon belirsizliği | Düşük-Orta | REG-4 erken teyit |
 | Paralel topluluk çalışmasıyla çabanın tekrarı | Orta | TA Mesh ile erken temas ve işbirliği |
 | **Uydu-doğrudan-telefon (D2C) yaygınlaşması → problemin telefon üreticilerince çözülmesi** | **Orta-Yüksek (orta vade)** | Apple Emergency SOS (Globalstar), Starlink Direct-to-Cell (Text-to-911 beta), AST SpaceMobile hızla yaygınlaşıyor. **Karşı konumlandırma:** D2C açık gökyüzü gerektirir — enkaz altında, bodrumda ve kapalı mekânda çalışmaz; ayrıca yalnızca yeni/pahalı telefonlarda bulunur. AfetMesh telefon modelinden bağımsızdır. **Pilot öncesi bu alan yeniden gözden geçirilecektir** |
@@ -499,6 +527,13 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | K-3 (sertifikalı modül) | — | Korundu |
 | HW-INT-1…7 | — | CEP için korundu; HW-INT-3 → A-1 |
 | HW-PWR-*, HW-RF-*, HW-UI-*, HW-MEC-* | — | CEP için tamamen korundu |
+| **Donanım Raporu v2.0/v2.1 (24 Eyl 2026)** | | |
+| HW-PWR-9/10 (kapalı mod, raf ömrü) | CEP-N3, CEP-N11 | Eklendi |
+| HW-MOD-1…5 (güç modları) | CEP-7, CEP-8 | Eklendi |
+| HW-BAT-1/2 (≤ 8 mA, ≥ 14 gün) | CEP-N10 | Eklendi |
+| HW-PWR-6 (buck-boost, 3,0 V'a kadar) | CEP-N12, A-8 | Eklendi |
+| K-4 (RAK4630) | CEP-1, A-4 | Değiştirildi (HT-N5262M → RAK4630) |
+| K-6 (e-paper + buton) | A-7 | Kapandı |
 | **Farklılaşma Raporu** | | |
 | AF-C1, AF-C2 | CEP-2, CEP-4 | Korundu |
 | AF-N1…AF-N9 | NOK-1…NOK-10 | Korundu |
@@ -519,6 +554,7 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | 1.0 | — | Gereksinim Analizi Raporu (ilk kapsam) |
 | 1.1 | — | Donanım Gereksinim Raporu (donanım detayı) |
 | **2.0** | **9 Ağu 2026** | Rekabet, mimari ve bakanlık analizleri birleştirildi. 14 çelişki çözüldü. Kamu node'u ayrı cihaz sınıfına alındı. Cihazsız erişim BLE'den WiFi portala taşındı. Gereksinim ID şeması birleştirildi |
+| **2.4** | **24 Eyl 2026** | Belge ailesi hizalaması: **Bölüm 6.2b Donanım Özeti** eklendi · belge tablosuna prototip BOM, birleşik kaynakça ve makale arşivi eklendi · literatür raporu `04_Dokumanlar/`'a taşındı · araştırma raporu kuralı "tarihli güncelleme notu" olarak gevşetildi · 13.2 test listesi T-01…T-20 ile güncellendi · yol haritasında Aşama 3 → 3a (breadboard) + 3b (PCB) · risk kaydına 3 donanım riski · izlenebilirlik tablosuna Donanım Raporu v2.x eşleşmeleri |
 | **2.3** | **24 Eyl 2026** | **A-7 kapandı:** kullanıcı dokunmatik ekranın zorunlu olmadığını bildirdi → CEP-T arayüzü e-paper + fiziksel butonlar (Yol A), MCU nRF52840; CEP-T ayrı cihaz sınıfı değil, CEP+ montaj varyantı |
 | **2.2** | **24 Eyl 2026** | Donanım Raporu v2.0 işlendi: işlemci karşılaştırması (TI/STM32/ESP32/Raspberry Pi/Nordic) sonucu **nRF52840 teyit edildi** · modül **RAK4630 (L/H)** önerildi (A-4) · **CEP-7/CEP-8** (güç modları, Enkaz/Beacon) ve **CEP-N10…N12** eklendi · CEP-N3 < 100 µA → ≤ 10 µA · CEP+ maliyet hedefi ~$59 → ~$85–90 · yeni açık kararlar **A-7** (CEP-T dokunmatik ↔ pil) ve **A-8** (regülatör) · belge tablosuna literatür raporu ve CEP-T eklendi |
 | **2.1** | **9 Ağu 2026** | Uluslararası karşılaştırma işlendi: **Bölüm 1.4** (İKAS ile tamamlayıcılık konumlandırması) eklendi · risk kaydına **uydu D2C** ve **sesli iletişim beklentisi** riskleri eklendi · **TST-7** "şebekesiz gün tatbikatı" olarak somutlaştırıldı |

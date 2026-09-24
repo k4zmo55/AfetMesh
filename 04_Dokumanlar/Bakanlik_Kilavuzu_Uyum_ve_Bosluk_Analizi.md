@@ -3,6 +3,8 @@
 > 📎 **Araştırma girdisi — 9 Ağustos 2026.** Kurumsal teklif stratejisi ve dayanakları içerir.
 > Buradan doğan gereksinimler SGB'ye işlenmiştir (NOK-11, PAN-6, PAN-7, doğrulama göstergeleri).
 > Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+>
+> **🔄 Güncelleme notu — 24 Eylül 2026 (SGB v2.4, Donanım Raporu v2.1):** Bu raporun orijinal bulguları korunmuştur; sonradan alınan donanım kararları ilgili yerlere `⚠️ v2.4` işaretiyle eklenmiştir. Özet: kişisel cihaz **nRF52840 + SX1262 (RAK4630)**, **2,9" e-paper + fiziksel butonlar** (dokunmatik yok, A-7 kapandı), **18650 + BQ24074 + TPS63900**, 5 güç modu, normal modda hedef **≥ 14 gün**. **Bu rapordaki etkisi:** Bölüm 5 maliyet karşılaştırmasında CEP birim maliyeti güncellendi. Birleşik kaynakça: [`Kaynakca.md`](Kaynakca.md).
 
 **İncelenen belge:** *Afet Sonrası İletişim Sistemleri Uygulaması — Rehberlik Kılavuzu*
 **Yayınlayan:** T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı, Coğrafi Bilgi Sistemleri Genel Müdürlüğü — Akıllı Şehir Rehberlik Uygulamaları Projesi, **2024**
@@ -159,10 +161,10 @@ Aynı örnek vaka (1000 Ha, 200.000 kişi) için:
 | | Kılavuzun modeli | AfetMesh (halk katmanı) |
 |---|---:|---:|
 | Röle/kapsama donanımı | $614.562 (59 röle alıcısı) | **$3.600** (30 NOKTA × $120) |
-| Uç cihazlar | $126.829 (118 telsiz + 59 tablet) | **$50.000** (2.000 CEP × $25) |
+| Uç cihazlar | $126.829 (118 telsiz + 59 tablet) | **$50.000** (2.000 CEP × $25) · ⚠️ v2.4: **≈ $74.000** (2.000 CEP × ~$37, 100+ adet tahmini) |
 | Yazılım | $104.617 | Açık kaynak (geliştirme maliyeti ayrı) |
 | Lisans | $123.078 | **$0** |
-| **Donanım toplamı** | **$741.391** | **≈ $53.600** |
+| **Donanım toplamı** | **$741.391** | **≈ $53.600** · ⚠️ v2.4: **≈ $77.600** |
 | Kapsanan kişi sayısı | Saha ekipleri (~118 telsiz kullanıcısı) | **200.000 vatandaş** |
 
 **Çarpıcı tek rakam:** Kılavuzdaki **bir adet röle alıcısı ($10.448)** bedeline, yaklaşık **87 adet AfetMesh NOKTA** kurulabilir.
@@ -170,6 +172,8 @@ Aynı örnek vaka (1000 Ha, 200.000 kişi) için:
 > ⚠️ **Bu karşılaştırma dürüstçe okunmalıdır.** İki sistem aynı işi yapmıyor: kılavuzun sistemi sesli, yüksek bant genişlikli, profesyonel ekip yönetimi; AfetMesh metin/SOS temelli vatandaş katmanı. Doğru argüman "AfetMesh telsiz sisteminin yerine geçsin" değil, şudur:
 >
 > **"Mevcut projenin bütçesine %5–7 ekleyerek, bugün hiç kapsanmayan 200.000 vatandaşı sisteme dahil edebilirsiniz."**
+>
+> ⚠️ **v2.4:** Güncel BOM ile oran **~%10**'dur (≈ $77.600 / $741.391). Teklif dilinde **"yaklaşık %10"** kullanılmalıdır. Artışın nedeni pil ömrü ve saha güvenilirliği için eklenen zorunlu parçalardır (buck-boost, yük anahtarları, ters kutup koruması, BLE anteni, sızdırmaz USB-C) — Donanım Raporu Bölüm 8. Argümanın özü değişmez: kılavuzun modeline göre **~10 kat** daha düşük donanım maliyetiyle vatandaş katmanı kapsanır.
 >
 > Bu, bir belediye bütçesinde savunması kolay bir tekliftir ve kılavuzun kendi paydaş listesindeki "Vatandaşlar" satırını gerçekten doldurur.
 

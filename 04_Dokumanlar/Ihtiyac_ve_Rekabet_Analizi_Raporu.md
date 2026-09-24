@@ -2,6 +2,8 @@
 
 > 📎 **Araştırma girdisi — 9 Ağustos 2026 tarihli bulguların kaydı.** Gereksinim kaynağı değildir.
 > Yürürlükteki gereksinimler: [`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](../00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)
+>
+> **🔄 Güncelleme notu — 24 Eylül 2026 (SGB v2.4, Donanım Raporu v2.1):** Bu raporun orijinal bulguları korunmuştur; sonradan alınan donanım kararları ilgili yerlere `⚠️ v2.4` işaretiyle eklenmiştir. Özet: kişisel cihaz **nRF52840 + SX1262 (RAK4630)**, **2,9" e-paper + fiziksel butonlar** (dokunmatik yok, A-7 kapandı), **18650 + BQ24074 + TPS63900**, 5 güç modu, normal modda hedef **≥ 14 gün**. **Bu rapordaki etkisi:** yalnızca Bölüm 6 maliyet argümanı (CEP ≈ $36–37, bandın içinde). Birleşik kaynakça: [`Kaynakca.md`](Kaynakca.md).
 
 ---
 
@@ -154,7 +156,7 @@ Gereksinim Analizi Bölüm 12, madde 5'te "pilot bölge/senaryo belirlenmeli" de
 
 - Hedef: bir **ilçe belediyesi** veya **AFAD il müdürlüğü** ile düşük maliyetli pilot
 - Argüman: teklif iki resmî dayanağa oturtulmalıdır — (1) BMO/EMO/TMMOB raporlarındaki *"iletişim kesintisi can kaybını artırdı"* tespiti, (2) **Bakanlık kılavuzunun kendi ihtiyaç analizi ve bütçe şablonu**. İkincisi, muhatabın kendi kurumsal çerçevesi olduğu için daha etkilidir
-- Avantaj: cihaz başına maliyet (NFR-1: ~$25–40) kurumsal alternatiflerin (ASELSAN mobil muhabere aracı vb.) yanında ihmal edilebilir düzeydedir — bu, satış hikâyesinin en güçlü kısmıdır
+- Avantaj: cihaz başına maliyet (NFR-1: ~$25–40; ⚠️ v2.4 güncel tahmin CEP ≈ $36–37 / 100 adet) kurumsal alternatiflerin (ASELSAN mobil muhabere aracı vb.) yanında ihmal edilebilir düzeydedir — bu, satış hikâyesinin en güçlü kısmıdır
 
 ### 5.4 Bakanlık kılavuzu — ✅ incelendi
 
