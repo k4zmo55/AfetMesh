@@ -1,7 +1,7 @@
 # AfetMesh — Sistem Gereksinim Belgesi (SGB)
 
-**Sürüm:** 2.5
-**Tarih:** 24 Eylül 2026
+**Sürüm:** 2.6
+**Tarih:** 25 Eylül 2026
 **Statü:** ✅ Yürürlükte — **projenin tek yetkili gereksinim kaynağı**
 
 ---
@@ -25,6 +25,7 @@ Bu belge, daha önce yazılmış beş raporun **birleştirilmiş ve çelişkiler
 | `04_Dokumanlar/Farklilasma_ve_Urun_Mimarisi_Raporu.md` | Mimari gerekçelendirme | 📎 Karar gerekçesi (9 Ağu 2026) |
 | `04_Dokumanlar/Bakanlik_Kilavuzu_Uyum_ve_Bosluk_Analizi.md` | Kurumsal uyum analizi | 📎 Araştırma girdisi (9 Ağu 2026) |
 | `04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md` | Ülkelerin acil haberleşme mimarileri, 5 katmanlı çerçeve | 📎 Araştırma girdisi (9 Ağu 2026) |
+| `06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md` | TUSAŞ HANGAR BİGG başvuru yapısı: seçenekler, **HAVA katmanı** gerekçesi, çift kullanım, rekabet (Lifeseeker), iş modeli | 📎 Karar gerekçesi (25 Eyl 2026) — **Seçenek B onaylandı** |
 
 > **Kural:** Yeni bir gereksinim doğduğunda önce **bu belgeye** yazılır. Araştırma raporlarının **orijinal bulguları silinmez**; sonradan alınan kararlar rapora **tarihli güncelleme notu** (`⚠️ vX.Y`) olarak eklenir. *(v2.4: "araştırma raporları güncellenmez" kuralı bu şekilde gevşetildi.)*
 >
@@ -39,6 +40,9 @@ Bu belge, daha önce yazılmış beş raporun **birleştirilmiş ve çelişkiler
 ### 1.1 Tek cümlelik tanım
 
 > AfetMesh, mevcut Meshtastic ağının üzerine oturan; afetzedenin **hiçbir uygulama kurmadan, hiçbir ön hazırlık yapmadan**, yalnızca telefonunun WiFi'ını açarak yardım çağrısı gönderebildiği halk erişim katmanıdır.
+
+> **v2.6 — HAVA katmanıyla genişletilmiş tanım** (kurumsal başvuru ve sunumlarda kullanılır):
+> AfetMesh, altyapının çöktüğü bölgede **enkaz altındaki insanları havadan bulan** ve onlarla **uygulama gerektirmeden haberleşen**, yerli, İHA taşınabilir bir yük modülü (**HAVA-Y**) ile onu besleyen kalıcı yer ağıdır. Ayrıntı: Bölüm 1.5 ve 7c.
 
 ### 1.2 Çözdüğü problem
 
@@ -67,6 +71,23 @@ Teknik olarak da çakışmazlar. Bakanlık kılavuzu afet haberleşmesinin üç 
 > **Kurumsal iletişim kuralı:** Teklif ve sunumlarda "Türkiye'de böyle bir sistem yok" denmeyecektir — yanlıştır ve gereksiz direnç doğurur. Kullanılacak çerçeve tamamlayıcılıktır.
 > Ayrıntı: [`04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md`](../04_Dokumanlar/Uluslararasi_Karsilastirma_Raporu.md)
 
+### 1.5 HAVA katmanı ve çift kullanım *(v2.6)*
+
+25 Eylül 2026'da ekip, TUSAŞ HANGAR BİGG başvurusu için **Seçenek B**'yi onayladı: yer ağına bir **İHA yük modülü (HAVA-Y)** ve bir **konum kestirim yazılımı (KONUM MOTORU)** eklenir. Gerekçe: program *"çift kullanım odaklı havacılık ve uzay"* girişimlerini hedefler; yalnızca yerde çalışan bir LoRa ağı bu tanıma zayıf uyar (ayrıntı: `06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md`).
+
+| Yetenek | Sivil kullanım | Savunma / güvenlik kullanımı |
+|---|---|---|
+| Havadan beacon konum tespiti | Enkaz altı afetzede · çığ · kayıp kişi | Personel kurtarma (CSAR): düşen pilot / kayıp personel beacon'ı |
+| Uçan erişim noktası | Altyapısı çökmüş bölgede geçici SOS kanalı | Altyapısız bölgede geçici veri rölesi |
+| Veri katırı | Kopuk yer düğümlerinden SOS toplama | Kopuk sensör düğümlerinden veri toplama |
+
+**Neden termal kamera yetmez:** Termal kamera beton ve molozun içini görmez. 433/868 MHz ve 2,4 GHz radyo sinyali moloz katmanlarından zayıflayarak da olsa geçer. HAVA-Y termal kameranın **yanına** gelir, yerine değil.
+
+> **Kurumsal iletişim kuralı (v2.6):**
+> - "Dünyada böyle bir şey yok" **denmeyecek.** Havadan hücresel telefon tespiti yapan yabancı ürün (Centum **Lifeseeker**, 35+ müşteri) vardır. Doğru çerçeve: *"Pazar kanıtlanmış. Biz yerli, lisans gerektirmeyen bantlarda çalışan ve kalıcı yer ağıyla entegre bir mimari sunuyoruz."*
+> - AfetMesh **askeri haberleşme sistemi olarak konumlandırılmayacak.** Meshtastic protokolü açıktır, yayını kolay tespit edilir ve anahtar yönetimi paylaşılan PSK ile sınırlıdır. Savunma tarafındaki değer **haberleşmede değil, konum tespitindedir** (HV-16).
+> - Belirli bir TUSAŞ platformuna (ANKA, AKSUNGUR vb.) entegrasyon **vaat edilmeyecek.** İddia: "platform bağımsız yük".
+
 ---
 
 ## 2. Tasarım İlkeleri
@@ -92,6 +113,8 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 - **PORTAL** — NOKTA üzerinde çalışan captive portal web arayüzü
 - **SOS protokolü** — yapılandırılmış acil durum paketi ve önceliklendirme firmware modülü
 - **PANO** — çevrimdışı çalışan koordinasyon/triage arayüzü
+- **HAVA-Y** — platform bağımsız İHA yük modülü: havadan sinyal ölçümü, uçan erişim noktası, veri katırı *(v2.6)*
+- **KONUM MOTORU** — havadan ölçümlerden kaynak konumu kestiren yer istasyonu yazılımı ve uçuş planı önerici *(v2.6)*
 - Kurumsal entegrasyon formatları, regülasyon uyumu, saha test protokolleri
 
 ### 3.2 Kapsam dışı
@@ -104,6 +127,9 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 | Kitlesel üretim ve endüstriyel sertifikasyon | Prototip ve pilot aşamasının dışında |
 | Sesli iletişim | LoRa bant genişliği elvermez. Telsiz sistemlerinin yerine geçilmiyor |
 | Video/görüntü aktarımı | Aynı gerekçe |
+| **İHA platformunun kendisi** *(v2.6)* | Drone hazır alınır; ürün **yük modülüdür** (HV-1). Uçuşu yetkili kurum operatörü yapar (REG-7) |
+| **Hücresel bantta yayın (sahte baz istasyonu)** *(v2.6)* | Lisanslı spektrum, BTK ve güvenlik kurumu yetkisi gerektirir. HAVA-Y yalnızca ISM/SRD bantlarında çalışır (REG-1) |
+| **Askeri sınıf taktik haberleşme** *(v2.6)* | Kripto onayı, askeri standart testleri ve uzmanlık gerektirir (Başvuru Konsepti Seçenek C — elendi) |
 
 > **Netleştirme (eski SW-8 çelişkisi):** "Özel mobil uygulama geliştirmek kapsam dışı" ifadesi geçerlidir. PORTAL bir mobil uygulama **değildir** — node üzerinde barındırılan, tarayıcıda açılan bir web sayfasıdır ve kapsam içidir.
 
@@ -142,6 +168,22 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 >
 > İlke **"dikey çık, yatay taşı"**: CEP yalnızca kendi binasının çatısına ulaşır. Uzun mesafe, 868 MHz erişim kanalını tüketmeden omurgadan taşınır. Gerekçe (kapasite hesabı): LongFast'te bir röle, %10 çalışma süresi sınırı yüzünden **dakikada yalnızca ~7 paket** yayınlayabilir. Bu yüzden çatı rölesi tek başına kapasite getirmez (`04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md` Bölüm 2 ve 4).
 
+> **v2.6 — HAVA katmanı.** Yer ağının üstüne, geçici ve hareketli bir katman eklendi (ayrıntı: Bölüm 7c):
+>
+> ```
+>              HAVA-Y (İHA üzerinde, 50–120 m)
+>        ┌────────┼──────────────┬──────────────────┐
+>        │ ölçer  │ erişim verir │ toplar           │
+>        ▼        ▼              ▼                  │
+>   CEP konum   telefon →     NOKTA / ÇATI          │ iniş sonrası
+>   beacon'ı    PORTAL        emanet deposu         │ (ve canlı özet)
+>   (CEP-12)    (HV-4)        (HV-6)                ▼
+>                                     KONUM MOTORU + PANO (yer istasyonu)
+>                                     → konum elipsi, ısı haritası, triage
+> ```
+>
+> İlke **"yer kalıcıdır, hava anlıktır"**: yer ağı haftalarca çalışır ve sinyal kaynağıdır. HAVA-Y, yer ağının ulaşamadığı yere dakikalar içinde gelir ve **mesh'e yük bindirmez** (HV-8).
+
 ### 4.1 Bileşen özeti
 
 | # | Bileşen | Tip | Rol | Hedef maliyet |
@@ -154,6 +196,8 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 | ③ | **PORTAL** | Yazılım (gömülü web) | Cihazsız kullanıcı arayüzü | — |
 | ④ | **SOS modülü** | Yazılım (firmware) | Yapısal paket + önceliklendirme | — |
 | ⑤ | **PANO** | Yazılım (çevrimdışı web) | Koordinasyon ve triage | — |
+| ⑥ | **HAVA-Y** *(v2.6)* | Donanım (prototip: hazır kart + 3D baskı kutu) | İHA yük modülü: havadan ölçüm, uçan NOKTA, veri katırı | $100–180 (prototip, tahmini) |
+| ⑦ | **KONUM MOTORU** *(v2.6)* | Yazılım (yer istasyonu) | Havadan ölçümlerden konum kestirimi + uçuş planı önerisi. PANO ile aynı makinede | — |
 
 ---
 
@@ -167,7 +211,9 @@ Bu dört ilke tüm tasarım kararlarının ölçütüdür. Bir karar bu ilkelerd
 | **SYS-4** | Meshtastic upstream firmware'inden sapma minimumda tutulacak; tüm özelleştirmeler **ayrı modül** olarak yazılacak, çekirdek mesh koduna dokunulmayacak | Kod incelemesi |
 | **SYS-5** | Tüm yazılım açık kaynak lisansla yayımlanacak; kullanıcıdan ücret veya lisans talep edilmeyecek | — |
 | **SYS-6** | Sistem hiçbir noktada kullanıcıdan kişisel veri (TCKN, telefon numarası, kimlik) **talep etmeyecek** | POR-7 |
-| **SYS-7** | Menzil, kapsama ve pil ömrü beyanları **ölçülmüş değerlere** dayanacak; ideal koşul rakamları pazarlama amaçlı kullanılmayacak | Test kayıtları |
+| **SYS-7** | Menzil, kapsama ve pil ömrü beyanları **ölçülmüş değerlere** dayanacak; ideal koşul rakamları pazarlama amaçlı kullanılmayacak. *(v2.6: konum doğruluğu beyanları da bu kurala tabidir — HV-N4)* | Test kayıtları |
+
+> ⚠️ **v2.6 — SYS-5 askıda (KONUM MOTORU için):** Yatırım programına başvuru, korunabilir fikri mülkiyet gerektirir. KONUM MOTORU'nun açık kaynak mı yoksa kapalı çekirdek mi olacağı **A-16** ile açık karara bağlandı. Yer ağı yazılımı (PORTAL, SOS modülü, PANO) için SYS-5 geçerliliğini korur.
 
 ---
 
@@ -190,8 +236,11 @@ Donanım tasarım detayı için: `02_Donanim/Donanim_Gereksinim_Raporu.md` (bu b
 | **CEP-9** *(v2.5)* | **Afet profili (ağ dostu istemci):** konum, telemetri ve NodeInfo periyodik yayınları kapanır. Konum yalnızca SOS paketinin içinde gider. Kanal doluluğu > %25 iken SOS dışı mesajlar bekletilir, SOS bekletilmez. Sarsıntı algılanınca veya MERKEZ duyurusuyla otomatik devreye girer |
 | **CEP-10** *(v2.5)* | **Üç aşamalı teslim göstergesi:** "Gönderildi → Çatıya ulaştı (örtük ACK) → MERKEZ aldı (SOS-TEYİT)". LED + e-paper. Amaç: kullanıcının tekrar tekrar basmasını kaynağında engellemek (Helene dersi) |
 | **CEP-11** *(v2.5)* | Kendi binasının ÇATI-B'sini ve MERKEZ'i **favori** olarak tutacak (NodeDB'den atılmaz, sahteciliğe karşı korunur) |
+| **CEP-12** *(v2.6)* | **Konum beacon'ı (Enkaz modunda):** SOS paketinden ayrı, yalnızca cihaz kimliği (SOS-9) + sayaç + pil seviyesi taşıyan **≤ 12 baytlık** kısa çerçeve. Hızlı modülasyonla (ör. SF7, ~30 ms hava süresi), **10–30 s** aralıkla gönderilir. **Mesh'te tekrarlanmaz** (sıçrama sınırı 0) — yalnızca HAVA-Y ve yakındaki ÇATI/NOKTA dinler. Hava süresi oranı ≤ %0,3 (REG-2 içinde). Ortalama akım bütçesi CEP-8'in ≤ 1 mA hedefi içinde kalır |
 
 > **CEP-2 gerekçesi:** Meshtastic'te her node varsayılan olarak gördüğü paketi tekrarlar. Toplanma alanında yüzlerce CEP aynı anda tekrarlarsa kanal tıkanır. Tekrarlama görevi NOKTA'lara aittir.
+
+> **CEP-12 gerekçesi (v2.6, Ç-15):** Havadan konum kestirimi, drone'un üzerinden geçtiği birkaç dakika içinde **onlarca ölçüm** ister. SOS-3 ise aynı kaynaktan 5 dakikada en fazla 1 SOS paketine izin verir; bu hızla bir uçuş geçişinde 0–1 ölçüm alınır. Çözüm SOS-3'ü gevşetmek **değil**, mesh'e girmeyen ayrı ve çok kısa bir konum çerçevesidir. Güç hesabı (tahmini): 30 ms × ~100 mA / 10 s ≈ **0,3 mA** ortalama. Uygulama yolu (ham LoRa çerçevesi mi, Meshtastic paketi mi) açık karar **A-15**.
 
 ### 6.2 İşlevsel olmayan
 
@@ -326,6 +375,53 @@ Donanım tasarım detayı: `02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` (
 
 ---
 
+## 7c. HAVA — İHA Yük Modülü ve Konum Motoru *(v2.6)*
+
+Karar gerekçesi: `06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md`. Bu bölüm, HANGAR BİGG başvurusunda projenin **anlatı merkezidir**. Yer ağı (CEP, NOKTA, ÇATI, MERKEZ) bu katmanın sinyal kaynağı ve veri altyapısıdır.
+
+### 7c.1 HAVA-Y — İşlevsel
+
+| # | Gereksinim |
+|---|---|
+| **HV-1** | **Platform bağımsız yük:** kendi pili ve kendi GNSS'i olacak; İHA'ya elektriksel veya veri bağlantısı **gerektirmeyecek**. Basit mekanik montaj (kelepçe / standart bağlantı). Harici besleme girişi (5–12 V) kablolu (tethered) İHA kullanımı için isteğe bağlı |
+| **HV-2** | Donanım: **ESP32-S3 + PSRAM** (NOKTA ile aynı yazılım tabanı) + **iki SX1262** radyo: ① mesh preset'inde dinleme (SOS, emanet senkronu) ② konum beacon'ı preset'inde dinleme (CEP-12) · **u-blox MAX-M10S** GNSS (≥ 5 Hz) · microSD kayıt |
+| **HV-3** | **Ölçüm kaydı:** alınan her LoRa çerçevesi için zaman damgası, GNSS konumu ve irtifası, RSSI, SNR, kaynak kimliği ve kanal. Ham kayıt microSD'ye yazılır; silinmez |
+| **HV-4** | **Uçan NOKTA:** WiFi AP + captive portal (NOK-2/3, POR-* aynen). SSID `AFETMESH-HAVA`. Bağlanan telefonun sinyal gücü, kullanıcının gönderdiği SOS ile birlikte KONUM MOTORU'na girdi olarak kaydedilir |
+| **HV-5** | **Pasif WiFi ölçümü** *(A-13 onayına bağlı)*: yalnızca **afet modunda ve yetkili operatör açtığında**. MAC adresleri uçuş oturumuna özgü tuzlu özetle ayrıştırılır, **ham MAC saklanmaz**, özetler görev sonunda silinir (SYS-6, REG-8) |
+| **HV-6** | **Veri katırı:** üzerinden geçtiği NOKTA ve ÇATI düğümlerinin emanet deposundaki **teyitsiz** SOS kayıtlarını toplar (SOS-8, SOS-11 ③). SOS-9 kimliğiyle yinelenme üretmez. Aktarım yolu A-14 |
+| **HV-7** | **Canlı özet:** uçuş sırasında yer istasyonuna yalnızca özet (kaynak kimliği, en güçlü RSSI ve konumu, yeni SOS sayısı) iletilir. Tam hesap iniş sonrası ham kayıtla yapılır |
+| **HV-8** | **Mesh'e yük bindirmeme:** varsayılan rol **`CLIENT_MUTE`**. 50–120 m irtifadaki bir düğüm çok sayıda hücreyi aynı anda duyar; tekrarlama yaparsa hepsini tıkar. Röle modu yalnızca operatör açarsa ve yalnızca **beyaz listeli trafik** (ÇAT-8 mantığı: SOS, SOS-TEYİT) için çalışır |
+
+### 7c.2 KONUM MOTORU — İşlevsel
+
+| # | Gereksinim |
+|---|---|
+| **HV-10** | Girdi: HV-3 ölçüm kayıtları. Çıktı: kaynak başına **konum kestirimi + %95 güven elipsi + kullanılan ölçüm sayısı** |
+| **HV-11** | Yöntem: yol kaybı parametrelerini ölçümlerle birlikte kestiren model + **parçacık filtresi** (veya eşdeğer olasılıksal yöntem). Çıktı hiçbir zaman tek nokta olarak sunulmaz |
+| **HV-12** | Tamamen **çevrimdışı** çalışır; PANO ile aynı dizüstü bilgisayarda (PAN-5) |
+| **HV-13** | **Uçuş planı önerici:** ilk tarama geçişinden sonra olasılığı yüksek bölgeler için daha sık ve alçak ikinci geçiş rotası önerir. Çıktı standart görev noktası dosyası (KML ve yaygın yer kontrol yazılımı formatları) |
+| **HV-14** | **PANO entegrasyonu:** konum elipsleri ve sinyal ısı haritası PANO haritasında katman olarak gösterilir. Beacon kimliği, aynı cihazın SOS kaydıyla (SOS-9) eşleştirilir → "enkaz altında, 3 kişi, konum elipsi ±X m" |
+| **HV-15** | Birden fazla uçuşun ölçümleri **birleştirilebilir**; her yeni uçuş kestirimi daraltır |
+| **HV-16** | **Protokol bağımsızlığı:** motor ölçümü soyut biçimde alır (kaynak kimliği, RSSI, SNR, alıcı konumu, zaman). Beacon protokolü değişse de (ör. savunma sürümünde farklı beacon) motor değişmeden çalışır |
+
+### 7c.3 İşlevsel olmayan
+
+| # | Gereksinim | Hedef |
+|---|---|---|
+| **HV-N1** | Ağırlık (anten + pil + kutu dahil) | **≤ 300 g** |
+| **HV-N2** | Kendi pille çalışma süresi | ≥ 2 saat (birden fazla uçuş) |
+| **HV-N3** | Birim maliyet (prototip, tahmini) | $100–180 |
+| **HV-N4** | Konum doğruluğu | **Tasarım hedefi** açık alanda ≤ 20 m (%95 elips yarıçapı). Enkaz ortamı hedefi TST-16 sonrası belirlenir. **SYS-7 gereği ölçülmeden beyan edilmez** |
+| **HV-N5** | Hazırlık süresi | Montaj + açılış < 5 dk, tek düğme |
+| **HV-N6** | Çalışma sıcaklığı | −10 °C … +45 °C |
+| **HV-N7** | Koruma | IP54 (yağmurda kısa uçuş) |
+
+> **Neden iki SX1262 (HV-2):** Bir SX1262 aynı anda yalnızca tek modülasyon ayarında dinler. Mesh trafiği TA Mesh preset'indedir (A-2), konum beacon'ı ise kısa hava süresi için hızlı bir preset kullanır (CEP-12). Tek radyoyla ikisi arasında geçiş yapmak, drone'un geçiş süresindeki ölçümlerin yarısını kaybettirir.
+
+> **Kanıt tabanı:** Çığ senaryosunda drone + gömülü LoRa vericisiyle RSSI/SNR ölçümüne dayalı konumlama deneyleri, yeterli ölçüm sayısında **metre mertebesinde** doğruluk raporlamıştır (Başvuru Konsepti Kaynaklar). Enkaz ortamı karmaşıktır; bu sonuçlar **doğrudan aktarılmaz**, TST-14…16 ile ölçülür.
+
+---
+
 ## 8. PORTAL — Captive Portal Arayüzü
 
 ### 8.1 Ekran akışı
@@ -432,6 +528,9 @@ Donanım tasarım detayı: `02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md` (
 | **REG-4** | BTK'nın güncel SRD düzenlemesi (Milli Frekans Planı, Sınıf 1 Cihaz Kategorileri) resmî kaynaktan **teyit edilecek** |
 | **REG-5** | Kullanıcıdan kişisel veri toplanmadığı için KVKK veri sorumlusu yükümlülüğü asgari düzeyde tutulacak (SYS-6, POR-7) |
 | **REG-6** | Anten takılı değilken TX yapılmayacak; kullanım kılavuzunda uyarı bulunacak |
+| **REG-7** *(v2.6)* | HAVA-Y uçuşları **SHGM İHA mevzuatına** uygun yapılacak. Ürün uçuş yapmaz; uçuşu kayıtlı İHA ve yetkili operatör (kurum ekibi) yapar. Afet bölgesinde uçuş, AFAD koordinasyonunda. Prototip testleri yalnızca **izinli alanda** |
+| **REG-8** *(v2.6)* | Pasif WiFi ölçümü (HV-5) için KVKK değerlendirmesi yapılacak. Kullanım yalnızca afet modunda ve yetkili kurum eliyle; ham tanımlayıcı saklanmaz |
+| **REG-9** *(v2.6)* | Yerden yükseklikte yayın da REG-2 ERP sınırlarına tabidir; HAVA-Y verici gücü yer düğümleriyle aynı yasal hesaba göre sabitlenir (ÇAT-3) |
 
 ---
 
@@ -453,12 +552,18 @@ Bu maddeler **bilerek açık bırakılmıştır.** Hiçbiri varsayım yapılarak
 | **A-10** *(v2.5)* | **ÇATI-B rolü:** `ROUTER_LATE` (öneri) · `CLIENT_BASE` (bina sakinlerinin CEP'leri favori) | Favori sayısı sınırı, kurulum yükü + TST-8 | Aşama 5a |
 | **A-11** *(v2.5)* | **ÇATI-K'da LNA'lı ön uç** (SKY66122, TX ≤ 24 dBm) kullanılsın mı? | TST-10: gürültü tabanı + paket alım oranı + güç farkı | Aşama 5a |
 | **A-12** *(v2.5)* | **SOS kodlaması:** özel portnum (SOS-1) · `TEXT_MESSAGE_APP` içinde yapılandırılmış metin (`#SOS1 …`) · ikisi birden | TST-5: `CORE_PORTNUMS_ONLY` ayarlı standart router'dan geçiş | **Aşama 0** |
+| **A-13** *(v2.6)* | **Pasif telefon WiFi ölçümü (HV-5) kapsamda mı?** Kapsam içi (daha çok kaynak) · kapsam dışı (yalnızca CEP beacon'ı + portala bağlanan telefon) | KVKK görüşü (REG-8) + TST-17 katkısı | Aşama H3 |
+| **A-14** *(v2.6)* | **Veri katırı aktarım yolu (HV-6):** NOKTA'dan WiFi (öneri) · ÇATI'dan BLE (drone < 30 m yaklaşır) veya LoRa toplu DM | TST-18: aktarım süresi, 2.000 kayıtlık emanet deposu için | Aşama H3 |
+| **A-15** *(v2.6)* | **Konum beacon'ı uygulaması (CEP-12):** Meshtastic dışı ham LoRa çerçevesi (öneri — kısa, hızlı preset) · Meshtastic paketi (sıçrama 0) | Enkaz modunda radyonun modül tarafından devralınabilirliği (SYS-4) + TST-19 güç ölçümü | Aşama H1 |
+| **A-16** *(v2.6)* | **KONUM MOTORU lisansı:** açık kaynak (SYS-5) · **kapalı çekirdek + açık yer ağı** (yatırım için öneri) | Patent ön araştırması + ekip kararı. Karar verilene kadar motor kodu **açık depoya konmaz** | HANGAR BİGG başvurusundan önce |
 
 > **A-1 ve PCB (v2.2):** RAK4630'un (L) ve (H) sürümleri aynı footprint'i paylaştığı için A-1 kararı artık **PCB layout'unu bloke etmez**; yalnızca modül sipariş kodu, anten ve eşleme değerleri banda göre seçilir.
 
 > **A-1 neden hâlâ açık:** Önceki raporlar bölge ayarını `EU_868` olarak sabitlemişti. Ancak Türkiye'de topluluk ağı ağırlıklı olarak **433 MHz** kullanmaktadır. 868 MHz daha yüksek güç bütçesi sunar (500 mW vs 10 mW ERP), ancak yanlış band seçimi bizi mevcut ağdan tamamen koparır. Node yoğunluğu bu projede menzilden daha kritik bir başarı faktörü olduğu için, karar ölçümle değil **ağ gerçeğiyle** verilecektir.
 
 > **A-1'e yeni girdi (v2.5, ÇATI raporu Bölüm 5.1):** 433 MHz'in 10 mW ERP sınırı **çatı rölelerini de bağlar.** 5 dBi antenli bir ÇATI'nın yasal iletim gücü ~8,7 dBm'dir, 868'de ise 22 dBm. Çatı katmanının verici link bütçesi 433'te **~13 dB zayıftır.** 433 seçilirse ÇATI yoğunluğu artırılmalı ve bu maliyet A-1 kararında hesaba katılmalıdır.
+
+> **A-1'e yeni girdi (v2.6, HAVA katmanı):** Düşük frekans moloz ve betondan daha iyi geçer. Enkaz altı konum beacon'ı (CEP-12) için **433 MHz lehine** bir teknik gerekçe doğmuştur. HAVA-Y alıcı olduğu için 433'ün 10 mW ERP sınırı beacon menzilini (drone doğrudan üstte, 50–120 m) büyük ölçüde etkilemez. TST-16 her iki bantta ölçülecektir.
 
 > **A-2'ye yeni girdi (v2.5):** Kapasite hesabı (Araştırma Bölüm 4): 100 cihaz, dakikada 1 mesaj, düz mesh'te kanal doluluğu LongFast'te %564, MediumFast'te %162, ShortFast'te %51. Hızlı preset TA Mesh ile birlikte çalışmayı bozar (SYS-3). **Önerilen uzlaşma:** erişim kanalı TA Mesh preset'inde kalır, çok sıçramalı taşıma ÇATI-O omurgasına alınır (A-9). Bu durumda hücre başına 25 cihazda MediumFast %20, LongFast %71 doluluk verir. LongFast'te kalınırsa **SOS disiplini (SOS-3, CEP-9) zorunludur.**
 
@@ -495,6 +600,17 @@ Bu testler **PCB tasarımından önce**, hazır kartlarla ve yaklaşık sıfır 
 | **TST-12** | Emanet zinciri: yol üstündeki ÇATI-O 1 saat kapalıyken SOS | Kayıp yok, teyit döner, yinelenme yok (SOS-7/8/9) | Yüksek |
 | **TST-13** | Patlama: 50 CEP aynı dakikada SOS (jitter açık/kapalı) | Jitter açıkken ≥ %95 SOS 10 dk içinde MERKEZ'de (SOS-10) | Yüksek |
 
+**v2.6 — HAVA katmanı testleri:**
+
+| # | Test | Başarı kriteri | Öncelik |
+|---|---|---|---|
+| **TST-14** | **Dronesuz konum testi:** beacon yere / bodruma / araç bagajına konur; GNSS'li alıcı yürüyerek, direkle veya araçla ızgara deseninde gezdirilir; KONUM MOTORU kestirir | Gerçek konum %95 elipsin içinde; elips yarıçapı ölçüm sayısına göre raporlanır. **HAVA katmanının ilk ve en kritik testi — drone gerektirmez** | ⚠️ En yüksek |
+| **TST-15** | Açık alan uçuş testi: gömülü / örtülü beacon, 50 / 80 / 120 m irtifa, çim biçme deseni | HV-N4 hedefiyle karşılaştırma; ölçüm/geçiş sayısı | Yüksek |
+| **TST-16** | Enkaz benzeri ortam: yıkım sahası, otopark bodrumu veya eğitim enkazı. **433 ve 868 MHz ayrı ayrı** | Beacon alım oranı ve konum hatası; A-1 girdisi | Yüksek |
+| **TST-17** | Uçan NOKTA: 50–120 m irtifada telefonun `AFETMESH-HAVA` ağına bağlanma ve SOS gönderme menzili (açık alan + bina içi) | Menzil ve başarı oranı raporlanır; A-13 girdisi | Orta |
+| **TST-18** | Veri katırı: 2.000 kayıtlı emanet deposunun NOKTA (WiFi) ve ÇATI (BLE / LoRa) üzerinden aktarımı | Aktarım süresi; yinelenme yok (SOS-9) → A-14 | Orta |
+| **TST-19** | CEP-12 güç ölçümü: Enkaz modu + konum beacon'ı 10 s ve 30 s aralıkla, PPK2, 24 saat | Ortalama ≤ 1 mA (CEP-8) → A-15 | Yüksek |
+
 ### 13.2 Donanım doğrulama
 
 `02_Donanim/Donanim_Gereksinim_Raporu.md` Bölüm 9'daki test listesi (**T-01…T-20**) geçerlidir: güç açılış, SWD/UF2, **kapalı mod ≤ 10 µA**, **normal mod ≤ 8 mA (PPK2, 24 saat)**, 3,0 V'a kadar brownout, **buck-boost alıcı gürültüsü (A-8)**, Meshtastic birlikte çalışabilirlik, çıkış gücü, menzil (elde tutarak dahil), tam deşarj, raf ömrü, −10 °C, şarj sıcaklık kesmesi, ters pil, piezo ses basıncı, buton-only gezinme, düşme algılama, 1,5 m düşme. PCB öncesi prototip sırası: `05_Cihaz_Tasarimi/CEP_Ilk_Prototip_Malzeme_Listesi.md` (B-1…B-11).
@@ -529,6 +645,17 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | **5 — Pilot** | Bir mahalle: 3 NOKTA + **8–15 ÇATI-B + 2–3 ÇATI-K + 1–2 ÇATI-O + MERKEZ** + 20 CEP + saha tatbikatı | 4 hafta | Ölçülmüş saha verisi |
 | **5b — ÇATI taşıyıcı PCB** *(v2.5)* | RAK4630 + BQ25798 MPPT + emanet flash + bekçi köpeği (ÇATI raporu Bölüm 8.2) | 6–8 hafta | Üretime uygun ÇATI-B/K |
 
+**v2.6 — HAVA katmanı iş kolu** (yer ağıyla **paralel** yürür; hedef: 2027 HANGAR BİGG başvurusunda çalışan prototip + ölçülmüş veri, TRL 2 → 4):
+
+| Aşama | İçerik | Süre | Çıktı |
+|---|---|---|---|
+| **H1 — Dronesuz konum testi** | Herhangi bir LoRa kartı beacon olarak (CEP-12 taslağı) + GNSS'li alıcı + KONUM MOTORU ilk sürümü. TST-14, TST-19. A-15 kararı | 4–6 hafta | Doğruluk grafiği (kestirim ↔ gerçek konum) |
+| **H2 — HAVA-Y prototipi** | Hazır ESP32-S3 kart + 2× SX1262 + MAX-M10S + LiPo + 3D baskı kutu. HV-1…HV-8 | 4 hafta | Ağırlık, pil süresi, çalışan kayıt |
+| **H3 — İlk uçuşlar** | Hazır drone ile izinli alanda TST-15, TST-17, TST-18. A-13, A-14 kararları | 3 hafta | **1–2 dakikalık demo videosu** |
+| **H4 — Enkaz benzeri test** | TST-16, 433 / 868 karşılaştırması. Mümkünse AFAD/JAK eğitim alanında | 3 hafta | Moloz altı zayıflama ve konum hatası verisi |
+
+> **H1 neden ilk:** Drone yalnızca alıcıyı yukarı taşır; **algoritma yerde kanıtlanabilir.** H1 neredeyse maliyetsizdir ve jürinin en önemli sorusunu ("gerçekten bulabiliyor mu?") ölçümle cevaplar. H1 için Aşama 3a (CEP breadboard) beklenmez.
+
 > **Sıralama gerekçesi:** Projenin farklılaşması donanımda değil PORTAL'dadır. Ayrıca PORTAL hazır kartlarla doğrulanabildiği için çok daha hızlı ve ucuzdur. PCB, farklılaşma kanıtlandıktan sonra anlamlıdır.
 
 ---
@@ -558,6 +685,14 @@ Bakanlık kılavuzu Bölüm 1.5'teki yedi resmî gösterge, raporlama dili olara
 | **SOS patlaması:** deprem anında herkes aynı dakikada basar, teyit görmeyen tekrar basar *(v2.5)* | **Yüksek** | SOS-7 (teyit), SOS-10 (jitter + geri çekilme), CEP-10 (gösterge), TST-13 |
 | Çatı kurulumuna sakin itirazı ("anten" / baz istasyonu hassasiyeti) *(v2.5)* | Orta | ÇATI raporu Bölüm 10 adım 3: bilgi notu, düşük güç, kamu binası önceliği |
 | 2,4 GHz omurga menzili kentte yetersiz *(v2.5)* | Orta | TST-9 erken. Yedek: ÇATI-O sıklaştırma, MERKEZ yakınında 5 GHz PtP |
+| **Moloz altında beacon sinyali beklenenden çok zayıflar** *(v2.6)* | **Yüksek** | 433 MHz seçeneği (A-1 notu); TST-16 erken; doğruluk hedefi ölçümden sonra ilan edilir (HV-N4) |
+| RSSI tabanlı kestirimin kentte yansımalarla bozulması *(v2.6)* | Orta | Çok sayıda ölçüm + olasılıksal yöntem (HV-11); çıktı nokta değil güven elipsi; çoklu uçuş birleştirme (HV-15) |
+| Afetzedede CEP yok ve telefonun WiFi'ı kapalı *(v2.6)* | Yüksek | İki kaynak birden (CEP-12 + HV-4/HV-5); CEP yaygınlığı belediye dağıtım modeline bağlı |
+| Pasif telefon ölçümünün KVKK sorunu doğurması *(v2.6)* | Orta | A-13, REG-8; ham MAC saklanmaz; yalnızca afet modu ve yetkili kurum |
+| İHA uçuş izni (SHGM, afet bölgesi) *(v2.6)* | Orta | Ürün platform bağımsız yük (HV-1); uçuşu yetkili kurum yapar (REG-7) |
+| Yabancı muadilin (Lifeseeker) Türkiye pazarına girmesi *(v2.6)* | Orta | Lisanssız bant, yerlilik, yer ağıyla entegrasyon, beacon + telefon, maliyet (Bölüm 1.5) |
+| Yüksekteki HAVA-Y'nin çok sayıda hücreyi aynı anda tıkaması *(v2.6)* | Yüksek | HV-8: varsayılan `CLIENT_MUTE`, röle yalnızca beyaz listeli trafik |
+| Açık depo (MIT) nedeniyle fikri mülkiyetin zayıflaması *(v2.6)* | Orta | A-16; KONUM MOTORU karar verilene kadar açık depoya konmaz |
 | Kullanıcıların sesli iletişim beklentisi (metin yetersiz bulunabilir) | Orta | Hurricane Helene saha raporu bu beklentiyi doğruluyor. Ürün sohbet için değil **tek yönlü SOS + triage** için konumlandırılacak; telsizle rekabet edilmeyecek (Bölüm 3.2) |
 
 ---
@@ -582,6 +717,7 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | **Ç-12** | "Özel uygulama kapsam dışı" vs PORTAL | Görünürde çelişki | **Netleştirildi:** PORTAL mobil uygulama değildir; node üzerinde barındırılan web sayfasıdır (Bölüm 3.2) |
 | **Ç-13** | Menzil beyanları | Raporlar arası farklı rakamlar (1–3 km / ≥2 km / 5 km) | **SYS-7:** yalnızca ölçülmüş değerler beyan edilir |
 | **Ç-14** | Store & Forward genel kanalda çalışmıyor | Fark edilmemişti | **PORTAL kendi deposundan HTTP ile sunar** (POR-8); Meshtastic S&F ikincil. Ayrıca SOS için ayrı kanal (SOS-6) |
+| **Ç-15** *(v2.6)* | Enkaz modunda sinyal sıklığı | CEP-8 + SOS-3: 5 dk'da en fazla 1 SOS → bir drone geçişinde 0–1 ölçüm | **Ayrı konum beacon'ı** (CEP-12): mesh'te taşınmaz, ≤ 12 bayt, 10–30 s aralık. SOS-3 **gevşetilmedi** |
 
 ---
 
@@ -638,6 +774,12 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | AF-D6, AF-D7, AF-X1 | PAN-6, PAN-7 | Birleştirildi |
 | İ-1…İ-4 | Bölüm 2 | Korundu |
 | T-1…T-6 | TST-1…TST-6 | Korundu + TST-7 eklendi |
+| **HANGAR BİGG Başvuru Konsepti (25 Eyl 2026)** | | |
+| Bölüm 3.4 HAVA-Y | HV-1…HV-8, HV-N1…N7 | Eklendi |
+| Bölüm 3.4 KONUM MOTORU, uçuş planı önerici | HV-10…HV-16 | Eklendi |
+| Bölüm 9 yol haritası 1–4 | H1…H4, TST-14…TST-19 | Eklendi |
+| Bölüm 10 riskler | Bölüm 15 (v2.6 satırları) | Eklendi |
+| Bölüm 12 K-3 (motor lisansı) | A-16 | Açık karar |
 
 ---
 
@@ -648,6 +790,7 @@ Aşağıdaki 14 çelişki, önceki raporlar arasında tespit edilmiş ve bu belg
 | 1.0 | — | Gereksinim Analizi Raporu (ilk kapsam) |
 | 1.1 | — | Donanım Gereksinim Raporu (donanım detayı) |
 | **2.0** | **9 Ağu 2026** | Rekabet, mimari ve bakanlık analizleri birleştirildi. 14 çelişki çözüldü. Kamu node'u ayrı cihaz sınıfına alındı. Cihazsız erişim BLE'den WiFi portala taşındı. Gereksinim ID şeması birleştirildi |
+| **2.6** | **25 Eyl 2026** | **HAVA katmanı (HANGAR BİGG Seçenek B onayı):** genişletilmiş tanım (1.1) ve **Bölüm 1.5** (çift kullanım, termal kamera karşılaştırması, kurumsal iletişim kuralları — Lifeseeker, askeri iddia yok) · kapsam: HAVA-Y ve KONUM MOTORU içeride; İHA platformu, hücresel bant, askeri taktik haberleşme dışarıda · mimari notu ve bileşen ⑥ ⑦ · **Bölüm 7c: HV-1…HV-8, HV-10…HV-16, HV-N1…N7** · **CEP-12** konum beacon'ı ve **Ç-15** · SYS-5 KONUM MOTORU için askıda, SYS-7 konum doğruluğunu kapsar · **REG-7…REG-9** · yeni açık kararlar **A-13…A-16**, A-1'e 433 MHz girdisi · **TST-14…TST-19** · yol haritasına **H1…H4** · risk kaydına 8 risk · belge tablosuna Başvuru Konsepti |
 | **2.5** | **24 Eyl 2026** | **ÇATI katmanı ve merkeze iletim:** yeni bileşenler ÇATI-B/K/O + MERKEZ (4.1, **Bölüm 7b**: ÇAT-1…11, ÇAT-N1…N7) · CEP-9 (afet profili), CEP-10 (üç aşamalı teslim göstergesi), CEP-11 (favoriler) · **SOS-7…SOS-11** (teyit, emanet zinciri, kimlik, patlama önleme, yedek teslim yolları) · SOS-5 için `CORE_PORTNUMS_ONLY` riski · A-1/A-2 notları (433'te çatı link bütçesi −13 dB, kapasite hesabı) · yeni açık kararlar **A-9…A-12** · TST-5 genişletildi, **TST-8…TST-13** · yol haritasına 4b ve 5b · risk kaydına 5 risk · belge tablosuna ÇATI Donanım Raporu ve Meshtastic Sorunları Araştırması |
 | **2.4** | **24 Eyl 2026** | Belge ailesi hizalaması: **Bölüm 6.2b Donanım Özeti** eklendi · belge tablosuna prototip BOM, birleşik kaynakça ve makale arşivi eklendi · literatür raporu `04_Dokumanlar/`'a taşındı · araştırma raporu kuralı "tarihli güncelleme notu" olarak gevşetildi · 13.2 test listesi T-01…T-20 ile güncellendi · yol haritasında Aşama 3 → 3a (breadboard) + 3b (PCB) · risk kaydına 3 donanım riski · izlenebilirlik tablosuna Donanım Raporu v2.x eşleşmeleri |
 | **2.3** | **24 Eyl 2026** | **A-7 kapandı:** kullanıcı dokunmatik ekranın zorunlu olmadığını bildirdi → CEP-T arayüzü e-paper + fiziksel butonlar (Yol A), MCU nRF52840; CEP-T ayrı cihaz sınıfı değil, CEP+ montaj varyantı |

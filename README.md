@@ -10,7 +10,7 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 
 | Klasör / Dosya | İçerik | Statü |
 |---|---|---|
-| **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** | **Tek yetkili gereksinim kaynağı (SGB v2.5)** — 6.2b'de donanım özeti | ✅ Yürürlükte |
+| **[`00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md`](00_Proje_Temeli/Sistem_Gereksinim_Belgesi.md)** | **Tek yetkili gereksinim kaynağı (SGB v2.6)** — 6.2b'de donanım özeti, 7c'de HAVA katmanı | ✅ Yürürlükte |
 | [`01_Gereksinim_Analizi/`](01_Gereksinim_Analizi/) | İlk kapsam çalışması (v2.4 notlarıyla hizalı) | 📎 Girdi belgesi |
 | [`02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md`](02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md) | **ÇATI ailesi** — çatı/direk röle düğümleri (ÇATI-B/K/O) + MERKEZ ağ geçidi: 46 gereksinim, yasal ERP hesabı, güç bütçesi, 2,4 GHz omurga köprüsü, BOM, kurulum ve test (v1.0) | 📎 Teknik ek |
 | [`02_Donanim/Donanim_Gereksinim_Raporu.md`](02_Donanim/Donanim_Gereksinim_Raporu.md) | CEP ailesi: 83 maddelik donanım gereksinim tablosu, **işlemci karşılaştırması** (TI / STM32 / ESP32 / Raspberry Pi / Nordic), güç bütçesi ve 5 güç modu, alt sistem malzeme seçimi, BOM, test planı (v2.1) | 📎 Teknik ek |
@@ -21,6 +21,7 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 | ↳ [`Kaynakca.md`](04_Dokumanlar/Kaynakca.md) | **Projenin birleşik kaynakçası** | 📚 Kaynak dizini |
 | ↳ [`Kaynaklar/Makaleler/`](04_Dokumanlar/Kaynaklar/Makaleler/) | İndirilen **18 açık erişimli makale** (PDF) | 📚 Arşiv |
 | [`05_Cihaz_Tasarimi/`](05_Cihaz_Tasarimi/) | CEP-T konsept raporu (v1.4) + **PCB öncesi prototip malzeme listesi** (v2.0) | 📎 Konsept / uygulama |
+| [`06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md`](06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md) | TUSAŞ HANGAR BİGG başvuru yapısı: 3 seçenek, önerilen HAVA katmanı (İHA ile enkaz altı konum tespiti), çift kullanım, rekabet, yol haritası, ekip kararları | 📝 Karar taslağı |
 | `Afet_Sonrası_İletişim_Sistemleri.pdf` | Çevre ve Şehircilik Bakanlığı rehberlik kılavuzu (2024) | 📄 Referans |
 
 > **Kural:** Yeni bir gereksinim doğduğunda **önce SGB'ye** yazılır. Araştırma raporlarının orijinal bulguları silinmez; sonraki kararlar tarihli güncelleme notu (`⚠️ vX.Y`) olarak eklenir.
@@ -41,6 +42,8 @@ Afetzede telefonunun WiFi'ını açar → `AFETMESH-<mahalle>` ağına bağlanı
 | **PORTAL** | Captive portal arayüzü — cihazsız kullanıcının ekranı | NOKTA üzerinde gömülü web | — |
 | **SOS modülü** | Yapısal acil paket + önceliklendirme | Meshtastic firmware modülü | — |
 | **PANO** | Triage ve koordinasyon arayüzü | Çevrimdışı web | — |
+| **HAVA-Y** *(v2.6)* | İHA yük modülü — enkaz altındaki CEP beacon'ını ve telefonları havadan ölçer, uçan NOKTA, veri katırı | ESP32-S3 + 2× SX1262 + GNSS, ≤ 300 g, platform bağımsız | $100–180 (prototip, tahmini) |
+| **KONUM MOTORU** *(v2.6)* | Havadan ölçümlerden konum elipsi kestiren yer istasyonu yazılımı + uçuş planı önerici | PANO ile aynı dizüstü | — |
 
 ---
 
@@ -88,6 +91,10 @@ Ayrıca bu aşamada **A-1 frekans kararı** verilecek (433 MHz mi 868 MHz mi). S
 ### Çatı röle katmanı (v2.5)
 
 **"Dikey çık, yatay taşı":** Çok katlı binalarda CEP → CEP doğrudan bağlantı güvenilmez. CEP yalnızca kendi binasının çatısındaki **ÇATI-B**'ye ulaşır; uzun mesafe yüksek noktalardaki **ÇATI-K** ve 2,4 GHz **ÇATI-O omurgası** üzerinden **MERKEZ**'e taşınır. MERKEZ her SOS için teslim teyidi döndürür; teyit gelene kadar SOS'u yol üstündeki ÇATI saklar (emanet zinciri). Gerekçe: LongFast'te bir röle yasal %10 çalışma süresiyle dakikada yalnızca ~7 paket yayınlayabilir — çatı rölesi tek başına kapasite getirmez. Ayrıntı: [`04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md`](04_Dokumanlar/Meshtastic_Sorunlari_ve_Cozum_Arastirmasi.md) · [`02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md`](02_Donanim/CATI_Node_Donanim_Gereksinim_Raporu.md)
+
+### HAVA katmanı (v2.6) — HANGAR BİGG başvurusunun merkezi
+
+**"Yer kalıcıdır, hava anlıktır":** Drone'a takılan **HAVA-Y** modülü, enkaz modundaki CEP'lerin kısa konum beacon'larını (CEP-12) ve telefonların sinyalini farklı noktalardan ölçer. **KONUM MOTORU** bu ölçümlerden her kaynak için bir konum elipsi çıkarır ve PANO'da SOS kaydıyla eşleştirir. Aynı modül havada `AFETMESH-HAVA` portalını açar ve kopuk kalmış yer düğümlerindeki SOS'ları toplar. **İlk adım drone gerektirmez:** H1 dronesuz konum testi (TST-14). Açık kararlar: **A-13…A-16**. Ayrıntı: SGB Bölüm 1.5 ve 7c · [`06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md`](06_Basvuru/HANGAR_BIGG_Basvuru_Konsepti.md)
 
 ---
 
